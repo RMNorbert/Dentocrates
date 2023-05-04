@@ -16,7 +16,7 @@ public class CustomerResponseDTO {
     private final String lastname;
     private final int authorizationCategory;
 
-    public CustomerResponseDTO of(Customer customer){
+    public static CustomerResponseDTO of(Customer customer){
         return CustomerResponseDTO.builder()
                 .email(customer.getEmail())
                 .firstName(customer.getFirstName())

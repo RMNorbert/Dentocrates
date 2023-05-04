@@ -16,7 +16,7 @@ public class DentistResponseDTO {
     private final String lastname;
     private final int authorizationCategory;
     private final String operatingLicenceNo;
-    public DentistResponseDTO of(Dentist dentist){
+    public static DentistResponseDTO of(Dentist dentist){
         return DentistResponseDTO.builder()
                 .email(dentist.getEmail())
                 .firstName(dentist.getFirstName())
