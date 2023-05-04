@@ -22,5 +22,5 @@ public class Dentist extends Client {
             allocationSize = 1
     )
     private final Long id;
-    private final String operatingLicence;
+    private final String operatingLicenceNo;
 }
