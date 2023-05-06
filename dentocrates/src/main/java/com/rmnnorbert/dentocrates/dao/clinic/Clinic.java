@@ -27,7 +27,7 @@ public class Clinic {
     private final ClinicType clinicType;
     private final String contactNumber;
     @Column(columnDefinition = "VARCHAR(255) DEFAULT ''")
-    private final String website;
+    private String website;
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private final Location location;
@@ -37,6 +37,9 @@ public class Clinic {
     @JoinColumn(name = "dentist_in_contract", referencedColumnName = "id")
     private final Dentist dentistInContract;
 
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private AppointmentCalendar appointmentCalendar;
     public static Clinic of(ClinicRegisterDTO clinicRegisterDTO,Dentist dentist,Location clinicLocation) {
         ClinicType type = ClinicType.valueOf(clinicRegisterDTO.clinicType());
 
@@ -50,5 +53,11 @@ public class Clinic {
                 .openingHours(clinicRegisterDTO.openingHours())
                 .dentistInContract(dentist)
                 .build();
+    }
+    public void setWebsite(String newWebsite){
+        website = newWebsite;
+    }
+    public void setAppointmentCalendar(AppointmentCalendar registeredAppointmentCalendar){
+        appointmentCalendar = registeredAppointmentCalendar;
     }
 }
