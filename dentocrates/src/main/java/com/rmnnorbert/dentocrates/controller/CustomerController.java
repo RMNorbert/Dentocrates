@@ -23,7 +23,7 @@ public class CustomerController {
         return customerService.registerCustomer(customerRegisterDTO);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable Long id){
+    public ResponseEntity<String> deleteCustomer(@PathVariable long id){
         return customerService.deleteCustomerById(id);
     }
 }

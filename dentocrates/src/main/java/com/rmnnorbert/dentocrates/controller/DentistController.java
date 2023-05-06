@@ -25,7 +25,7 @@ public class DentistController {
         return dentistService.registerDentist(dentistRegisterDTO);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDentist(@PathVariable Long id){
+    public ResponseEntity<String> deleteDentist(@PathVariable long id){
         return dentistService.deleteDentistById(id);
     }
 }
