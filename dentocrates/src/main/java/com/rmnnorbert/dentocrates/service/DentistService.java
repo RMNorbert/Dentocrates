@@ -33,7 +33,7 @@ public class DentistService {
     }
     public ResponseEntity<String> deleteDentistById(Long id){
         if(dentistRepository.findById(id).isPresent()) {
-            return ResponseEntity.badRequest().body("Dentist with " + id + " don't exist.");
+            return ResponseEntity.badRequest().body("Dentist don't exist.");
         }else{
             dentistRepository.deleteById(id);
             return  ResponseEntity.ok("Dentist deleted successfully");

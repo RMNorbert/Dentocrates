@@ -33,7 +33,7 @@ public class CustomerService {
     }
     public ResponseEntity<String> deleteCustomerById(Long id){
         if(customerRepository.findById(id).isPresent()) {
-            return ResponseEntity.badRequest().body("Customer with " + id + " don't exist.");
+            return ResponseEntity.badRequest().body("Customer with  don't exist.");
         }else{
             customerRepository.deleteById(id);
             return  ResponseEntity.ok("Customer deleted successfully");
