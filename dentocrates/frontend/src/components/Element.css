@@ -1,0 +1,27 @@
+button {
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    color: #010C80;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-style: solid;
+    border-width: thin;
+    margin: 10px 10px 10px 0;
+}
+
+button:hover {
+    background-color: #2D3EFA;
+    color: #FFFFFF;
+}
+
+button:active {
+    color: #9B9B9B;
+}
+.pageContent {
+    position: relative;
+    top: 120px;
+    left: 50px;
+}
