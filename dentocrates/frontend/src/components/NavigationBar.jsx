@@ -1,12 +1,13 @@
 import './NavigationBar.css'
-import './Elements.css'
+import './Element.css'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import {email, role} from "./token/TokenDecoder";
 function NavigationBar() {
     const navigate = useNavigate();
     const [logedInUserEmail, setLogedInUserEmail] = useState(null);
     const [userRole , setUserRole] = useState(null);
+    const [isHidden,setIsHidden] = useState(true);
     let url = window.location.href.split('/');
     let currentUrl = url[url.length-1];
 
@@ -27,12 +28,11 @@ function NavigationBar() {
     return (
         <div className='navigationBar'>
             <img className='logo' src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'} alt="logo" />
-            <div id='tabs'>Home</div>
-            <div id='tabs'>Search clinic</div>
-            <div id='tabs'>Search dentist</div>
-            <div id='tabs'>Appointments</div>
-            <div id='tabs'>Profile</div>
-            <div id='tabs'>Logout</div>
+            <button id='tabs'>Home</button>
+            <button id='tabs'>Search clinic</button>
+            <button id='tabs'>Search dentist</button>
+            <button id='tabs'>Appointments</button>
+            <button id='tabs'>Profile</button>
             {userRole && userRole === "DENTIST" ?
       <h2 className='clinicLabel'>Clinics</h2>
       :
@@ -57,7 +57,7 @@ function NavigationBar() {
                 </button>
                 {userRole && userRole === "CUSTOMER" &&
                 <button className='logoutButton'
-                onClick={() => navigateTo("/pass")}
+                onClick={() => navigate("/pass")}
                 >
                   Pass
                 </button>}

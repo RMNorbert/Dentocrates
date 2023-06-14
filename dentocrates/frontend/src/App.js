@@ -10,6 +10,7 @@ import {ClinicSelectorPage} from "./components/clinic/ClinicSelectorPage";
 import { ClinicPage } from "./components/clinic/ClinicPage";
 import LocationPage from "./components/clinic/location/LocationRegisterPage";
 import ClinicRegisterPage from "./components/clinic/ClinicRegisterPage.jsx";
+import Calendar from "./components/clinic/calendar/Calendar";
 function App() {
   return (
       <Router>
@@ -22,6 +23,7 @@ function App() {
           <Route path="/dentist" element={<DentistPage/>} />
           <Route path="/clinic" element={<ClinicSelectorPage />} />
           <Route path="/clinic/:id" element={<ClinicPage />} />
+          <Route path="/calendar/:id" element={<Calendar />} />
           <Route path="/location" element={<LocationPage />} />
           <Route path="/clinic/register" element={<ClinicRegisterPage />} />
         </Routes>

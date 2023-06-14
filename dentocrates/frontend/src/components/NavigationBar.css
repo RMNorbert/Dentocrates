@@ -1,5 +1,5 @@
 .navigationBar {
-    position: fixed;
+    position:fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -44,5 +44,8 @@
     width: 100%;
 }
 #tabs{
+    height: 100%;
+    border-radius: 0%;
     margin-right: 10px;
+    border-style: none;
 }
