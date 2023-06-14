@@ -1,6 +1,7 @@
 package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
+import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;
 import lombok.AllArgsConstructor;
@@ -21,22 +22,17 @@ public class LocationService {
                 .toList();
     }
     public ResponseEntity<String> registerLocation(LocationDTO locationDTO){
-        if (locationRepository.getByZipCode(locationDTO.getZipCode()).isPresent()) {
-            return ResponseEntity.badRequest().body("Location already registered");
-        }else {
-            Location location = Location.of(locationDTO);
-            locationRepository.save(location);
-
-            return ResponseEntity.ok("Location registered successfully");
-        }
+        Location location = Location.of(locationDTO);
+        locationRepository.save(location);
+        return ResponseEntity.ok("Location registered successfully");
     }
     public ResponseEntity<String> deleteLocationById(Long id){
-        if(locationRepository.findById(id).isPresent()) {
-            return ResponseEntity.badRequest().body("Location don't exist.");
-        }else{
-            locationRepository.deleteById(id);
-            return  ResponseEntity.ok("Location deleted successfully");
-        }
+        Location location = getLocationById(id);
+        locationRepository.deleteById(id);
+        return  ResponseEntity.ok("Location deleted successfully");
     }
-
+    private Location getLocationById(long id){
+        return locationRepository.findById(id).orElseThrow(() -> new NotFoundException("Location"));
+    }
 }
+

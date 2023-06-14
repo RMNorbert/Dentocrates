@@ -2,35 +2,31 @@ package com.rmnnorbert.dentocrates.dao.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
 @Getter
 @Builder
-@NonNull
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class Location {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "location_seq"
-    )
-    @SequenceGenerator(
-            name = "location_seq",
-            sequenceName = "location_seq",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @Min(1000)
+    @Max(10000)
     private final int zipCode;
-    @Column(unique = true)
+    @NotBlank
     private final String city;
 
     public static Location of(LocationDTO locationDTO) {
         return Location.builder()
-                .zipCode(locationDTO.getZipCode())
-                .city(locationDTO.getCity())
+                .zipCode(locationDTO.zipCode())
+                .city(locationDTO.city())
                 .build();
     }
 }

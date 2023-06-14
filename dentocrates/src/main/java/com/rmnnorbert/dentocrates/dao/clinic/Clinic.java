@@ -2,36 +2,35 @@ package com.rmnnorbert.dentocrates.dao.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
+import com.rmnnorbert.dentocrates.data.ClinicType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
 @Getter
 @Builder
-@NonNull
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class Clinic {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
-    )
-    @SequenceGenerator(
-            name = "clinic_seq",
-            sequenceName = "clinic_seq",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private final String name;
+    @NotBlank
     @Enumerated(EnumType.STRING)
     private final ClinicType clinicType;
+    @NotBlank
     private final String contactNumber;
     @Column(columnDefinition = "VARCHAR(255) DEFAULT ''")
     private String website;
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private final Location location;
+    @NotBlank
     private final String street;
+    @NotBlank
     private final String openingHours;
     @OneToOne
     @JoinColumn(name = "dentist_in_contract", referencedColumnName = "id")
@@ -61,3 +60,4 @@ public class Clinic {
         appointmentCalendar = registeredAppointmentCalendar;
     }
 }
+

@@ -1,8 +1,9 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.CustomerRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.CustomerResponseDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,13 @@ public class CustomerController {
     public List<CustomerResponseDTO> getAllCustomer(){
         return customerService.getAllCustomer();
     }
+    @GetMapping("/{id}")
+    public CustomerResponseDTO getAllCustomer(@PathVariable long id){
+        return customerService.getClient(id);
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<String> registerCustomer(@RequestBody CustomerRegisterDTO customerRegisterDTO){
+    public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerRegisterDTO customerRegisterDTO){
         return customerService.registerCustomer(customerRegisterDTO);
     }
     @DeleteMapping("/{id}")

@@ -1,32 +1,26 @@
 package com.rmnnorbert.dentocrates.dao.client;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.data.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
 @Getter
-@NonNull
 @NoArgsConstructor(force = true)
 public class Dentist extends Client {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "dentist_seq"
-    )
-    @SequenceGenerator(
-            name = "dentist_seq",
-            sequenceName = "dentist_seq",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
     @Column(unique = true)
+    @NotBlank
     private final String operatingLicenceNo;
     @Transient
-    private static final int DENTIST_AUTHORIZATION_CATEGORY = 2;
+    private static final Role DENTIST_ROLE = Role.DENTIST;
     @Builder
     public Dentist(String email, String password, String firstName, String lastName, Long id, String operatingLicenceNo) {
-        super(email, password, firstName, lastName, DENTIST_AUTHORIZATION_CATEGORY);
+        super(email, password, firstName, lastName, DENTIST_ROLE);
         this.id = id;
         this.operatingLicenceNo = operatingLicenceNo;
     }
@@ -36,6 +30,7 @@ public class Dentist extends Client {
                 .password(dentistRegisterDTO.password())
                 .firstName(dentistRegisterDTO.firstName())
                 .lastName(dentistRegisterDTO.lastname())
+                .operatingLicenceNo(dentistRegisterDTO.operatingLicenceNo())
                 .build();
     }
 }

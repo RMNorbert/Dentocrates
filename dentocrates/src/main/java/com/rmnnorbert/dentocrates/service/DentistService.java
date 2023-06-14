@@ -1,7 +1,8 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.DentistResponseDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
+import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import lombok.AllArgsConstructor;
@@ -22,22 +23,17 @@ public class DentistService {
                 .toList();
     }
     public ResponseEntity<String> registerDentist(DentistRegisterDTO dentistRegisterDTO){
-        if (dentistRepository.findByEmail(dentistRegisterDTO.email()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already registered");
-        }else {
-            Dentist dentist = Dentist.of(dentistRegisterDTO);
-            dentistRepository.save(dentist);
-
-            return ResponseEntity.ok("Dentist registered successfully");
-        }
+        Dentist dentist = Dentist.of(dentistRegisterDTO);
+        dentistRepository.save(dentist);
+        return ResponseEntity.ok("Dentist registered successfully");
     }
     public ResponseEntity<String> deleteDentistById(Long id){
-        if(dentistRepository.findById(id).isPresent()) {
-            return ResponseEntity.badRequest().body("Dentist don't exist.");
-        }else{
-            dentistRepository.deleteById(id);
-            return  ResponseEntity.ok("Dentist deleted successfully");
-        }
-    }
+        Dentist dentist = getDentistById(id);
+        dentistRepository.deleteById(id);
+        return  ResponseEntity.ok("Dentist deleted successfully");
 
+    }
+    private Dentist getDentistById(long id){
+        return dentistRepository.findById(id).orElseThrow(() -> new NotFoundException("Dentist"));
+    }
 }

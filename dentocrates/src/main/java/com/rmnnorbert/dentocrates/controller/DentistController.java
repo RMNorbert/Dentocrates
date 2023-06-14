@@ -1,8 +1,9 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.DentistResponseDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.service.DentistService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/dentist")
-@AllArgsConstructor
 public class DentistController {
     private final DentistService dentistService;
 
@@ -21,7 +22,7 @@ public class DentistController {
         return dentistService.getAllDentist();
     }
     @PostMapping("/register")
-    public ResponseEntity<String> registerDentist(@RequestBody DentistRegisterDTO dentistRegisterDTO){
+    public ResponseEntity<String> registerDentist(@Valid @RequestBody DentistRegisterDTO dentistRegisterDTO){
         return dentistService.registerDentist(dentistRegisterDTO);
     }
     @DeleteMapping("/{id}")

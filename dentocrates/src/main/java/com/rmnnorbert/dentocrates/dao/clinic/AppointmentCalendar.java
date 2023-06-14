@@ -2,36 +2,28 @@ package com.rmnnorbert.dentocrates.dao.clinic;
 
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
-@NonNull
+@Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class AppointmentCalendar {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
-    )
-    @SequenceGenerator(
-            name = "appointment_seq",
-            sequenceName = "appointment_seq",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @PrimaryKeyJoinColumn
+    @NonNull
     private final Clinic clinic;
-    @ManyToMany(mappedBy = "appointmentCalendars")
-    private List<Customer> customers = new ArrayList<>();
+    @ManyToOne
+    @PrimaryKeyJoinColumn
+    @NonNull
+    private Customer customer;
     private final LocalDate reservation;
+
 }

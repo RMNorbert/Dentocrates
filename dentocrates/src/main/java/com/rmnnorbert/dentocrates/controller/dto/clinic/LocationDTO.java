@@ -1,24 +1,21 @@
 package com.rmnnorbert.dentocrates.controller.dto.clinic;
 
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.util.Objects;
-@Getter
 @Builder
-@AllArgsConstructor
-public final class LocationDTO {
-    private final int zipCode;
-    private final String city;
-
-    public static LocationDTO of(Location location){
+public record LocationDTO(@Min(1000) @Max(10000) int zipCode, @NotBlank String city) {
+    public static LocationDTO of(Location location) {
         return LocationDTO.builder()
                 .zipCode(location.getZipCode())
                 .city(location.getCity())
                 .build();
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -26,11 +23,6 @@ public final class LocationDTO {
         var that = (LocationDTO) obj;
         return this.zipCode == that.zipCode &&
                 Objects.equals(this.city, that.city);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(zipCode, city);
     }
 
     @Override

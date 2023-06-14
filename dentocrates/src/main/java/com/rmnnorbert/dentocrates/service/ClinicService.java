@@ -2,6 +2,7 @@ package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
+import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
@@ -28,27 +29,23 @@ public class ClinicService {
                 .toList();
     }
     public ResponseEntity<String> registerClinic(ClinicRegisterDTO clinicRegisterDTO){
-        if (clinicRepository.findByName(clinicRegisterDTO.name()).isPresent()) {
-            return ResponseEntity.badRequest().body("Clinic already registered");
-        }else {
-            Dentist dentist = dentistRepository.getReferenceById(clinicRegisterDTO.dentistId());
-            int locationZipCode = clinicRegisterDTO.location().getZipCode();
-            Optional<Location> location =  locationRepository.getByZipCode(locationZipCode);
-            if(location.isPresent()) {
-                Clinic clinic = Clinic.of(clinicRegisterDTO, dentist, location.get());
-                clinicRepository.save(clinic);
-                return ResponseEntity.ok("Clinic registered successfully");
-            }
-            return ResponseEntity.badRequest().body("Invalid location.");
+        Dentist dentist = dentistRepository.getReferenceById(clinicRegisterDTO.dentistId());
+        int locationZipCode = clinicRegisterDTO.location().zipCode();
+        Optional<Location> location =  locationRepository.getByZipCode(locationZipCode);
+        if(location.isPresent()) {
+            Clinic clinic = Clinic.of(clinicRegisterDTO, dentist, location.get());
+            clinicRepository.save(clinic);
+            return ResponseEntity.ok("Clinic registered successfully");
         }
+        return ResponseEntity.badRequest().body("Invalid location.");
     }
     public ResponseEntity<String> deleteClinicById(Long id){
-        if(clinicRepository.findById(id).isPresent()) {
-            return ResponseEntity.badRequest().body("Clinic don't exist.");
-        }else{
-            clinicRepository.deleteById(id);
-            return  ResponseEntity.ok("Clinic deleted successfully");
-        }
-    }
+        Clinic clinic = getClinicById(id);
+        clinicRepository.deleteById(id);
+        return  ResponseEntity.ok("Clinic deleted successfully");
 
+    }
+    private Clinic getClinicById(long id){
+        return clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic"));
+    }
 }

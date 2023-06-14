@@ -2,15 +2,16 @@ package com.rmnnorbert.dentocrates.controller;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
 import com.rmnnorbert.dentocrates.service.LocationService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/location")
-@AllArgsConstructor
 public class LocationController {
     private final LocationService locationService;
     @GetMapping("/all")
@@ -18,7 +19,7 @@ public class LocationController {
         return locationService.getAllLocation();
     }
     @PostMapping("/register")
-    public ResponseEntity<String> registerLocation(@RequestBody LocationDTO locationDTO){
+    public ResponseEntity<String> registerLocation(@Valid @RequestBody LocationDTO locationDTO){
         return locationService.registerLocation(locationDTO);
     }
     @DeleteMapping("/{id}")

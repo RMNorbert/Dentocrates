@@ -1,25 +1,12 @@
 package com.rmnnorbert.dentocrates.controller.dto.clinic;
 
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-@AllArgsConstructor
-public class ClinicResponseDTO {
-    private final String name;
-    private final String clinicType;
-    private final String website;
-    private final String contactNumber;
-    private final int zipCode;
-    private final String city;
-    private final String street;
-    private final String openingHours;
-    private final long dentistId;
-
-    public static ClinicResponseDTO of (Clinic clinic){
+public record ClinicResponseDTO(String name, String clinicType, String website, String contactNumber, int zipCode,
+                                String city, String street, String openingHours, long dentistId) {
+    public static ClinicResponseDTO of(Clinic clinic) {
         return ClinicResponseDTO.builder()
                 .name(clinic.getName())
                 .clinicType(clinic.getClinicType().toString())
