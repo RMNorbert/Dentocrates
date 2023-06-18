@@ -24,6 +24,7 @@ public class ExceptionHandlerControllerAdvice {
         String errorMessage = fieldErrors.stream()
                 .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
+        System.out.println(errorMessage);
         return ResponseEntity.badRequest().body(errorMessage);
     }
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -34,6 +35,7 @@ public class ExceptionHandlerControllerAdvice {
         }
         int detailStartIndex = cause.indexOf("=");
         String message = cause.substring(detailStartIndex + 1).trim().replaceAll("[()]", "");
+        System.out.println(message);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
     }
     @ExceptionHandler(NotFoundException.class)
@@ -43,6 +45,7 @@ public class ExceptionHandlerControllerAdvice {
     @ExceptionHandler({SQLException.class, PersistenceException.class})
     public ResponseEntity<Object> handleDatabaseException() {
         String errorMessage = "An error occurred while accessing the database.";
+        System.out.println(errorMessage);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
 
