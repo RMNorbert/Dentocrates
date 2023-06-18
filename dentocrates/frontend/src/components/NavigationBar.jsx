@@ -8,14 +8,12 @@ function NavigationBar() {
     const [logedInUserEmail, setLogedInUserEmail] = useState(null);
     const [userRole , setUserRole] = useState(null);
     const [isHidden,setIsHidden] = useState(true);
-    let url = window.location.href.split('/');
-    let currentUrl = url[url.length-1];
 
     const handleLogout = () => {
         localStorage.clear();
         setUserRole(null);
         setLogedInUserEmail(null);
-        navigate("/login");
+        navigate("/");
     }
 
      useEffect(() => {
@@ -28,18 +26,26 @@ function NavigationBar() {
     return (
         <div className='navigationBar'>
             <img className='logo' src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'} alt="logo" />
-            <button id='tabs'>Home</button>
-            <button id='tabs'>Search clinic</button>
-            <button id='tabs'>Search dentist</button>
-            <button id='tabs'>Appointments</button>
-            <button id='tabs'>Profile</button>
+            {logedInUserEmail === null &&
+                <>
+            <button id='tabs' onClick={() => navigate("/")}>Login</button>
+            <button id='tabs' onClick={() => navigate("/register")}>Register</button>
+                </>
+            }
+            <button id='tabs' onClick={() => navigate("/home")}>Home</button>
+            {logedInUserEmail !== null &&
+                <>
+            <button id='tabs' onClick={() => navigate("/clinic")}>Search clinic</button>
+            <button id='tabs' onClick={() => navigate("/dentist")}>Search dentist</button>
+                </>
+            }
             {userRole && userRole === "DENTIST" ?
-      <h2 className='clinicLabel'>Clinics</h2>
-      :
-                userRole && userRole === "CUSTOMER" ?
-      <h2 className='searchLabel'>Search</h2>
-      : <></>
-      }
+                <>
+                    <button id='tabs' onClick={() => navigate("/clinic/register")}>Register clinic</button>
+                    <button id='tabs' onClick={() => navigate("/location")}>Register location</button>
+                </> :
+                <button id='tabs' onClick={() => navigate("/appointments")}>Appointments</button>
+            }
       {logedInUserEmail != null ? <div className='logout'
       >
                 <p
@@ -55,12 +61,7 @@ function NavigationBar() {
                 >
                   Logout
                 </button>
-                {userRole && userRole === "CUSTOMER" &&
-                <button className='logoutButton'
-                onClick={() => navigate("/pass")}
-                >
-                  Pass
-                </button>}
+                <button className='logoutButton' onClick={() => navigate("/client")}>Profile</button>
                 </div>
                 </div>
             </div>
