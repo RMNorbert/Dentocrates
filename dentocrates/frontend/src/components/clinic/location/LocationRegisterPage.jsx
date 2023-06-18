@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import { MultiFetch } from "../../../fetch/MultiFetch";
+import { useNavigate } from "react-router-dom";
 function LocationRegisterPage (){
+    const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [zipCode, setZipCode] = useState(1000);
     const [city, setCity] = useState('');
-    const [message, setMessage] = useState('');
-    const [hidden, setHidden] = useState(true);
     const isMounted = useRef(true);
     useEffect(() => {
         return () => {
@@ -26,35 +27,25 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
-        fetch('/location/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                zipCode: zipCode,
-                city: city
-            }),
-        })
-            .then(response => {
-                setHidden(false);
-                if (response.status === 200) {
-                    response.text().then(messages => setMessage(messages));
-                } else {
-                    response.text().then(errorMessage => setMessage(errorMessage));
-                }
-            })
-            .catch(error => console.error(error));
+        let locationData = {
+            zipCode: zipCode,
+            city: city
+        }
+        await data('/location/register','POST', locationData);
+        navigate("/home");
     };
     return (
         <div className="pageContent">
             <h1>Location Register</h1>
-            <div hidden = {hidden}>{message}</div>
             <div className="flex justify-center flex-col items-center text-2xl ">
                 <form onSubmit={HandleSubmit}>
                     <div>
                         <label htmlFor="zipCode">ZipCode:</label>
-                        <input type="number" id="zipCode" value={zipCode} onChange={handleZipCodeChange} />
+                        <input type="number"
+                               id="zipCode"
+                               value={zipCode}
+                               placeholder={"1000 - 10.000"}
+                               onChange={handleZipCodeChange} />
                     </div>
                     <div>
                         <label htmlFor="city">City:</label>

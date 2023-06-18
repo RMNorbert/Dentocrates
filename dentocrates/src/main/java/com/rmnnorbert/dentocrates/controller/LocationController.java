@@ -23,7 +23,7 @@ public class LocationController {
         return locationService.registerLocation(locationDTO);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteLocation(@PathVariable long id){
+    public ResponseEntity<String> deleteLocation(@PathVariable Long id){
         return locationService.deleteLocationById(id);
     }
 }
