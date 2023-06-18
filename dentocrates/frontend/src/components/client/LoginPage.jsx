@@ -7,10 +7,6 @@ function LoginPage() {
     const isMounted = useRef(true);
     const navigate = useNavigate()
 
-    const navigateTo = (urlEnd) => {
-        navigate(urlEnd);
-    };
-
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -29,7 +25,7 @@ function LoginPage() {
         event.preventDefault();
 
         const response =
-            await fetch('/authenticate', {
+            await fetch('/api/authenticate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,8 +40,8 @@ function LoginPage() {
             const data = await response.json();
             const token = data.token;
             const id = data.id;
+            localStorage.setItem('userId', id);
             localStorage.setItem('token', token);
-            localStorage.setItem('id', id);
             navigate("/home");
         }
 
@@ -68,7 +64,7 @@ function LoginPage() {
                 <button type="submit">Login</button>
             </form>
             <h3 className="register"
-                onClick={() =>  navigateTo("/register")}
+                onClick={() =>  navigate("/register")}
             >
                 Not registered yet?
             </h3>
