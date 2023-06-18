@@ -5,16 +5,18 @@ import com.rmnnorbert.dentocrates.data.Role;
 import lombok.Builder;
 
 @Builder
-public record DentistResponseDTO(String email,
+public record DentistResponseDTO(long id,
+                                 String email,
                                  String firstName,
-                                 String lastname,
+                                 String lastName,
                                  Role role,
                                  String operatingLicenceNo) {
     public static DentistResponseDTO of(Dentist dentist) {
         return DentistResponseDTO.builder()
+                .id(dentist.getId())
                 .email(dentist.getEmail())
                 .firstName(dentist.getFirstName())
-                .lastname(dentist.getLastName())
+                .lastName(dentist.getLastName())
                 .role(dentist.getRole())
                 .operatingLicenceNo(dentist.getOperatingLicenceNo())
                 .build();
@@ -25,7 +27,7 @@ public record DentistResponseDTO(String email,
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DentistResponseDTO that = (DentistResponseDTO) o;
-        return role == that.role && email.equals(that.email) && firstName.equals(that.firstName) && lastname.equals(that.lastname) && operatingLicenceNo.equals(that.operatingLicenceNo);
+        return role == that.role && email.equals(that.email) && firstName.equals(that.firstName) && lastName.equals(that.lastName) && operatingLicenceNo.equals(that.operatingLicenceNo);
     }
 
 }

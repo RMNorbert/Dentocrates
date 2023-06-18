@@ -1,6 +1,5 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
@@ -22,11 +21,7 @@ public class DentistService {
                 .map(DentistResponseDTO::of)
                 .toList();
     }
-    public ResponseEntity<String> registerDentist(DentistRegisterDTO dentistRegisterDTO){
-        Dentist dentist = Dentist.of(dentistRegisterDTO);
-        dentistRepository.save(dentist);
-        return ResponseEntity.ok("Dentist registered successfully");
-    }
+
     public ResponseEntity<String> deleteDentistById(Long id){
         Dentist dentist = getDentistById(id);
         dentistRepository.deleteById(id);
