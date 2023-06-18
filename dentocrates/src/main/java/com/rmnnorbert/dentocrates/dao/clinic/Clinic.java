@@ -1,6 +1,7 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.ClinicType;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class Clinic {
     private Long id;
     @NotBlank
     private final String name;
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     private final ClinicType clinicType;
     @NotBlank
@@ -34,7 +35,7 @@ public class Clinic {
     private final String openingHours;
     @OneToOne
     @JoinColumn(name = "dentist_in_contract", referencedColumnName = "id")
-    private final Dentist dentistInContract;
+    private final Client dentistInContract;
 
     @OneToOne
     @PrimaryKeyJoinColumn
@@ -45,7 +46,7 @@ public class Clinic {
         return Clinic.builder()
                 .name(clinicRegisterDTO.name())
                 .clinicType(type)
-                .contactNumber(builder().contactNumber)
+                .contactNumber(clinicRegisterDTO.contactNumber())
                 .website(clinicRegisterDTO.website())
                 .location(clinicLocation)
                 .street(clinicRegisterDTO.street())

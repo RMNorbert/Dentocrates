@@ -20,12 +20,16 @@ public class ClinicController {
     public List<ClinicResponseDTO> getAllClinic(){
         return clinicService.getAllClinic();
     }
+    @GetMapping("/{id}")
+    public ClinicResponseDTO getClinicById(@PathVariable Long id){
+        return clinicService.getClinicById(id);
+    }
     @PostMapping("/register")
     public ResponseEntity<String> registerClinic(@Valid @RequestBody ClinicRegisterDTO clinicRegisterDTO){
         return clinicService.registerClinic(clinicRegisterDTO);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClinic(@PathVariable long id){
+    public ResponseEntity<String> deleteClinic(@PathVariable Long id){
         return clinicService.deleteClinicById(id);
     }
 }

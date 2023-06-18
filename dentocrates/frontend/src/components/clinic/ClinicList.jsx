@@ -1,19 +1,23 @@
 import { useNavigate } from "react-router-dom";
-export const ClinicList = (clinicData) => {
+export const ClinicList = ({ clinicDatas }) => {
     const navigate = useNavigate();
     return (
-        <div>asdasd
-            {clinicData && clinicData.map((clinic) => {
-                <div
-                    key={clinic.name}
-                    onClick={() => navigate(`/clinic/${clinic.id}`)}
-                >
-                    <h1>{clinic.name}</h1>
-                    <h2>Location : {clinic.city} {clinic.street}</h2>
-                    <h3>{clinic.clinicType}</h3>
-                    <h3>Open: {clinic.openingHours}</h3>
-                </div>
-            })}
+        <div>
+            {clinicDatas &&
+                clinicDatas.map((clinic) => {
+                    return (
+                        <div
+                            key={clinic.name}
+                            className="listBox"
+                            onClick={() => navigate(`/clinic/${clinic.id}`)}
+                        >
+                            <h1 className="listName listMargin">{clinic.name}</h1>
+                            <h2 className="listDetail1 listMargin">Location: {clinic.city} {clinic.street} str.</h2>
+                            <h3 className="listDetail2 listMargin">{clinic.clinicType}</h3>
+                            <h3 className="listDetail3 listMargin">Open: {clinic.openingHours}</h3>
+                        </div>
+                    );
+                })}
         </div>
-    )
-}
+    );
+};

@@ -2,43 +2,56 @@ import "./ClinicSelectorPage.css";
 import { useEffect, useState } from "react"
 import { ClinicList } from "./ClinicList"
 import { Loading } from "../elements/Loading";
+import { MultiFetch } from "../../fetch/MultiFetch";
 export const ClinicSelectorPage = () => {
-    const [data , setData] = useState();
+    const { data } = MultiFetch();
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const [clinicData, setClinicData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
 
-    const getClinicData = async() =>{
-        const responseData = await fetch(`/clinic/all`);
-        setData(await responseData.json());
-    }
-
-    const isDataLoaded = () => {
-        console.log(!!data);
-        return !!data;
+    const getClinicData = async () => {
+        const responseData = await data(`/clinic/all`);
+        setClinicData(await responseData);
+        setFilteredData(await responseData);
+        setIsDataLoaded(true);
     };
+
 
     const search = (event) => {
         const searchText = event.target.value;
-        const results = [];
-        setFilteredData(results);
-        //  results.sort((a, b) => b[0] - a[0]);
-        //   event.target.value = clinic.name;
+        const filteredClinics = clinicData.filter((clinic) =>
+            clinic.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredData(filteredClinics);
     };
 
     useEffect(() => {
-        getClinicData();
-    },[data]);
-    if(isDataLoaded()){
+        if(!isDataLoaded) {
+            getClinicData();
+        }
+        }, [filteredData]);
+
+    if (isDataLoaded) {
         return (
             <div className="clinic">
                 <div>
-                    <input className={"searchBar"} type={"text"} placeholder={"Search for clinics"} onKeyDown={(event) => (event.code === 'Enter') && search(event)}/>
+                    <input
+                        className={"searchBar"}
+                        type={"text"}
+                        placeholder={"Search for clinics"}
+                        onChange={(event) => search(event)}
+                    />
                 </div>
-
-                <ClinicList
-                    clinicData={data}
-                />
+                <div className="list">
+                    {filteredData.length > 0 ? (
+                <ClinicList clinicDatas={filteredData} />
+                        ) :
+                        ( <p>No results found.</p>)
+                    }
+                </div>
             </div>
-        )} else {
-        return <Loading/>
+        );
+    } else {
+        return <Loading />;
     }
-}
+};
