@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AppointmentCalendarRepository extends JpaRepository<AppointmentCalendar,Long> {
     List<AppointmentCalendar> getAllByCustomer_Id(long id);
+
+    List<AppointmentCalendar> getAllByClinic_Id(long id);
 }

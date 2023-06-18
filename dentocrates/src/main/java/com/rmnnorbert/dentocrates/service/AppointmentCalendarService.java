@@ -1,7 +1,6 @@
 package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
@@ -33,14 +32,14 @@ public class AppointmentCalendarService {
                 .map(AppointmentDTO::of)
                 .toList();
     }
-    public ResponseEntity<String> registerAppointment(AppointmentRegisterDTO appointmentRegisterDTO){
-        Clinic clinic = getClinicById(appointmentRegisterDTO.clinicId());
-        Customer customer = getCustomerById(appointmentRegisterDTO.CustomerId());
+    public ResponseEntity<String> registerAppointment(AppointmentDTO appointmentDTO){
+        Clinic clinic = getClinicById(appointmentDTO.clinicId());
+        Customer customer = getCustomerById(appointmentDTO.CustomerId());
 
         AppointmentCalendar reservation = AppointmentCalendar.builder()
                 .clinic(clinic)
                 .customer(customer)
-                .reservation(appointmentRegisterDTO.reservation())
+                .reservation(appointmentDTO.reservation())
                 .build();
         appointmentCalendarRepository.save(reservation);
         return ResponseEntity.ok("Customer registered successfully");
@@ -51,6 +50,12 @@ public class AppointmentCalendarService {
         return  ResponseEntity.ok("Appointment deleted successfully");
 
     }
+    public List<AppointmentDTO> getAllAppointmentByClinic(long id) {
+            return appointmentCalendarRepository.getAllByClinic_Id(id)
+                    .stream()
+                    .map(AppointmentDTO::of)
+                    .toList();
+    }
     private void checkAppointmentExistenceById(long id){
         appointmentCalendarRepository.findById(id).orElseThrow(() -> new NotFoundException("Appointment"));
     }
@@ -60,4 +65,5 @@ public class AppointmentCalendarService {
     private Customer getCustomerById(long id){
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer"));
     }
+
 }

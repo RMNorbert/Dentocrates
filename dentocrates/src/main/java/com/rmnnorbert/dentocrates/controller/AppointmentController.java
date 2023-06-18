@@ -1,7 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.service.AppointmentCalendarService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,21 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppointmentController {
     private final AppointmentCalendarService appointmentCalendarService;
-    @GetMapping
-    public List<AppointmentDTO> getAppointments(@RequestBody long id ){
+    @GetMapping("/customer/{id}")
+    public List<AppointmentDTO> getCustomerAppointments(@PathVariable Long id ){
         return appointmentCalendarService.getAllAppointmentById(id);
     }
-    @GetMapping("/all")
-    public List<AppointmentDTO> getAllAppointments(){
-        return appointmentCalendarService.getAllAppointment();
-    }
     @PostMapping("/register")
-    public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentRegisterDTO appointmentRegisterDTO){
-        return appointmentCalendarService.registerAppointment(appointmentRegisterDTO);
+    public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentDTO appointmentDTO){
+        return appointmentCalendarService.registerAppointment(appointmentDTO);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> addCalendar(@PathVariable long id ){
+    public ResponseEntity<String> removeAppointment(@PathVariable Long id ){
         return appointmentCalendarService.deleteAppointmentById(id);
     }
-
+    @GetMapping("/clinic/{id}")
+    public List<AppointmentDTO> getAppointmentsByClinic(@PathVariable Long id ){
+        return appointmentCalendarService.getAllAppointmentByClinic(id);
+    }
 }
