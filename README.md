@@ -77,5 +77,6 @@ Installation
     Clone the repository: git clone https://github.com/RMNorbert/Dentocrates.git
     Set up the necessary environment variables and configure the database connection details.
     Build and run the project using your preferred development environment or command-line tools.
-    Access the Dentocrates application through the provided URL, create an account, and start exploring dentists and scheduling appointments.
+    Access the Dentocrates application through the provided URL, create an account, and start exploring
+    dentists and scheduling appointments.
 
