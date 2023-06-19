@@ -34,7 +34,7 @@ public class AppointmentCalendarService {
     }
     public ResponseEntity<String> registerAppointment(AppointmentDTO appointmentDTO){
         Clinic clinic = getClinicById(appointmentDTO.clinicId());
-        Customer customer = getCustomerById(appointmentDTO.CustomerId());
+        Customer customer = getCustomerById(appointmentDTO.customerId());
 
         AppointmentCalendar reservation = AppointmentCalendar.builder()
                 .clinic(clinic)

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
-export const ClientPage = (clientId) => {
+import { email } from "../token/TokenDecoder";
+
+export const ClientPage = () => {
     const [clientData, setClientData] = useState(null);
 
     const getClientDetails = async() =>{
-        const data = await fetch(`/client/${clientId}`);
+        const data = await fetch(`/client/${email()}`);
         setClientData(await data.json());
     }
 
@@ -12,12 +14,12 @@ export const ClientPage = (clientId) => {
 
     return (
         <div>
-            {clientData && clientData.map((client) => {
+            {clientData && clientData.map((client) => (
                 <div>
                     <div>Name: {client.firstName} + {client.lastName}</div>
                     <div>Email: {client.email}</div>
                 </div>
-            })}
+            ))}
         </div>
     )
 }

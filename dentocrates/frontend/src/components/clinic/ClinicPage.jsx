@@ -10,9 +10,8 @@ export const ClinicPage = () => {
     const [clinicData, setClinicData] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [customerAppointments, setCustomerAppointments] = useState([]);
-
+    const [customers, setCustomers] = useState([]);
     const getClinicData = async () => {
-        console.log(id)
         const responseData = await data(`/clinic/${id}`);
         setClinicData(await responseData);
         setDataLoaded(true);
@@ -22,9 +21,19 @@ export const ClinicPage = () => {
         const calendarData = await data(`/calendar/clinic/${id}`);
         setAppointments(await calendarData);
     };
-
+    const getCustomerDetails = async() =>{
+        const responseData = await data(`/client/all`);
+        setCustomers(await responseData);
+    }
+    const filterCustomerDetails = (customerId) => {
+       return customers.filter((customer) => customer.id === customerId)
+           .map((customer,index) => (
+            <div key={index}>
+                <h2 className="listName listMargin"> {customer.firstName} {customer.lastName}</h2>
+            </div>
+           ))
+    }
     const getCustomerAppointments = async () => {
-        console.log(userId())
         const appointmentsData = await data(`/calendar/customer/${userId()}`);
         setCustomerAppointments(await appointmentsData);
     };
@@ -32,6 +41,7 @@ export const ClinicPage = () => {
     useEffect(() => {
         if (!isLoaded) {
             if (role() === "DENTIST") {
+                getCustomerDetails();
                 getCalendarData();
             } else {
                 getCustomerAppointments();
@@ -57,6 +67,20 @@ export const ClinicPage = () => {
                 ) : (
                     <Loading />
                 )}
+                {role === "DENTIST" ? (
+                    appointments.map((appointment) => (
+                    <>
+                        <div key={appointment.id}>{appointment.reservation}</div>
+                        {filterCustomerDetails(appointment.customerId)}
+                    </>
+                        ))
+                    ) :
+                    (customerAppointments.map((appointment) => (
+                        <div>
+                            <div key={appointment.reservation}>{appointment.reservation}</div>
+                        </div>
+                    )))
+                }
             </div>
         );
     } else {

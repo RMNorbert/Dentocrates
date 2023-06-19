@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.service;
 
+import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
@@ -16,10 +17,10 @@ import java.util.List;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final AppointmentCalendarRepository appointmentCalendarRepository;
-    public List<CustomerResponseDTO> getAllCustomer(){
+    public List<CustomerAppointmentResponseDTO> getAllCustomer(){
         return customerRepository.findAll()
                 .stream()
-                .map(CustomerResponseDTO::of)
+                .map(CustomerAppointmentResponseDTO::toDTO)
                 .toList();
     }
 

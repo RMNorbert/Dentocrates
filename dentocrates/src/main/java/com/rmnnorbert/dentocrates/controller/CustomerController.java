@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService customerService;
     @GetMapping("/all")
-    public List<CustomerResponseDTO> getAllCustomer(){
+    public List<CustomerAppointmentResponseDTO> getAllCustomer(){
         return customerService.getAllCustomer();
     }
     @GetMapping("/{id}")

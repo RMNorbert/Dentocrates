@@ -2,15 +2,17 @@ import ReactCalendar from "react-calendar";
 import "./Calendar.css";
 import {useState} from "react";
 import {add, format} from "date-fns";
+import { userId } from "../../token/TokenDecoder";
 import { useParams } from "react-router-dom";
+import {MultiFetch} from "../../../fetch/MultiFetch";
 const Calendar = (openingHours) => {
     const { id } = useParams();
+    const { data } = MultiFetch();
     const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
     const getCalendarData = async() =>{
         const calendarData = await fetch(`/calendar//clinic/${id}`);
         setAppointments(await calendarData.json());
-        console.log(appointments);
     }
 
     const getTimes = () => {
@@ -29,6 +31,15 @@ const Calendar = (openingHours) => {
         return times;
     }
 
+    const bookAppointment = (appointment) => {
+        const bookingData = {
+            clinicId: id,
+            customerId: userId(),
+            reservation: appointment
+        };
+        data('/calendar/register', 'POST', bookingData);
+    }
+
     const times = getTimes();
 
     return (
@@ -44,7 +55,7 @@ const Calendar = (openingHours) => {
                         </button>
                       </div>
                   ))}
-                  <button onClick={() => console.log("booking method")}>Book Appointment</button>
+                  <button onClick={() => bookAppointment(date.dateTime.toISOString().substring(0, 16).replace("T"," "))}>Book Appointment</button>
               </div>
               ):(
           <ReactCalendar minDate={new Date()}
