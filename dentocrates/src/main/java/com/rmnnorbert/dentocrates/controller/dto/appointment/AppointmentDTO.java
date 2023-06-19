@@ -6,10 +6,10 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 @Builder
-public record AppointmentDTO(@Min(1) long clinicId, @Min(1) long CustomerId, LocalDate reservation) {
+public record AppointmentDTO(@Min(1) long clinicId, @Min(1) long customerId, LocalDate reservation) {
     public static AppointmentDTO of(AppointmentCalendar calendar) {
         return AppointmentDTO.builder()
-                .CustomerId(calendar.getCustomer().getId())
+                .customerId(calendar.getCustomer().getId())
                 .clinicId(calendar.getClinic().getId())
                 .reservation(calendar.getReservation())
                 .build();
