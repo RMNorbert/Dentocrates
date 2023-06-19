@@ -1,18 +1,69 @@
 # Dentocrates
 Dentocrates
 
+[Description for the project](#description)
+- [Used technologies](#used-technologies)
+- [Features](#features)
+- [Getting started](#getting-started)
+
+  
+## Description:
+
 Dentocrates is an online platform for dental appointments, designed to streamline the process of finding and booking dental services. The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience.
 Features
 
-    User Registration and Authentication: Users can create accounts, log in securely, and manage their personal information.
-    Dentist Search: Users can search for dentists based on location, specialty, and other relevant criteria.
-    Appointment Scheduling: Dentocrates offers a user-friendly calendar interface, displaying available appointment times for each dentist.
-    Booking System: Users can easily book their preferred appointment time slot with their selected dentist.
-    Search Functionality: A comprehensive search function allows users to filter dentists based on various parameters to find their ideal dental service provider.
+## Used technologies:
 
-Getting Started
+ Backend
+  - Java,
+  - Spring Boot,Spring Security, JWT
+  - JPA Hibernate,
+  - Lombok,
+    
+ Frontend
+  - JavaScript,
+  - React,
+  
+ Database
+  - PostgreSQL
+  
+  Others
+  - Docker (In progress),
+  - CI/CD GitHub workflows (In progress)
+
+## Features
+
+User Registration and Authentication:
+
+    Users can create accounts and authenticate themselves on the Dentocrates platform.
+    Registration can be done using email addresses.
+
+Dentist Registration and Clinic Management:
+
+    Dentists can register their clinics on Dentocrates and provide necessary details such
+    as clinic name, address, contact information, working hours.
+
+Search for Dentists and Clinics:
+
+    Users can search for dentists or clinics.
+
+Appointment Booking:
+
+    Users can book appointments with dentists or clinics directly through the Dentocrates
+    platform.Dentocrates provides a user-friendly interface where users can select their 
+    preferred dentist, clinic, and appointment time slot. The system ensures that available
+    appointment slots are displayed accurately based on the dentist or clinic's schedule.
+
+Appointment Management:
+
+    Users can view and manage their booked appointments, including canceling appointments
+    if necessary. Dentists and clinics can also manage their appointment schedules, view upcoming
+    appointments, and make any necessary updates.
+
+## Getting Started
 
 Follow these instructions to get a copy of the Dentocrates project up and running on your local machine for development and testing purposes.
+
 Prerequisites
 
     Java Development Kit (JDK)
@@ -23,21 +74,9 @@ Prerequisites
 
 Installation
 
-    Clone the repository: git clone https://github.com/your-username/Dentocrates.git
+    Clone the repository: git clone https://github.com/RMNorbert/Dentocrates.git
     Set up the necessary environment variables and configure the database connection details.
     Build and run the project using your preferred development environment or command-line tools.
-    Access the Dentocrates application through the provided URL, create an account, and start exploring dentists and scheduling appointments.
+    Access the Dentocrates application through the provided URL, create an account, and start exploring
+    dentists and scheduling appointments.
 
-Contributing
-
-Contributions are welcome! If you would like to contribute to Dentocrates, please follow the guidelines outlined in the CONTRIBUTING.md file.
-
-
-License
-
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-Acknowledgments
-
-    Spring Framework for providing a powerful Java-based development environment.
-    React for the frontend user interface and interactive components.
-    PostgreSQL for the reliable and scalable database solution.

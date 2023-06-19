@@ -1,0 +1,71 @@
+button {
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    color: #010C80;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-style: solid;
+    border-width: thin;
+    margin: 10px 10px 10px 0;
+}
+
+button:hover {
+    background-color: #2D3EFA;
+    color: #FFFFFF;
+}
+
+button:active {
+    color: #9B9B9B;
+}
+.pageContent {
+    position: relative;
+    top: 120px;
+    left: 50px;
+}
+.list{
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.listBox{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    color: #010C80;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px 70px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-style: solid;
+    border-width: thin;
+    margin: 10px 0px 10px 0;
+    box-shadow: rgba(0,0,0,0.05) 0 54px 55px,
+    rgba(0,0,0,0.05) 0 -12px 30px,
+    rgba(0,0,0,0.05) 0 4px 6px,
+    rgba(0,0,0,0.05) 0 12px 3px,
+    rgba(0,0,0,0.05) 0 -3px 15px;
+}
+.listDetail1{
+    list-style-type: none;
+    border-top: solid 0.5px rgb(255, 255, 255, 0.5);
+    border-bottom: solid 0.5px rgb(255, 255, 255, 0.5);
+    margin-left: -20px;
+}
+.listDetail2{
+    margin-left: -20px;
+}
+.listDetail3{
+    margin-left: -20px;
+}
+.listMargin {
+    margin-bottom: 0px;
+}
