@@ -1,19 +1,22 @@
 package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
-import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
+import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class DentistService {
     private final DentistRepository dentistRepository;
+    @Autowired
+    public DentistService(DentistRepository dentistRepository) {
+        this.dentistRepository = dentistRepository;
+    }
 
     public List<DentistResponseDTO> getAllDentist(){
         return dentistRepository.findAll()

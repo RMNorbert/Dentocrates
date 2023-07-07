@@ -2,21 +2,26 @@ package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
-import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
+import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final AppointmentCalendarRepository appointmentCalendarRepository;
+    @Autowired
+    public CustomerService(CustomerRepository customerRepository, AppointmentCalendarRepository appointmentCalendarRepository) {
+        this.customerRepository = customerRepository;
+        this.appointmentCalendarRepository = appointmentCalendarRepository;
+    }
+
     public List<CustomerAppointmentResponseDTO> getAllCustomer(){
         return customerRepository.findAll()
                 .stream()
