@@ -1,10 +1,13 @@
 .cal{
-    padding-top: 30px;
+    padding-top: 55px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url("../../../../public/clinic/appointmentaigeneratedpic.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .date{
     display: flex;
@@ -13,9 +16,12 @@
     gap: 1rem;
 }
 .times{
-    border-radius: 0.125rem;
+    height: 50px;
+    width: 80px;
+    border-radius: 10px;
     background-color: #f8f9fa;
     padding: 0.5rem;
+
 }
 .react-calendar {
     width: 450px;
