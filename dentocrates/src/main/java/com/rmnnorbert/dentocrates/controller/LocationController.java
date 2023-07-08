@@ -3,17 +3,22 @@ package com.rmnnorbert.dentocrates.controller;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
 import com.rmnnorbert.dentocrates.service.LocationService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+
 @RestController
 @RequestMapping("/location")
 public class LocationController {
     private final LocationService locationService;
+    @Autowired
+    public LocationController(LocationService locationService) {
+        this.locationService = locationService;
+    }
+
     @GetMapping("/all")
     public List<LocationDTO> getAllLocation(){
         return locationService.getAllLocation();

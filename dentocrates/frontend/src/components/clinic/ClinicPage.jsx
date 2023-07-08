@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Loading } from "../elements/Loading";
 import { role , userId} from "../token/TokenDecoder";
 import { MultiFetch } from "../../fetch/MultiFetch";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 export const ClinicPage = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [isLoaded, setDataLoaded] = useState(false);
     const [clinicData, setClinicData] = useState([]);
     const [appointments, setAppointments] = useState([]);
@@ -75,11 +76,15 @@ export const ClinicPage = () => {
                     </>
                         ))
                     ) :
+                    <div>
                     (customerAppointments.map((appointment) => (
                         <div>
                             <div key={appointment.reservation}>{appointment.reservation}</div>
                         </div>
                     )))
+                        {/*{*TODO:prop opening hour/ booked appointments/store date type *}*/}
+                        <button onClick={() => navigate("/calendar/" + id)}>Book an appointment</button>
+                    </div>
                 }
             </div>
         );

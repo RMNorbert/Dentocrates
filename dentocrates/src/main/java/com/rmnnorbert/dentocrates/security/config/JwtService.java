@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "46566A765E5A3274753777217A25432A462D4A614E645267556B58703273357638792F413F4428472B4B6250655368566D597133743677397A24432645294840";
+    private static final String SECRET_KEY = System.getenv("SECRET");
 
     private static final int EXPIRATION = 1000 * 60 * 24 *7;
 

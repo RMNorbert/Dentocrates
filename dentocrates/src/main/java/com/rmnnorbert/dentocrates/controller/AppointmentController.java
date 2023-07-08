@@ -3,7 +3,7 @@ package com.rmnnorbert.dentocrates.controller;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.service.AppointmentCalendarService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/calendar")
-@RequiredArgsConstructor
 public class AppointmentController {
     private final AppointmentCalendarService appointmentCalendarService;
+    @Autowired
+    public AppointmentController(AppointmentCalendarService appointmentCalendarService) {
+        this.appointmentCalendarService = appointmentCalendarService;
+    }
+
     @GetMapping("/customer/{id}")
     public List<AppointmentDTO> getCustomerAppointments(@PathVariable Long id ){
         return appointmentCalendarService.getAllAppointmentById(id);

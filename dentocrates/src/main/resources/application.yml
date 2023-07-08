@@ -1,8 +1,8 @@
 spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/dentocrates
-        username: ${username}
-        password: ${password}
+        username: ${POSTGRESQL_DB_USER:postgres}
+        password: ${POSTGRESQL_DB_PASSWORD:postgres}
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
@@ -12,4 +12,33 @@ spring:
                 format_sql: true
         database: postgresql
         database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+springdoc:
+    api-docs:
+        path: /api-docs
+    swagger-ui:
+        operations-sorter:
+            "method"
+management:
+  endpoints:
+      web:
+          exposure:
+              include:
+                  "*"
+  health:
+      db:
+          enabled: true
+  info:
+      git:
+          enabled: true
+  endpoint:
+    health:
+        group:
+          custom:
+              include:
+                  "*"
+              show-components:
+                  always
+              show-details:
+                  always
+    info:
+        enabled: true

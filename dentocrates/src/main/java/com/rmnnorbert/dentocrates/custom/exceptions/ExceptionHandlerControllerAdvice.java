@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.customExceptions;
+package com.rmnnorbert.dentocrates.custom.exceptions;
 
 
 import jakarta.persistence.PersistenceException;

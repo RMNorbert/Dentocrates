@@ -1,19 +1,22 @@
 package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
-import com.rmnnorbert.dentocrates.customExceptions.NotFoundException;
+import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class LocationService {
     private final LocationRepository locationRepository;
+    @Autowired
+    public LocationService(LocationRepository locationRepository) {
+        this.locationRepository = locationRepository;
+    }
 
     public List<LocationDTO> getAllLocation(){
         return locationRepository.findAll()

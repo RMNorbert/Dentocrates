@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.security.config;
 
 import com.rmnnorbert.dentocrates.repository.ClientRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,9 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfig {
     private final ClientRepository clientRepository;
+    @Autowired
+    public ApplicationConfig(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -50,5 +53,6 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
 

@@ -2,7 +2,7 @@ package com.rmnnorbert.dentocrates.security.auth;
 
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.customExceptions.InvalidLoginException;
+import com.rmnnorbert.dentocrates.custom.exceptions.InvalidLoginException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
@@ -10,7 +10,9 @@ import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
 import com.rmnnorbert.dentocrates.utils.DtoMapper;
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,15 +22,24 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
     private final ClientRepository clientRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
-
     private final AuthenticationManager authenticationManager;
+    private final Counter loginSuccessCounter;
+    private final Counter loginFailureCounter;
+    @Autowired
+    public AuthenticationService(ClientRepository clientRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.clientRepository = clientRepository;
+        this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        loginSuccessCounter = Metrics.counter("counter.login.success");
+        loginFailureCounter = Metrics.counter("counter.login.failure");
+    }
 
     public AuthenticationResponse register(CustomerRegisterDTO request) {
         if(clientRepository.findByEmail(request.email()).isEmpty()){
@@ -58,17 +69,18 @@ public class AuthenticationService {
             throw new InvalidLoginException();
         }
     }
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws Throwable {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
             try {
-            Optional<Client> optionalClient = clientRepository.findByEmail(request.getEmail());
+            Optional<Client> optionalClient = clientRepository.findByEmail(request.email());
             if(optionalClient.isPresent()) {
                 Client client = optionalClient.get();
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                request.getEmail(),
-                                request.getPassword()
+                                request.email(),
+                                request.password()
                         )
                 );
+                loginSuccessCounter.increment();
 
                 HashMap<String, Object> additionalClaims = new HashMap<>();
                 additionalClaims.put("role", client.getRole());
@@ -79,7 +91,8 @@ public class AuthenticationService {
                         .build();
             }
         }catch (Exception e){
-            throw new InvalidLoginException();
+                loginFailureCounter.increment();
+                throw new InvalidLoginException();
         }
         throw new InvalidLoginException();
     }

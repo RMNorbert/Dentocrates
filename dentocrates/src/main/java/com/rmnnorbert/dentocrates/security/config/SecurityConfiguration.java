@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,10 +26,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers(
+      return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+                        authorizationManagerRequestMatcherRegistry.requestMatchers(
                         "/api/**",
                         "/",
                         "/frontend/index",
@@ -39,29 +39,36 @@ public class SecurityConfiguration {
                         "/*.png",
                         "/frontend/**",
                         "/clinic/all",
-                        "/home"
-                ).permitAll()
-                .requestMatchers("/client/{id}",
+                        "/home",
+                        "/actuator/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs",
+                        "/api-docs/**",
+                        "/api-docs.yaml"
+                    ).permitAll()
+                    .requestMatchers("/client/{id}",
                         "/calendar/customer/**",
                         "/calendar/clinic/**",
+                        "/calendar/register",
                         "/clinic/{id}",
                         "/dentist/all",
                         "/dentist/{id}",
                         "/location/all"
-                ).hasAnyRole(ADMIN.name(), CUSTOMER.name(), DENTIST.name())
-                .requestMatchers("/client/**",
+                     ).hasAnyRole(ADMIN.name(), CUSTOMER.name(), DENTIST.name())
+                    .requestMatchers("/client/**",
                         "/calendar/**",
                         "/clinic/**",
                         "/dentist/**",
                         "/location/**"
-                ).hasAnyRole(ADMIN.name(), DENTIST.name())
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                    ).hasAnyRole(ADMIN.name(), DENTIST.name())
+                    .anyRequest()
+                    .authenticated())
+                .sessionManagement(sessionManagementConfigurer ->
+                        sessionManagementConfigurer
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 }
 
