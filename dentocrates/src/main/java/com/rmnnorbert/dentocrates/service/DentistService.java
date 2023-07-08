@@ -2,7 +2,6 @@ package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
-import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +25,14 @@ public class DentistService {
     }
 
     public ResponseEntity<String> deleteDentistById(Long id){
-        Dentist dentist = getDentistById(id);
+        DentistResponseDTO dentist = getDentistById(id);
         dentistRepository.deleteById(id);
         return  ResponseEntity.ok("Dentist deleted successfully");
+    }
 
+    public DentistResponseDTO getDentistById(long id){
+        return DentistResponseDTO.of(dentistRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Dentist")));
     }
-    private Dentist getDentistById(long id){
-        return dentistRepository.findById(id).orElseThrow(() -> new NotFoundException("Dentist"));
-    }
+
 }

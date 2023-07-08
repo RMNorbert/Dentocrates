@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/client/{id}",
                         "/calendar/customer/**",
                         "/calendar/clinic/**",
+                        "/calendar/register",
                         "/clinic/{id}",
                         "/dentist/all",
                         "/dentist/{id}",

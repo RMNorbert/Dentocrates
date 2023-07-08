@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.dao.client.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,6 +24,6 @@ public class AppointmentCalendar {
     @PrimaryKeyJoinColumn
     @NonNull
     private Customer customer;
-    private final LocalDate reservation;
+    private final LocalDateTime reservation;
 
 }
