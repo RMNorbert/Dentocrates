@@ -33,7 +33,7 @@ export const ClinicSelectorPage = () => {
 
     if (isDataLoaded) {
         return (
-            <div className="clinic">
+            <div className="selector">
                 <div>
                     <input
                         className={"searchBar"}

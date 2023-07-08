@@ -1,9 +1,14 @@
-.clinic{
-    margin-top: 100px;
+.selector{
+    margin-top: 90px;
+    background-image: url("../../../public/clinic/clinicaigeneratedpicture.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    overflow-y: auto;
 }
 .searchBar {
-    position: absolute;
-    z-index: 3;
+    position: fixed;
+    z-index: 1;
     top: 100px;
     left: 50%;
     transform: translateX(-50%);

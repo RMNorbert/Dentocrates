@@ -11,6 +11,7 @@ import { ClinicPage } from "./components/clinic/ClinicPage";
 import LocationRegisterPage from "./components/clinic/location/LocationRegisterPage";
 import ClinicRegisterPage from "./components/clinic/ClinicRegisterPage.jsx";
 import Calendar from "./components/clinic/calendar/Calendar";
+import {Appointment} from "./components/client/Appointment";
 function App() {
   return (
       <Router>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/client" element={<ClientPage/>} />
+          <Route path="/appointments" element={<Appointment/>} />
           <Route path="/dentist" element={<DentistPage/>} />
           <Route path="/clinic" element={<ClinicSelectorPage />} />
           <Route path="/clinic/:id" element={<ClinicPage />} />

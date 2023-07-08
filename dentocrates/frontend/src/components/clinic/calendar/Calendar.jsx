@@ -31,13 +31,15 @@ const Calendar = (openingHours) => {
         return times;
     }
 
-    const bookAppointment = (appointment) => {
+    const bookAppointment = async(appointment) => {
+        const formattedAppointment  = appointment.replace(" ","T") + ":00";
+        console.log(formattedAppointment)
         const bookingData = {
             clinicId: id,
             customerId: userId(),
-            reservation: appointment
+            reservation: formattedAppointment
         };
-        data('/calendar/register', 'POST', bookingData);
+        await data('/calendar/register', 'POST', bookingData);
     }
 
     const times = getTimes();
@@ -47,8 +49,9 @@ const Calendar = (openingHours) => {
           {date.justDate ? (
               <div className="date">
                   {times?.map((time, i) => (
-                      <div key={`time-${i}`} className="times">
+                      <div >
                         <button type="button"
+                                key={`time-${i}`} className="times"
                                 onClick={() => setDate((prev) => ({...prev, dateTime: time }))}
                         >
                             {format(time, 'kk:mm')}
