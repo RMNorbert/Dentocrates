@@ -15,7 +15,7 @@ function Home() {
             <img
                 className="home-logo"
                 src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'}
-                width={"300px"}
+                width={"280px"}
                 alt="logo"
             />
         </div>

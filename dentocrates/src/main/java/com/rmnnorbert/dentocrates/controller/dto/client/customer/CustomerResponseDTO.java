@@ -5,9 +5,10 @@ import com.rmnnorbert.dentocrates.data.Role;
 import lombok.Builder;
 
 @Builder
-public record CustomerResponseDTO(String email, String firstName, String lastname, Role role) {
+public record CustomerResponseDTO(long id, String email, String firstName, String lastname, Role role) {
     public static CustomerResponseDTO of(Customer customer) {
         return CustomerResponseDTO.builder()
+                .id(customer.getId())
                 .email(customer.getEmail())
                 .firstName(customer.getFirstName())
                 .lastname(customer.getLastName())

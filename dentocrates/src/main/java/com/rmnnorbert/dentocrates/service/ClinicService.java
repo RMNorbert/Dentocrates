@@ -54,4 +54,11 @@ public class ClinicService {
     public ClinicResponseDTO getClinicById(long id){
         return ClinicResponseDTO.of(clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic")));
     }
+
+    public List<ClinicResponseDTO> getAllClinicByDentist(long id) {
+        return clinicRepository.findAllByDentistInContract_Id(id)
+                .stream()
+                .map(ClinicResponseDTO::of)
+                .toList();
+    }
 }

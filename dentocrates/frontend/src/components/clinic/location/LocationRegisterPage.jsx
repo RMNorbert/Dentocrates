@@ -35,11 +35,12 @@ function LocationRegisterPage (){
         navigate("/home");
     };
     return (
+        <div className="clinic-register">
         <div className="pageContent">
-            <h1>Location Register</h1>
+            <h1 className="clinic-register-title">Location Register</h1>
             <div className="flex justify-center flex-col items-center text-2xl ">
                 <form onSubmit={HandleSubmit}>
-                    <div>
+                    <div className="inputBox">
                         <label htmlFor="zipCode">ZipCode:</label>
                         <input type="number"
                                id="zipCode"
@@ -47,13 +48,14 @@ function LocationRegisterPage (){
                                placeholder={"1000 - 10.000"}
                                onChange={handleZipCodeChange} />
                     </div>
-                    <div>
+                    <div className="inputBox">
                         <label htmlFor="city">City:</label>
                         <input type="text" id="city" value={city} onChange={handleCityChange} />
                     </div>
                     <button type="submit">Register</button>
                 </form>
             </div>
+        </div>
         </div>
     );
 }

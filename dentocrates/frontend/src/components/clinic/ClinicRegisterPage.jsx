@@ -103,8 +103,9 @@ function ClinicRegisterPage (){
 
     if(isDataLoaded) {
         return (
+            <div className="clinic-register">
             <div className="pageContent">
-                <h1>Register Clinic</h1>
+                <h1 className="clinic-register-title">Register Clinic</h1>
                 <div hidden={hidden}>{message}</div>
                 <div className="inputs">
                     <form onSubmit={HandleSubmit}>
@@ -130,7 +131,7 @@ function ClinicRegisterPage (){
                         </div>
                         <div className="inputBox">
                             <label htmlFor="zipCode">Zipcode:</label>
-                            <select type="text" id="zipCode" value={zipCode} onChange={handleZipCodeChange}>
+                            <select type="text" id="zipCode"  onChange={handleZipCodeChange}>
                                 {locations.map((location) =>
                                     <option key={location.id} >{location.zipCode} - {location.city}</option>)}
                             </select>
@@ -145,17 +146,13 @@ function ClinicRegisterPage (){
                                    onChange={handleOpeningHoursChange}/>
                         </div>
                         <button type="submit">Register</button>
-                        <h3 className="register"
-                            onClick={() => navigate("/login")}
-                        >
-                            Registered already?
-                        </h3>
                     </form>
                 </div>
+            </div>
             </div>
         );
     } else {
         return(<Loading/>)
     }
-};
+}
 export default ClinicRegisterPage;

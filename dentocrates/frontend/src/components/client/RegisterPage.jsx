@@ -39,7 +39,6 @@ function RegisterPage (){
     }
 
     const postRegistration = async(email, password)=>{
-        console.log(lastName)
         const dentistUrl = '/api/register/dentist';
         const customerUrl = '/api/register/customer';
         fetch(dentist ? dentistUrl : customerUrl, {

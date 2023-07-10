@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.LocationDTO;
+import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;

@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.controller.dto.clinic;
+package com.rmnnorbert.dentocrates.controller.dto.clinic.location;
 
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import jakarta.validation.constraints.Max;

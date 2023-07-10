@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.service.CustomerService;
@@ -27,8 +28,8 @@ public class CustomerController {
         return customerService.getClient(id);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable Long id){
-        return customerService.deleteCustomerById(id);
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteCustomer(@RequestBody DeleteDTO dto){
+        return customerService.deleteCustomerById(dto);
     }
 }

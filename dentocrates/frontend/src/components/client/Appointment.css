@@ -1,0 +1,76 @@
+.appointment {
+    margin-top: 90px;
+    height: 100vh;
+    text-align: center;
+}
+.appointment-box {
+    background-color: #b5bfd9;
+    text-align: center;
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 2px;
+}
+.appointment-element {
+    border-bottom-style: groove;
+    justify-items: center;
+    height: 25px;
+}
+.appended {
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+    top: -100px;
+    width: 15px;
+    height: 15px;;
+    border: 1px solid #000;
+    background-color: green;
+}
+.default {
+    display: inline-block;
+    margin-left: 5px;
+    top: -100px;
+    width: 15px;
+    height: 15px;;
+    border: 1px solid #000;
+    background-color: grey;
+}
+.checkmark {
+    position: absolute;
+    margin-top: 6px;
+    transform: translate(-50%, -50%);
+    font-size: 26px;
+    font-weight: bold;
+    color: #000;
+}
+.hidden-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+.missed {
+    display: inline-block;
+    margin-left: 5px;
+    top: -100px;
+    width: 15px;
+    height: 15px;;
+    border: 1px solid #000;
+    background-color: #ae0505
+}
+.appointment-delete {
+    margin-top: -2px;
+    height: 5px;
+    font-size: 12px;
+    background-color: transparent;
+    border-style: none;
+    color: black;
+}
+.appointment-delete:hover {
+    background-color: transparent;
+    color: #c40909;
+    scale: 1.2;
+    margin-left: 10px;
+}
+
+.appointment-clinic-name {
+    font-weight: bold;
+    background-color: #535699;
+}

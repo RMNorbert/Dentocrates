@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export const ClinicPage = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
+    const currentDate = new Date().toJSON();
     const navigate = useNavigate();
     const [isLoaded, setDataLoaded] = useState(false);
     const [isFetched, setIsFetched] = useState(false);
@@ -26,7 +27,15 @@ export const ClinicPage = () => {
 
     const getCalendarData = async () => {
         const calendarData = await data(`/calendar/clinic/${id}`);
-        setAppointments(await calendarData);
+        const appointmentsData = await calendarData.filter((appointment) =>
+            appointment.reservation >= currentDate).sort(
+            (a, b) => Number(a.reservation.substring(0,19)
+                    .replace(/[T:-]/g, ""))
+                -
+                Number(b.reservation.substring(0,19)
+                    .replace(/[T:-]/g, "")));
+
+        setAppointments(await appointmentsData);
     };
 
     const getCustomerDetails = async() => {
@@ -45,7 +54,14 @@ export const ClinicPage = () => {
 
     const getCustomerAppointments = async () => {
         const appointmentsData = await data(`/calendar/customer/${userId()}`);
-        setCustomerAppointments(await appointmentsData);
+        const sortedAppointments = await appointmentsData.filter((appointment) =>
+            appointment.clinicId === Number(id) && appointment.reservation >= currentDate).sort(
+                (a, b) => Number(a.reservation.substring(0,19)
+                        .replace(/[T:-]/g, ""))
+                    -
+                    Number(b.reservation.substring(0,19)
+                        .replace(/[T:-]/g, "")));
+        setCustomerAppointments(sortedAppointments);
     };
 
     const fetchData = async () => {
@@ -86,17 +102,17 @@ export const ClinicPage = () => {
                     <Loading />
                 )}
                 {role() === "DENTIST" ? (
-                    appointments.map((appointment) => (
+                    appointments.map((appointment, index) => (
                         <>
-                            <div key={appointment.id}>{appointment.reservation}</div>
+                            <div key={index}>{appointment.reservation}</div>
                             {filterCustomerDetails(appointment.customerId)}
                         </>
                     ))
                 ) : (
                     <div>
-                        <button onClick={() => navigate("/calendar/" + id)}>Book an appointment</button>
-                        {customerAppointments.map((appointment) => (
-                            <div key={appointment.id}
+                        <button className="button" onClick={() => navigate("/calendar/" + id)}>Book an appointment</button>
+                        {customerAppointments.map((appointment, index) => (
+                            <div key={index}
                             className="customer"
                             >
                                 <div className="customer-appointment">

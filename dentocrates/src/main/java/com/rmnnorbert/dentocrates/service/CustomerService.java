@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.service;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
@@ -29,11 +30,14 @@ public class CustomerService {
                 .toList();
     }
 
-    public ResponseEntity<String> deleteCustomerById(Long id){
-        Customer customer = getClientById(id);
-        appointmentCalendarRepository.deleteById(id);
-        customerRepository.deleteById(id);
-        return  ResponseEntity.ok("Customer deleted successfully");
+    public ResponseEntity<String> deleteCustomerById(DeleteDTO dto){
+        Customer customer = getClientById(dto.targetId());
+        if(dto.userId() == customer.getId()) {
+            appointmentCalendarRepository.deleteById(dto.targetId());
+            customerRepository.deleteById(dto.targetId());
+            return ResponseEntity.ok("Customer deleted successfully");
+        }
+        return ResponseEntity.badRequest().body("Invalid delete request.");
     }
     public CustomerResponseDTO getClient(long id){
         return CustomerResponseDTO.of(customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer")));

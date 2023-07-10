@@ -23,6 +23,11 @@ public class ClinicController {
     public List<ClinicResponseDTO> getAllClinic(){
         return clinicService.getAllClinic();
     }
+    @GetMapping("/dentist/{id}")
+    public List<ClinicResponseDTO> getAllClinicByDentist(@PathVariable long id){
+        return clinicService.getAllClinicByDentist(id);
+    }
+
     @GetMapping("/{id}")
     public ClinicResponseDTO getClinicById(@PathVariable Long id){
         return clinicService.getClinicById(id);

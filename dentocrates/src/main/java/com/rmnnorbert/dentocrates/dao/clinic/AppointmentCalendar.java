@@ -15,15 +15,19 @@ public class AppointmentCalendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final Long id;
+
     @ManyToOne
     @PrimaryKeyJoinColumn
     @NonNull
     private final Clinic clinic;
+
     @ManyToOne
     @PrimaryKeyJoinColumn
     @NonNull
-    private Customer customer;
-    private final LocalDateTime reservation;
+    private final Customer customer;
 
+    private final LocalDateTime reservation;
+    @Column(columnDefinition = "boolean DEFAULT FALSE")
+    private final boolean appeared;
 }

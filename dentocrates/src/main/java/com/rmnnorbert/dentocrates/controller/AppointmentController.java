@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.service.AppointmentCalendarService;
 import jakarta.validation.Valid;
@@ -26,9 +27,9 @@ public class AppointmentController {
     public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentDTO appointmentDTO){
         return appointmentCalendarService.registerAppointment(appointmentDTO);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeAppointment(@PathVariable Long id ){
-        return appointmentCalendarService.deleteAppointmentById(id);
+    @DeleteMapping("/")
+    public ResponseEntity<String> removeAppointment(@RequestBody DeleteDTO dto){
+        return appointmentCalendarService.deleteAppointmentById(dto);
     }
     @GetMapping("/clinic/{id}")
     public List<AppointmentDTO> getAppointmentsByClinic(@PathVariable Long id ){

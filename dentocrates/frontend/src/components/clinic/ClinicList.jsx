@@ -15,7 +15,7 @@ export const ClinicList = ({ clinicDatas }) => {
                             <h1 className="listMargin">{clinic.name}</h1>
                             </div>
                             <h2 className="listDetail1 listMargin">{clinic.city} {clinic.street} str.</h2>
-                            <h3 className="listDetail2 listMargin">{clinic.clinicType}</h3>
+                            <h3 className="listDetail2 listMargin">{clinic.clinicType.replaceAll("_"," ")}</h3>
                             <h3 className="listDetail3 listMargin">Open: {clinic.openingHours}</h3>
                         </div>
                     );

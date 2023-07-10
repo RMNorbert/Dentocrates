@@ -22,8 +22,10 @@ button:active {
 }
 .pageContent {
     position: relative;
+    backdrop-filter: blur(4px);
     top: 120px;
-    left: 50px;
+    left: 30%;
+    width: 50%;
 }
 .home {
     position: absolute;
@@ -60,7 +62,7 @@ button:active {
     display: flex;
     flex-direction: column;
     border-radius: 12px;
-    background-color: #f5f5f5;
+    background-color: #d1d1d1;
     color: #010C80;
     font-size: 12px;
     font-weight: bold;
@@ -69,7 +71,7 @@ button:active {
     transition: all 0.2s ease-in-out;
     border-style: solid;
     border-width: thin;
-    margin: 10px 0px 10px 0;
+    margin: 10px 0 10px 0;
     box-shadow: rgba(0,0,0,0.05) 0 54px 55px,
     rgba(0,0,0,0.05) 0 -12px 30px,
     rgba(0,0,0,0.05) 0 4px 6px,
@@ -91,7 +93,7 @@ button:active {
 .listMargin {
     text-align: center;
     background-color: #FFFFFF;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-bottom: #010C80;
     border-top-style: groove;
     border-bottom-style: groove;
@@ -99,6 +101,6 @@ button:active {
 }
 
 .home-logo {
-    margin-top: 4%;
+    margin-top: 4.5%;
     margin-left: 39%;
 }
