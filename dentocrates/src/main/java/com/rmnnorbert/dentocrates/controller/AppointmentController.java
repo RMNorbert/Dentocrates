@@ -1,6 +1,9 @@
 package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
+import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.service.AppointmentCalendarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +26,19 @@ public class AppointmentController {
         return appointmentCalendarService.getAllAppointmentById(id);
     }
     @PostMapping("/register")
-    public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentDTO appointmentDTO){
+    public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentRegisterDTO appointmentDTO){
         return appointmentCalendarService.registerAppointment(appointmentDTO);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeAppointment(@PathVariable Long id ){
-        return appointmentCalendarService.deleteAppointmentById(id);
+    @DeleteMapping("/")
+    public ResponseEntity<String> removeAppointment(@RequestBody DeleteDTO dto){
+        return appointmentCalendarService.deleteAppointmentById(dto);
     }
     @GetMapping("/clinic/{id}")
     public List<AppointmentDTO> getAppointmentsByClinic(@PathVariable Long id ){
         return appointmentCalendarService.getAllAppointmentByClinic(id);
+    }
+    @PutMapping("/")
+    public ResponseEntity<String> updateAppointment(@RequestBody AppointmentUpdateDTO dto) {
+        return appointmentCalendarService.updateAppointment(dto);
     }
 }

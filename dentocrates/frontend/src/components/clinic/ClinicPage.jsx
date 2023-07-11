@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export const ClinicPage = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
+    const currentDate = new Date().toJSON();
     const navigate = useNavigate();
     const [isLoaded, setDataLoaded] = useState(false);
     const [isFetched, setIsFetched] = useState(false);
@@ -24,9 +25,21 @@ export const ClinicPage = () => {
         setDentistData(dentistResponse);
     };
 
+    const updateAppointment = async (currentId, appearance) => {
+        const requestBody = {id:currentId, clinicId: id, dentistId: userId(), appeared:!appearance};
+        await data('/calendar/','PUT', requestBody);
+    }
     const getCalendarData = async () => {
         const calendarData = await data(`/calendar/clinic/${id}`);
-        setAppointments(await calendarData);
+        const appointmentsData = await calendarData.filter((appointment) =>
+            appointment.reservation >= currentDate).sort(
+            (a, b) => Number(a.reservation.substring(0,19)
+                    .replace(/[T:-]/g, ""))
+                -
+                Number(b.reservation.substring(0,19)
+                    .replace(/[T:-]/g, "")));
+
+        setAppointments(await appointmentsData);
     };
 
     const getCustomerDetails = async() => {
@@ -38,14 +51,24 @@ export const ClinicPage = () => {
         return customers.filter((customer) => customer.id === customerId)
             .map((customer,index) => (
                 <div key={index}>
-                    <h2 className="listName listMargin"> {customer.firstName} {customer.lastName}</h2>
+                    <h2 className="listName listMargin">Name: {customer.firstName} {customer.lastName}</h2>
                 </div>
             ))
     };
 
+    const dateFormatter = (date) => {
+        return date.substring(0,16).replace("T"," ");
+    }
     const getCustomerAppointments = async () => {
         const appointmentsData = await data(`/calendar/customer/${userId()}`);
-        setCustomerAppointments(await appointmentsData);
+        const sortedAppointments = await appointmentsData.filter((appointment) =>
+            appointment.clinicId === Number(id) && appointment.reservation >= currentDate).sort(
+                (a, b) => Number(a.reservation.substring(0,19)
+                        .replace(/[T:-]/g, ""))
+                    -
+                    Number(b.reservation.substring(0,19)
+                        .replace(/[T:-]/g, "")));
+        setCustomerAppointments(sortedAppointments);
     };
 
     const fetchData = async () => {
@@ -86,17 +109,26 @@ export const ClinicPage = () => {
                     <Loading />
                 )}
                 {role() === "DENTIST" ? (
-                    appointments.map((appointment) => (
+                    appointments.map((appointment, index) => (
                         <>
-                            <div key={appointment.id}>{appointment.reservation}</div>
+                            <div key={index}
+                                 className="listName listMargin"
+                            >
+                                {dateFormatter(appointment.reservation)}
+                                <input
+                                    className="fulfilled"
+                                    type="checkbox"
+                                    onChange={() => updateAppointment(appointment.id,appointment.appeared)}
+                                />
                             {filterCustomerDetails(appointment.customerId)}
+                            </div>
                         </>
                     ))
                 ) : (
                     <div>
-                        <button onClick={() => navigate("/calendar/" + id)}>Book an appointment</button>
-                        {customerAppointments.map((appointment) => (
-                            <div key={appointment.id}
+                        <button className="button" onClick={() => navigate("/calendar/" + id)}>Book an appointment</button>
+                        {customerAppointments.map((appointment, index) => (
+                            <div key={index}
                             className="customer"
                             >
                                 <div className="customer-appointment">

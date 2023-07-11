@@ -29,7 +29,7 @@ export const DentistPage = () => {
                 <div key={relatedClinic.street} onClick={() => navigate(`/clinic/${relatedClinic.id}`)}>
                 <h1 className="listName listMargin">{currentName}</h1>
                     <div className="listDetail1 listMargin">
-                        {relatedClinic.clinicType}
+                        {relatedClinic.clinicType.replaceAll("_"," ")}
                     </div>
                     <div className="listDetail2 listMargin">
                         Location: {relatedClinic.city} {relatedClinic.street}
@@ -42,7 +42,6 @@ export const DentistPage = () => {
         const filteredDentists = dentistData.filter((dentist) =>
             dentist.lastName.toLowerCase().includes(searchText.toLowerCase())
         );
-        console.log(filteredDentists);
         setFilteredData(filteredDentists);
     };
 

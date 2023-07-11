@@ -47,19 +47,19 @@ public class SecurityConfiguration {
                         "/api-docs.yaml"
                     ).permitAll()
                     .requestMatchers("/client/{id}",
-                        "/calendar/customer/**",
-                        "/calendar/clinic/**",
-                        "/calendar/register",
+                        "/calendar/**",
+                        "/client/",
                         "/clinic/{id}",
                         "/dentist/all",
                         "/dentist/{id}",
-                        "/location/all"
+                        "/location/all",
+                        "/leave/{id}"
                      ).hasAnyRole(ADMIN.name(), CUSTOMER.name(), DENTIST.name())
                     .requestMatchers("/client/**",
-                        "/calendar/**",
                         "/clinic/**",
                         "/dentist/**",
-                        "/location/**"
+                        "/location/**",
+                        "/leave/**"
                     ).hasAnyRole(ADMIN.name(), DENTIST.name())
                     .anyRequest()
                     .authenticated())

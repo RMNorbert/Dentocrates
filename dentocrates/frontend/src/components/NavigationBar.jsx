@@ -1,17 +1,16 @@
 import './NavigationBar.css'
 import './Element.css'
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {email, role} from "./token/TokenDecoder";
+
 function NavigationBar() {
     const navigate = useNavigate();
     const [logedInUserEmail, setLogedInUserEmail] = useState(null);
-    const [userRole , setUserRole] = useState(null);
     const [isHidden,setIsHidden] = useState(true);
 
     const handleLogout = () => {
         localStorage.clear();
-        setUserRole(null);
         setLogedInUserEmail(null);
         navigate("/");
     }
@@ -19,7 +18,6 @@ function NavigationBar() {
      useEffect(() => {
         if(email() && role()){
             setLogedInUserEmail(email());
-            setUserRole(role());
         }
     },[email()]);
 
@@ -37,14 +35,14 @@ function NavigationBar() {
                 <>
             <button id='tabs' onClick={() => navigate("/clinic")}>Search clinic</button>
             <button id='tabs' onClick={() => navigate("/dentist")}>Search dentist</button>
+            <button id='tabs' onClick={() => navigate("/appointments")}>Appointments</button>
                 </>
             }
-            {userRole && userRole === "DENTIST" ?
+            {logedInUserEmail !== null && role() === "DENTIST" &&
                 <>
                     <button id='tabs' onClick={() => navigate("/clinic/register")}>Register clinic</button>
                     <button id='tabs' onClick={() => navigate("/location")}>Register location</button>
-                </> :
-                <button id='tabs' onClick={() => navigate("/appointments")}>Appointments</button>
+                </>
             }
       {logedInUserEmail != null ? <div className='logout'
       >
