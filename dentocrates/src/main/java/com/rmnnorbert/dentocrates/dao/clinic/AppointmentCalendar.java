@@ -28,6 +28,8 @@ public class AppointmentCalendar {
     private final Customer customer;
 
     private final LocalDateTime reservation;
+    @With
     @Column(columnDefinition = "boolean DEFAULT FALSE")
     private final boolean appeared;
+
 }

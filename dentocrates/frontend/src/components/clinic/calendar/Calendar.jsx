@@ -6,16 +6,19 @@ import { userId } from "../../token/TokenDecoder";
 import { useParams } from "react-router-dom";
 import {MultiFetch} from "../../../fetch/MultiFetch";
 import {Loading} from "../../elements/Loading";
-const Calendar = (openingHours) => {
+const Calendar = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
     const [isLoaded,setIsLoaded] = useState(false);
-    const [appointments, setAppointments] = useState([]);
     const [leaveDates, setLeaveDates] = useState([]);
+    const [clinic, setClinic] = useState([]);
+    const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
     const getCalendarData = async() =>{
+        const clinicData = await data(`clinic/${id}`);
         const calendarData = await data(`/calendar/clinic/${id}`);
         const leaveData = await data(`/leave/${id}`);
+        setClinic(clinicData);
         setAppointments(await calendarData);
         getAllLeaveDates(await leaveData);
     }
@@ -35,12 +38,15 @@ const Calendar = (openingHours) => {
     }
     const getTimes = () => {
         if (!date.justDate) {return}
-
         const { justDate } = date;
+        const openingHours = clinic.openingHours.split("-");
+        const open = Number(openingHours[0]);
+        const close = Number(openingHours[1]);
 
-        const beginning = add(justDate, { hours: 9 });
-        const end = add(justDate, { hours: 17 });
+        const beginning = add(justDate, { hours: open });
+        const end = add(justDate, { hours: close });
         const interval = 30; //minutes
+        const currentTime = new Date();
 
         const currentDate = beginning.toJSON().substring(0,10);
         const bookedAppointments = appointments.filter((date) =>
@@ -49,13 +55,12 @@ const Calendar = (openingHours) => {
         const times = [];
         for(let i = beginning; i <= end; i = add(i, {minutes: interval})){
             const formattedTime = format(i, 'kk:mm');
-            if (!bookedAppointments.includes(formattedTime)) {
+            if (!bookedAppointments.includes(formattedTime) && i >= currentTime) {
                 times.push(i);
             }
         }
         return times;
     }
-
     const bookAppointment = async(appointment) => {
         const formattedAppointment  = appointment.replace(" ","T") + ":00";
         const bookingData = {

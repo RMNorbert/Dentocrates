@@ -7,7 +7,12 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record AppointmentDTO(@Min(1) long id, @Min(1) long clinicId, @Min(1) long customerId, LocalDateTime reservation, boolean appeared) {
+public record AppointmentDTO(@Min(1) long id,
+                             @Min(1) long clinicId,
+                             @Min(1) long customerId,
+                             LocalDateTime reservation,
+                             boolean appeared
+                            ) {
     public static AppointmentDTO of(AppointmentCalendar calendar) {
         return AppointmentDTO.builder()
                 .id(calendar.getId())

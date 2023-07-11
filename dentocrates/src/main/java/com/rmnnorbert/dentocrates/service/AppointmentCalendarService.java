@@ -2,6 +2,8 @@ package com.rmnnorbert.dentocrates.service;
 
 import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
+import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
@@ -27,19 +29,13 @@ public class AppointmentCalendarService {
         this.clinicRepository = clinicRepository;
     }
 
-    public List<AppointmentDTO> getAllAppointment(){
-        return appointmentCalendarRepository.findAll()
-                .stream()
-                .map(AppointmentDTO::of)
-                .toList();
-    }
     public List<AppointmentDTO> getAllAppointmentById(long id){
         return appointmentCalendarRepository.getAllByCustomer_Id(id)
                 .stream()
                 .map(AppointmentDTO::of)
                 .toList();
     }
-    public ResponseEntity<String> registerAppointment(AppointmentDTO appointmentDTO){
+    public ResponseEntity<String> registerAppointment(AppointmentRegisterDTO appointmentDTO){
         Clinic clinic = getClinicById(appointmentDTO.clinicId());
         Customer customer = getCustomerById(appointmentDTO.customerId());
 
@@ -66,6 +62,17 @@ public class AppointmentCalendarService {
                     .map(AppointmentDTO::of)
                     .toList();
     }
+
+    public ResponseEntity<String> updateAppointment(AppointmentUpdateDTO dto) {
+        Clinic clinic = getClinicById(dto.clinicId());
+        if(dto.dentistId() == clinic.getDentistInContract().getId()) {
+            AppointmentCalendar appointment = getAppointmentById(dto.id()).withAppeared(dto.appeared());
+            appointmentCalendarRepository.save(appointment);
+            return ResponseEntity.ok("Appointment updated successfully");
+        }
+        return ResponseEntity.badRequest().body("Invalid update request.");
+    }
+
     private void checkAppointmentExistenceById(long id) {
         appointmentCalendarRepository.findById(id).orElseThrow(() -> new NotFoundException("Appointment"));
     }

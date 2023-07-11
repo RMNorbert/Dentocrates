@@ -25,6 +25,10 @@ export const ClinicPage = () => {
         setDentistData(dentistResponse);
     };
 
+    const updateAppointment = async (currentId, appearance) => {
+        const requestBody = {id:currentId, clinicId: id, dentistId: userId(), appeared:!appearance};
+        await data('/calendar/','PUT', requestBody);
+    }
     const getCalendarData = async () => {
         const calendarData = await data(`/calendar/clinic/${id}`);
         const appointmentsData = await calendarData.filter((appointment) =>
@@ -47,11 +51,14 @@ export const ClinicPage = () => {
         return customers.filter((customer) => customer.id === customerId)
             .map((customer,index) => (
                 <div key={index}>
-                    <h2 className="listName listMargin"> {customer.firstName} {customer.lastName}</h2>
+                    <h2 className="listName listMargin">Name: {customer.firstName} {customer.lastName}</h2>
                 </div>
             ))
     };
 
+    const dateFormatter = (date) => {
+        return date.substring(0,16).replace("T"," ");
+    }
     const getCustomerAppointments = async () => {
         const appointmentsData = await data(`/calendar/customer/${userId()}`);
         const sortedAppointments = await appointmentsData.filter((appointment) =>
@@ -104,8 +111,17 @@ export const ClinicPage = () => {
                 {role() === "DENTIST" ? (
                     appointments.map((appointment, index) => (
                         <>
-                            <div key={index}>{appointment.reservation}</div>
+                            <div key={index}
+                                 className="listName listMargin"
+                            >
+                                {dateFormatter(appointment.reservation)}
+                                <input
+                                    className="fulfilled"
+                                    type="checkbox"
+                                    onChange={() => updateAppointment(appointment.id,appointment.appeared)}
+                                />
                             {filterCustomerDetails(appointment.customerId)}
+                            </div>
                         </>
                     ))
                 ) : (
