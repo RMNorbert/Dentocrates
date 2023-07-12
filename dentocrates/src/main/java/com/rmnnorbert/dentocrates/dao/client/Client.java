@@ -21,7 +21,7 @@ import java.util.Collection;
 public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    protected Long id;
 
     @Column(unique = true)
     @Email

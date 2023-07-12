@@ -17,7 +17,7 @@ public record ClinicResponseDTO(long id, String name, String clinicType, String 
                 .city(clinic.getLocation().getCity())
                 .street(clinic.getStreet())
                 .openingHours(clinic.getOpeningHours())
-                .dentistId(clinic.getDentistInContract().id)
+                .dentistId(clinic.getDentistInContract().getId())
                 .build();
     }
 }

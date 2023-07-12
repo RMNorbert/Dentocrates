@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.service;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
@@ -24,10 +25,13 @@ public class DentistService {
                 .toList();
     }
 
-    public ResponseEntity<String> deleteDentistById(Long id){
-        DentistResponseDTO dentist = getDentistById(id);
-        dentistRepository.deleteById(id);
-        return  ResponseEntity.ok("Dentist deleted successfully");
+    public ResponseEntity<String> deleteDentistById(DeleteDTO dto){
+        DentistResponseDTO dentist = getDentistById(dto.targetId());
+        if(dto.userId() == dentist.id()) {
+            dentistRepository.deleteById(dto.targetId());
+            return ResponseEntity.ok("Dentist deleted successfully");
+        }
+        return ResponseEntity.badRequest().body("Invalid delete request.");
     }
 
     public DentistResponseDTO getDentistById(long id){

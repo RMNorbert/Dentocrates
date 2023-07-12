@@ -23,7 +23,7 @@ public class CustomerService {
         this.appointmentCalendarRepository = appointmentCalendarRepository;
     }
 
-    public List<CustomerAppointmentResponseDTO> getAllCustomer(){
+    public List<CustomerAppointmentResponseDTO> getAllCustomerWithAppointment(){
         return customerRepository.findAll()
                 .stream()
                 .map(CustomerAppointmentResponseDTO::toDTO)

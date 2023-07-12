@@ -87,7 +87,7 @@ public class AuthenticationService {
                 String jwtToken = jwtService.generateToken(additionalClaims, client);
                 return AuthenticationResponse.builder()
                         .token(jwtToken)
-                        .id(client.id)
+                        .id(client.getId())
                         .build();
             }
         }catch (Exception e){

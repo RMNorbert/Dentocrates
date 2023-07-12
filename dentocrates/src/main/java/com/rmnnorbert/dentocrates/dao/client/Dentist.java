@@ -20,9 +20,10 @@ public class Dentist extends Client {
     @NotBlank
     private final String operatingLicenceNo;
     @Builder
-    public Dentist(String email, String password, String firstName, String lastName, String operatingLicenceNo, Role role) {
+    public Dentist(Long id, String email, String password, String firstName, String lastName, String operatingLicenceNo, Role role) {
         super(email, password, firstName, lastName, role);
         this.operatingLicenceNo = operatingLicenceNo;
+        this.id = id;
     }
 
 }
