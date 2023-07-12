@@ -61,7 +61,8 @@ export const ClientPage = () => {
         }
     }
     const handleDelete = async (currentId) => {
-        const response = await data('/client/','DELETE',{userId: userId(), targetId: currentId})
+        const response = role() === "CUSTOMER" ? await data('/client/', 'DELETE', {userId: userId(), targetId: currentId}) :
+            role() === "DENTIST" ? await data('/dentist/', 'DELETE', {userId: userId(), targetId: currentId}) : false
         if(response) {
             localStorage.clear();
             navigate('/register');

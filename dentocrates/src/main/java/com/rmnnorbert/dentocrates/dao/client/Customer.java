@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("CUSTOMER")
 public class Customer extends Client {
     @Builder
-    public Customer(String email, String password, String firstName, String lastName, Role role) {
+    public Customer(Long id,String email, String password, String firstName, String lastName, Role role) {
         super(email, password, firstName, lastName, role);
+        this.id = id;
     }
-
 }

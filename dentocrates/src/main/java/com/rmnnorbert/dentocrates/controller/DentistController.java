@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.service.DentistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class DentistController {
         return dentistService.getDentistById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDentist(@PathVariable Long id){
-        return dentistService.deleteDentistById(id);
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteDentist(@RequestBody DeleteDTO dto){
+        return dentistService.deleteDentistById(dto);
     }
 }

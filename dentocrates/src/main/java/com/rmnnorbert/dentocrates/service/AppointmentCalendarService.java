@@ -22,6 +22,7 @@ public class AppointmentCalendarService {
     private final AppointmentCalendarRepository appointmentCalendarRepository;
     private final CustomerRepository customerRepository;
     private final ClinicRepository clinicRepository;
+
     @Autowired
     public AppointmentCalendarService(AppointmentCalendarRepository appointmentCalendarRepository, CustomerRepository customerRepository, ClinicRepository clinicRepository) {
         this.appointmentCalendarRepository = appointmentCalendarRepository;
@@ -45,10 +46,9 @@ public class AppointmentCalendarService {
                 .reservation(appointmentDTO.reservation())
                 .build();
         appointmentCalendarRepository.save(reservation);
-        return ResponseEntity.ok("Customer registered successfully");
+        return ResponseEntity.ok("Appointment registered successfully");
     }
     public ResponseEntity<String> deleteAppointmentById(DeleteDTO dto){
-        checkAppointmentExistenceById(dto.targetId());
         AppointmentCalendar appointmentCalendar = getAppointmentById(dto.targetId());
         if(dto.userId() == appointmentCalendar.getCustomer().getId()) {
             appointmentCalendarRepository.deleteById(dto.targetId());
@@ -73,9 +73,6 @@ public class AppointmentCalendarService {
         return ResponseEntity.badRequest().body("Invalid update request.");
     }
 
-    private void checkAppointmentExistenceById(long id) {
-        appointmentCalendarRepository.findById(id).orElseThrow(() -> new NotFoundException("Appointment"));
-    }
     private Clinic getClinicById(long id) {
         return clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic"));
     }

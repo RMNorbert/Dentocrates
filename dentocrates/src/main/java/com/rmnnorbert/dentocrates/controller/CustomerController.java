@@ -21,7 +21,7 @@ public class CustomerController {
 
     @GetMapping("/all")
     public List<CustomerAppointmentResponseDTO> getAllCustomer(){
-        return customerService.getAllCustomer();
+        return customerService.getAllCustomerWithAppointment();
     }
     @GetMapping("/{id}")
     public CustomerResponseDTO getCustomer(@PathVariable Long id){

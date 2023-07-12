@@ -7,7 +7,7 @@ import lombok.Builder;
 public record CustomerAppointmentResponseDTO (Long id, String firstName, String lastName){
     public static CustomerAppointmentResponseDTO toDTO(Customer customer){
         return CustomerAppointmentResponseDTO.builder()
-                .id(customer.id)
+                .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
                 .build();
