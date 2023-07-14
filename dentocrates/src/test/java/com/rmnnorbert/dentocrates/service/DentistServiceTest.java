@@ -24,7 +24,7 @@ class DentistServiceTest {
     @Mock
     private DentistRepository dentistRepository;
     @InjectMocks
-    DentistService dentistService;
+    private DentistService dentistService;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

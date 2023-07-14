@@ -15,9 +15,9 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "client_type", discriminatorType = DiscriminatorType.STRING)
+@Entity
 public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

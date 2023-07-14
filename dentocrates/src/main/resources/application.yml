@@ -6,7 +6,7 @@ spring:
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: none
         properties:
             hibernate:
                 format_sql: true
@@ -42,3 +42,9 @@ management:
                   always
     info:
         enabled: true
+    metrics:
+        enabled: true
+logging:
+    level:
+        org.apache.catalina.core: DEBUG
+        com.zaxxer.hikari: DEBUG

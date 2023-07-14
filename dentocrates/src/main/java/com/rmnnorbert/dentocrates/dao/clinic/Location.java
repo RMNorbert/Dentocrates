@@ -7,11 +7,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@Entity
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

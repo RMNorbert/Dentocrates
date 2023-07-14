@@ -8,6 +8,7 @@ import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
 import com.rmnnorbert.dentocrates.utils.DtoMapper;
 import io.micrometer.core.instrument.Counter;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Service
 public class AuthenticationService {
     private final ClientRepository clientRepository;
+    private final DentistRepository dentistRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -31,8 +33,9 @@ public class AuthenticationService {
     private final Counter loginSuccessCounter;
     private final Counter loginFailureCounter;
     @Autowired
-    public AuthenticationService(ClientRepository clientRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(ClientRepository clientRepository, DentistRepository dentistRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.clientRepository = clientRepository;
+        this.dentistRepository = dentistRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -59,7 +62,7 @@ public class AuthenticationService {
         if(clientRepository.findByEmail(request.email()).isEmpty()){
             String password = passwordEncoder.encode(request.password());
             Dentist dentist = DtoMapper.toEntity(request,password);
-            clientRepository.save(dentist);
+            dentistRepository.save(dentist);
 
             String jwtToken = jwtService.generateToken(dentist);
             return AuthenticationResponse.builder()
