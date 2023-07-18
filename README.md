@@ -12,7 +12,7 @@
 [![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com/)
 [![React](https://img.shields.io/badge/React-grey.svg?logo=react&logoColor=blue&labelColor=323330&style=for-the-badge)](https://vitejs.dev/)
 
-[![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](License "License")
+[![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
 [![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&style=for-the-badge&display_timestamp=committer)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
 
 
@@ -107,3 +107,7 @@ Follow these instructions to get a copy of the Dentocrates project up and runnin
     Access the application: Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g., http://localhost:8080) to access the application. You can create an account, explore dentists, and schedule appointments.
 
 Note: The URL and port number may vary depending on your configuration.
+
+## License
+
+This project is licensed under the Unlicense License - see the [License](LICENSE) file for details.
