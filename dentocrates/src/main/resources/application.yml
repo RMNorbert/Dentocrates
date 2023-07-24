@@ -1,17 +1,19 @@
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/dentocrates
-        username: ${POSTGRESQL_DB_USER:postgres}
-        password: ${POSTGRESQL_DB_PASSWORD:postgres}
-        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://postgres:5432/dentocrates
+        username: postgres
+        password: postgres
     jpa:
         hibernate:
-            ddl-auto: none
+            ddl-auto: update
         properties:
             hibernate:
-                format_sql: true
+                format_sql: false
         database: postgresql
         database-platform: org.hibernate.dialect.PostgreSQLDialect
+    web:
+      resources:
+          static-locations: classpath:/frontend/
 springdoc:
     api-docs:
         path: /api-docs
@@ -44,7 +46,3 @@ management:
         enabled: true
     metrics:
         enabled: true
-logging:
-    level:
-        org.apache.catalina.core: DEBUG
-        com.zaxxer.hikari: DEBUG
