@@ -2,7 +2,7 @@ package com.rmnnorbert.dentocrates.security.auth;
 
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.custom.exceptions.InvalidLoginException;
+import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
@@ -55,7 +55,7 @@ public class AuthenticationService {
                     .token(jwtToken)
                     .build();
         } else{
-            throw new InvalidLoginException();
+            throw new InvalidCredentialException();
         }
     }
     public AuthenticationResponse register(DentistRegisterDTO request) {
@@ -69,12 +69,11 @@ public class AuthenticationService {
                     .token(jwtToken)
                     .build();
         } else{
-            throw new InvalidLoginException();
+            throw new InvalidCredentialException();
         }
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-            try {
-            Optional<Client> optionalClient = clientRepository.findByEmail(request.email());
+        Optional<Client> optionalClient = clientRepository.findByEmail(request.email());
             if(optionalClient.isPresent()) {
                 Client client = optionalClient.get();
                 authenticationManager.authenticate(
@@ -93,10 +92,9 @@ public class AuthenticationService {
                         .id(client.getId())
                         .build();
             }
-        }catch (Exception e){
+            else {
                 loginFailureCounter.increment();
-                throw new InvalidLoginException();
-        }
-        throw new InvalidLoginException();
+                throw new InvalidCredentialException();
+            }
     }
 }

@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.custom.exceptions;
 
-public class InvalidLoginException extends RuntimeException{
-    public InvalidLoginException() {
+public class InvalidCredentialException extends RuntimeException{
+    public InvalidCredentialException() {
         super("Wrong username or password");
     }
 }
