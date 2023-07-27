@@ -8,11 +8,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@Entity
 public class Clinic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

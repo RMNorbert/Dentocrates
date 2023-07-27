@@ -29,7 +29,7 @@ class CustomerServiceTest {
     @Mock
     private AppointmentCalendarRepository appointmentCalendarRepository;
     @InjectMocks
-    CustomerService customerService;
+    private CustomerService customerService;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

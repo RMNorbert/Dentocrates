@@ -6,11 +6,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@Entity
 public class AppointmentCalendar {
 
     @Id
