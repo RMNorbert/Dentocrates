@@ -10,9 +10,9 @@ name: Java CI TEST
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "RMNorbert-patch-2" ]
   pull_request:
-    branches: [ "main","RMNorbert-patch-1" ]
+    branches: [ "main" ]
 
 jobs:
   build:
