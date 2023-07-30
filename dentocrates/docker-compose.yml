@@ -38,5 +38,5 @@ networks:
   mynetwork:
     driver: bridge
 volumes:
-  postgres:
+  postgres-data:
     driver: local
