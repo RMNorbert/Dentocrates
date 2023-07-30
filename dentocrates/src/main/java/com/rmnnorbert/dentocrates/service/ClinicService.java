@@ -36,9 +36,14 @@ public class ClinicService {
     }
     public ResponseEntity<String> registerClinic(ClinicRegisterDTO clinicRegisterDTO){
         Dentist dentist = dentistRepository.getReferenceById(clinicRegisterDTO.dentistId());
+        if(dentist == null) {
+            throw new NotFoundException("Dentist");
+        }
+
         int locationZipCode = clinicRegisterDTO.zipCode();
-        Optional<Location> location =  locationRepository.getByZipCode(locationZipCode);
-        if(location.isPresent()) {
+        Optional<Location> location = locationRepository.getByZipCode(locationZipCode);
+
+        if (location.isPresent()) {
             Clinic clinic = Clinic.of(clinicRegisterDTO, dentist, location.get());
             clinicRepository.save(clinic);
             return ResponseEntity.ok("Clinic registered successfully");
@@ -46,7 +51,7 @@ public class ClinicService {
         return ResponseEntity.badRequest().body("Invalid location.");
     }
     public ResponseEntity<String> deleteClinicById(Long id){
-        ClinicResponseDTO clinic = getClinicById(id);
+        getClinicById(id);
         clinicRepository.deleteById(id);
         return  ResponseEntity.ok("Clinic deleted successfully");
 
