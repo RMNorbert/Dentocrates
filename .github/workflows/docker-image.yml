@@ -2,7 +2,7 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" , "docker" ]
+    branches: [ "main", "docker" ]
   pull_request:
     branches: [ "main" ]
 
@@ -15,6 +15,14 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: actions/checkout@v3
+
+      # Set up environment variables for database connection
+      - name: Set up Environment Variables
+        run: |
+          echo "POSTGRES_URL=jdbc:postgresql://postgres:5432/InquireNet" >> $GITHUB_ENV
+          echo "POSTGRES_USERNAME=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -24,14 +32,24 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and Push Docker Image
+      - name: Build Docker Image (Skipping Tests)
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           cd dentocrates
+
+          # Build the project, skipping tests with the -DskipTests flag
           mvn -B package -DskipTests
 
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t $DOCKER_USERNAME/dentocrates .
+          
+          # Use environment variables for database connection
+          docker build -t $DOCKER_USERNAME/dentocrates \
+            --build-arg SPRING_DATASOURCE_URL=$POSTGRES_URL \
+            --build-arg SPRING_DATASOURCE_USERNAME=$POSTGRES_USERNAME \
+            --build-arg SPRING_DATASOURCE_PASSWORD=$POSTGRES_PASSWORD \
+            .
+            
           docker push $DOCKER_USERNAME/dentocrates
+
