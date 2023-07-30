@@ -1,7 +1,7 @@
 # build the application without running the tests with  ./mvnw clean package -DskipTests
 # to skip the execution of tests during the build process, CI/CD pipeline run before deployment
 FROM maven:3.8.3-openjdk-17-slim AS build
-RUN mkdir /project
+WORKDIR /project
 COPY . /project
 WORKDIR /project
 RUN mvn clean install
