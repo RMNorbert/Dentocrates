@@ -10,11 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@Entity
 @Getter
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @DiscriminatorValue("DENTIST")
+@Entity
 public class Dentist extends Client {
     @Column(unique = true)
     @NotBlank

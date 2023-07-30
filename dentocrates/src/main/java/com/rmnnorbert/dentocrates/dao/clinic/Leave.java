@@ -6,11 +6,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@Entity
 public class Leave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

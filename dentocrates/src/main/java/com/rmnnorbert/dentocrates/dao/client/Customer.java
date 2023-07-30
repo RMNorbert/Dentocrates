@@ -6,10 +6,10 @@ import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-@Entity
 @Getter
 @NoArgsConstructor(force = true)
 @DiscriminatorValue("CUSTOMER")
+@Entity
 public class Customer extends Client {
     @Builder
     public Customer(Long id,String email, String password, String firstName, String lastName, Role role) {

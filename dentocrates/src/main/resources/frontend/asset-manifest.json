@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ab90eb1c.css",
+    "main.js": "/static/js/main.03161278.js",
+    "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/clinicaigeneratedpicture.jpg": "/static/media/clinicaigeneratedpicture.ae0a6164169e08bb4cc8.jpg",
+    "static/media/roomaigeneratedpicture.jpg": "/static/media/roomaigeneratedpicture.6f5bbec1ecf35edef062.jpg",
+    "static/media/appointmentaigeneratedpic.jpg": "/static/media/appointmentaigeneratedpic.bc7f559ff23794d6abf6.jpg",
+    "index.html": "/index.html",
+    "main.ab90eb1c.css.map": "/static/css/main.ab90eb1c.css.map",
+    "main.03161278.js.map": "/static/js/main.03161278.js.map",
+    "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ab90eb1c.css",
+    "static/js/main.03161278.js"
+  ]
+}
