@@ -54,8 +54,8 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - PostgreSQL
   
   Others
-  - Docker (In progress),
-  - CI/CD GitHub workflows (In progress)
+  - Docker,
+  - CI/CD GitHub workflows
   - OpenApi (version 3.0)
 
 ## Features
