@@ -9,13 +9,15 @@
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
 
+
+[![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=323330&style=for-the-badge)](https://www.openapis.org/)
+[![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=748b97&style=for-the-badge)](https://hibernate.org/)
 [![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red)](https://jwt.io/)
 [![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com/)
-[![React](https://img.shields.io/badge/React-grey.svg?logo=react&logoColor=blue&labelColor=323330&style=for-the-badge)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-323330.svg?logo=react&logoColor=blue&labelColor=323330&style=for-the-badge)](https://vitejs.dev/)
 
 [![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
 [![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&style=for-the-badge&display_timestamp=committer)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
-
 
 </div>
 <!-- MANPAGE: END EXCLUDED SECTION -->
@@ -60,36 +62,36 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 ## Features
 
-**User Registration and Authentication:**
+- **Registration and uthentication for users and dentists**
 
-  Users can create accounts and authenticate themselves on the Dentocrates platform.
-  Registration can be done using email addresses.
+- **Clinic Registration and Management**
 
-**Dentist Registration and Clinic Management:**
+- **Search for Dentists and Clinics**
 
-  Dentists can register their clinics on Dentocrates and provide necessary details such
-  as clinic name, address, contact information, working hours.
+- **Appointment booking and management for users and clinics**
 
-**Search for Dentists and Clinics:**
+- **Notifications (in progress)**
 
-  Users can search for dentists or clinics.
+- **Chatbot (in progress)**
 
-**Appointment Booking:**
-
-  Users can book appointments with dentists or clinics directly through the Dentocrates
-  platform.Dentocrates provides a user-friendly interface where users can select their 
-  preferred dentist, clinic, and appointment time slot. The system ensures that available
-  appointment slots are displayed accurately based on the dentist or clinic's schedule.
-
-**Appointment Management:**
-
-  Users can view and manage their booked appointments, including canceling appointments
-  if necessary. Dentists and clinics can also manage their appointment schedules, view upcoming
-  appointments, and make any necessary updates.
-
+- **Reset password (in progress)**
+  
 ## Getting Started
 
 Follow these instructions to get a copy of the Dentocrates project up and running on your local machine for development and testing purposes.
+
+## Prerequisites
+
+To set up the project, follow these steps:
+    
+Make sure you have the following dependencies installed before proceeding with the installation:
+
+#### 1.   Java Development Kit (JDK):
+   Ensure that you have the Java Development Kit installed on your machine. You can download the JDK from the Oracle website and install it according to the provided instructions.
+
+#### 2.    JDBC Database (e.g., PostgreSQL):
+   In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can download and install PostgreSQL from the official PostgreSQL website and configure it as required.
+
 
 ## Installation:
 
