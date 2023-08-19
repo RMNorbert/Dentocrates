@@ -34,8 +34,7 @@
   
 ## Description:
 
-Dentocrates is an online platform for dental appointments, designed to streamline the process of finding and booking dental services. The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience.
-Features
+Dentocrates is an online platform for dental appointments designed to streamline the process of finding and booking dental services. The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, search for dentists in their area, and view available appointments.
 
 # Dockerized version can be pulled from DockerHub:
 https://hub.docker.com/repository/docker/7nrm/dentocrates/general
