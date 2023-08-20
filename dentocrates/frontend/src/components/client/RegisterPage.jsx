@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Terms } from "../elements/TermsAndConditions";
 function RegisterPage (){
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -12,6 +12,7 @@ function RegisterPage (){
     const [dentist, setDentist] = useState(false);
     const [hidden, setHidden] = useState(true);
     const isMounted = useRef(true);
+
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -21,18 +22,23 @@ function RegisterPage (){
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
+
     const handleOperatingLicenceNoChange = (event) => {
         setOperatingLicenceNo(event.target.value);
     };
+
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     };
+
     const handleLastNameChange = (event) => {
         setLastName(event.target.value);
     };
+
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
+
     const HandleSubmit = async (e) => {
         e.preventDefault();
         await postRegistration(email,password);
@@ -74,6 +80,9 @@ function RegisterPage (){
         return (
             <div className="pageContent">
                 <h1>Register</h1>
+                <div>
+                <Terms title="Dentocrates"/>
+                </div>
                 <div hidden={hidden}>{message}</div>
                 <div className="flex justify-center flex-col items-center text-2xl ">
                     <form onSubmit={HandleSubmit}>
