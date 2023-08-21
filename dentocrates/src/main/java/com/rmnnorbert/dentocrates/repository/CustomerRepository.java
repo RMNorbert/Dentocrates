@@ -7,5 +7,4 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends ClientRepository<Customer> {
     Optional<Customer> findByEmail(String email);
-
 }

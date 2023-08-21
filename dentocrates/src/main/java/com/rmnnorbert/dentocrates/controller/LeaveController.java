@@ -4,6 +4,7 @@ import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.service.LeaveService;
+import com.rmnnorbert.dentocrates.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,11 @@ import java.util.List;
 @RequestMapping("/leave")
 public class LeaveController {
     private final LeaveService leaveService;
+    private final NotificationService notificationService;
     @Autowired
-    public LeaveController(LeaveService leaveService) {
+    public LeaveController(LeaveService leaveService, NotificationService notificationService) {
         this.leaveService = leaveService;
+        this.notificationService = notificationService;
     }
     @GetMapping("/{id}")
     public List<LeaveDTO> getLeavesFromDateOfClinic(@PathVariable long id) {
@@ -24,7 +27,9 @@ public class LeaveController {
     }
     @PostMapping("/")
     public ResponseEntity<String> registerLeaveToClinic(@RequestBody LeaveRegisterDTO dto) {
-        return leaveService.registerLeave(dto);
+        ResponseEntity<String> registeredLeave = leaveService.registerLeave(dto);
+        notificationService.sendLeaveNotifications(dto);
+        return registeredLeave;
     }
     @DeleteMapping("/")
     public ResponseEntity<String> deleteLeaveOfClinic(@RequestBody LeaveDeleteDTO dto) {
