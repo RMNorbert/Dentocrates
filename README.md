@@ -99,7 +99,7 @@ Make sure you have the following dependencies installed before proceeding with t
 1. Clone the repository
     
 2. Set up the necessary environment variables and configure the database connection details. Update the configuration files with the appropriate values.
-   The configuration files located in : dentocrates/src/main/resources/application.yml
+   The configuration files located in : dentocrates/src/main/resources/application.yml, an environment variable called SECRET have to created for the key creation. 
 
 3. Build and run the project: Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
 
