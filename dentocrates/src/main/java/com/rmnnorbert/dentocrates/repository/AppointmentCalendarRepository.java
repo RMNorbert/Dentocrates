@@ -12,6 +12,6 @@ public interface AppointmentCalendarRepository extends JpaRepository<Appointment
     List<AppointmentCalendar> getAllByCustomer_Id(long id);
 
     List<AppointmentCalendar> getAllByClinic_Id(long id);
-    @Query("SELECT a FROM AppointmentCalendar a WHERE a.reservation > :startOfLeave AND a.reservation < :endOfLeave AND a.clinic = :id")
+    @Query("SELECT a FROM AppointmentCalendar a WHERE a.reservation > :startOfLeave AND a.reservation < :endOfLeave AND a.clinic.id = :id")
     List<AppointmentCalendar> getAllByLeave(long id, LocalDateTime startOfLeave, LocalDateTime endOfLeave);
 }

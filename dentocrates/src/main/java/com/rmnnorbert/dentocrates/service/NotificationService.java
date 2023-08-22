@@ -5,14 +5,15 @@ import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class NotificationService {
-    private final EmailService emailService;
+    private final GMailerService emailService;
     private final AppointmentCalendarRepository appointmentCalendarRepository;
 
-    public NotificationService(EmailService emailService, AppointmentCalendarRepository appointmentCalendarRepository) {
+    public NotificationService(GMailerService emailService, AppointmentCalendarRepository appointmentCalendarRepository) {
         this.emailService = emailService;
         this.appointmentCalendarRepository = appointmentCalendarRepository;
     }
@@ -25,12 +26,17 @@ public class NotificationService {
                     "We apologize for any inconvenience this may cause.\n\nThank you for your understanding.\n\nBest regards,\nThe Dentocrates Team";
 
 
-        List<String> emailsList = getEmailsToNotify(dto);
+        List<String> emailsList = new ArrayList<>();//getEmailsToNotify(dto);
         emailsList.add("zdantowin7747@gmail.com");
+        try {
         for (String email: emailsList) {
-            emailService.sendMail(email, leaveSubject, message,"");
+            emailService.sendMail(email, leaveSubject, message, "http://localhost:3000/");
         }
         return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
     private List<AppointmentCalendar> getAffectedAppointmentsByLeave(LeaveRegisterDTO dto) {
