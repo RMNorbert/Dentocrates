@@ -29,7 +29,8 @@ public class SecurityConfiguration {
       return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry.requestMatchers(
-                        "/api/**",
+                        "/api/register/**",
+                        "/api/authenticate",
                         "/",
                         "/frontend/index",
                         "/index.html",
@@ -47,6 +48,9 @@ public class SecurityConfiguration {
                         "/api-docs.yaml"
                     ).permitAll()
                     .requestMatchers("/client/{id}",
+                        "/verify/**",
+                        "/api/reset",
+                        "/api/verify",
                         "/calendar/**",
                         "/client/",
                         "/clinic/{id}",

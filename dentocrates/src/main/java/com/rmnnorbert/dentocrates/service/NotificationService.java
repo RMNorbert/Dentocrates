@@ -5,7 +5,6 @@ import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,8 +25,8 @@ public class NotificationService {
                     "We apologize for any inconvenience this may cause.\n\nThank you for your understanding.\n\nBest regards,\nThe Dentocrates Team";
 
 
-        List<String> emailsList = new ArrayList<>();//getEmailsToNotify(dto);
-        emailsList.add("zdantowin7747@gmail.com");
+        List<String> emailsList = getEmailsToNotify(dto);
+
         try {
         for (String email: emailsList) {
             emailService.sendMail(email, leaveSubject, message, "http://localhost:3000/");

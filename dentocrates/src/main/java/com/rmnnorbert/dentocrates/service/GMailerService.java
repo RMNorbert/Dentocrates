@@ -14,20 +14,22 @@ import com.google.api.services.gmail.model.Message;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.internet.*;
-import java.io.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.Set;
 
-import static com.google.api.services.gmail.GmailScopes.*;
+import static com.google.api.services.gmail.GmailScopes.GMAIL_SEND;
 import static javax.mail.Message.RecipientType.TO;
 @Service
 public class GMailerService {
-    private final String emailAddress = System.getenv("SENDER_USERNAME");//"zdantowin7747@gmail.com";
+    private final String emailAddress = System.getenv("SENDER_USERNAME");
     private final Gmail service;
 
     public GMailerService() throws GeneralSecurityException, IOException {
@@ -41,7 +43,6 @@ public class GMailerService {
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory)
             throws IOException {
         // Load client secrets.
-        //String credentialsPath =
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(GMailerService.class.getResourceAsStream("/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json")));
 
         // Build flow and trigger user authorization request.
@@ -57,9 +58,9 @@ public class GMailerService {
     }
 
 
-    public void sendMail(String recipient, String subject, String message, String link) throws MessagingException, IOException {
+    public void sendMail(String recipient, String subject, String message, String link) {
         // Create the email content
-
+        try {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
@@ -76,7 +77,7 @@ public class GMailerService {
         Message msg = new Message();
         msg.setRaw(encodedEmail);
 
-        try {
+
         msg = service.users().messages().send("me", msg).execute();
         System.out.println("Msg id: " + msg.getId());
         System.out.println(msg.toPrettyString());

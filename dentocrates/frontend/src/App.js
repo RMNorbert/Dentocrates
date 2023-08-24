@@ -12,6 +12,7 @@ import LocationRegisterPage from "./components/clinic/location/LocationRegisterP
 import ClinicRegisterPage from "./components/clinic/ClinicRegisterPage.jsx";
 import Calendar from "./components/clinic/calendar/Calendar";
 import {Appointment} from "./components/client/Appointment";
+import VerifyPage from "./components/client/Verification";
 function App() {
   return (
       <Router>
@@ -28,6 +29,8 @@ function App() {
           <Route path="/calendar/:id" element={<Calendar />} />
           <Route path="/location" element={<LocationRegisterPage />} />
           <Route path="/clinic/register" element={<ClinicRegisterPage />} />
+          <Route path="/verify/:verificationCode" element={<VerifyPage reset={false} />} />
+          <Route path="/verify/reset/:verificationCode" element={<VerifyPage reset={true} />} />
         </Routes>
       </Router>
   );
