@@ -9,7 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
 
-
+[![Oauth2](https://img.shields.io/badge/oauth2-323330.svg?logo=oauth2&logoColor=blue&labelColor=323330&style=for-the-badge)](https://oauth.net/)
 [![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=323330&style=for-the-badge)](https://www.openapis.org/)
 [![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=748b97&style=for-the-badge)](https://hibernate.org/)
 [![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red)](https://jwt.io/)
@@ -61,7 +61,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 ## Features
 
-- **Registration and uthentication for users and dentists**
+- **Registration and authentication for users and dentists**
 
 - **Clinic Registration and Management**
 
@@ -69,11 +69,13 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 - **Appointment booking and management for users and clinics**
 
-- **Notifications (in progress)**
+- **Notifications**
 
-- **Chatbot (in progress)**
+- **OAuth2**
 
-- **Reset password (in progress)**
+- **Chatbot, 2FA (in progress)**
+
+- **Reset password, Verification**
   
 ## Getting Started
 
