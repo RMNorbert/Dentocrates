@@ -5,7 +5,7 @@ function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const isMounted = useRef(true);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         return () => {
@@ -47,7 +47,19 @@ function LoginPage() {
 
     }
 
-
+    const handleGoogleLogin = async () => {
+        try {
+            const response = await fetch("/api/oauth2/authorizationPageUrl/google");
+            if (response.ok) {
+                const url = await response.text();
+                window.location.replace(url);
+            } else {
+                console.error("Failed to fetch Google authorization URL");
+            }
+        } catch (error) {
+            console.error("Error fetching Google authorization URL:", error);
+        }
+    }
 
     return (
         <div className='pageContent'>
@@ -63,6 +75,7 @@ function LoginPage() {
                 </div>
                 <button type="submit">Login</button>
             </form>
+            <button onClick={handleGoogleLogin}>Sign in With Google</button>
             <h3 className="register"
                 onClick={() =>  navigate("/register")}
             >

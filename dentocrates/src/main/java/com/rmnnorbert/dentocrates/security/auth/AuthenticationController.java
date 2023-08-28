@@ -24,29 +24,44 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.register(request));
     }
+
     @PostMapping("/register/dentist")
     public ResponseEntity<AuthenticationResponse> registerDentist(
             @Valid @RequestBody DentistRegisterDTO request
     ) {
         return ResponseEntity.ok(service.register(request));
     }
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
-            ){
+    ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(
             @RequestBody ResetDto dto
-    ){
+    ) {
         return service.resetPassword(dto);
     }
+
     @PostMapping("/verify")
     public ResponseEntity<String> verify(
             @RequestBody VerifyDto dto
-    ){
+    ) {
         return service.verifyClient(dto);
     }
-}
 
+    @GetMapping("/oauth2/authorizationPageUrl/google")
+    public String getAuthorizationPageUrl(){
+        return service.getAuthorizationUrl();
+    }
+    @CrossOrigin("http://localhost:3000/")
+    @GetMapping("login/oauth2/code/")
+    public ResponseEntity<AuthenticationResponse> handleOauth2Redirect(@RequestParam String state,@RequestParam String code) {
+        AuthenticationRequest request = service.registerWithOauth(state,code);
+        return ResponseEntity.ok(service.authenticate(request));
+    }
+
+}

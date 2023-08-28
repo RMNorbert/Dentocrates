@@ -17,31 +17,40 @@ import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
 import com.rmnnorbert.dentocrates.service.VerificationService;
 import com.rmnnorbert.dentocrates.utils.DtoMapper;
+import com.rmnnorbert.dentocrates.service.OAuth2HelperService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Optional;
 
 @Service
 public class AuthenticationService {
+    private String state;
     private final ClientRepository clientRepository;
     private final DentistRepository dentistRepository;
     private final CustomerRepository customerRepository;
+    private final ClientRegistrationRepository clientRegistrationRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final Counter loginSuccessCounter;
     private final Counter loginFailureCounter;
+    private final OAuth2HelperService oAuth2Helper;
+    private final JwtService jwtService;
     private final VerificationService verificationService;
     @Autowired
-    public AuthenticationService(ClientRepository clientRepository, DentistRepository dentistRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService) {
+    public AuthenticationService(ClientRepository clientRepository, DentistRepository dentistRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService, ClientRegistrationRepository clientRegistrationRepository, OAuth2HelperService oAuth2Helper) {
         this.clientRepository = clientRepository;
         this.dentistRepository = dentistRepository;
         this.customerRepository = customerRepository;
@@ -49,6 +58,8 @@ public class AuthenticationService {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.verificationService = verificationService;
+        this.clientRegistrationRepository = clientRegistrationRepository;
+        this.oAuth2Helper = oAuth2Helper;
         loginSuccessCounter = Metrics.counter("counter.login.success");
         loginFailureCounter = Metrics.counter("counter.login.failure");
     }
@@ -85,6 +96,22 @@ public class AuthenticationService {
             throw new InvalidCredentialException();
         }
     }
+    public AuthenticationRequest registerWithOauth(String state, String code) {
+        String[] userCredentials = authenticateOauth(state, code);
+        try {
+            if (getClient(userCredentials[0]).isEmpty()) {
+                CustomerRegisterDTO customerRegisterDTO = new CustomerRegisterDTO(userCredentials[0],
+                        userCredentials[1],
+                        userCredentials[2],
+                        userCredentials[3]);
+
+                register(customerRegisterDTO);
+            }
+            return new AuthenticationRequest(userCredentials[0], userCredentials[1]);
+        }catch (Exception e) {
+            return new AuthenticationRequest(userCredentials[0], userCredentials[1]);
+        }
+    }
     public ResponseEntity<String> resetPassword(ResetDto dto) {
         Verification verification = getVerification(dto.verificationCode());
 
@@ -115,7 +142,7 @@ public class AuthenticationService {
         Optional<Client> optionalClient = getClient(request.email());
             if(optionalClient.isPresent()) {
                 Client client = optionalClient.get();
-                authenticationManager.authenticate(
+                Authentication a = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.email(),
                                 request.password()
@@ -126,6 +153,7 @@ public class AuthenticationService {
                 HashMap<String, Object> additionalClaims = new HashMap<>();
                 additionalClaims.put("role", client.getRole());
                 String jwtToken = jwtService.generateToken(additionalClaims, client);
+
                 return AuthenticationResponse.builder()
                         .token(jwtToken)
                         .id(client.getId())
@@ -135,6 +163,41 @@ public class AuthenticationService {
                 loginFailureCounter.increment();
                 throw new InvalidCredentialException();
             }
+    }
+    public String getAuthorizationUrl() {
+        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("google");
+        if (clientRegistration != null) {
+            String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
+            String clientId = clientRegistration.getClientId();
+            String redirectUri ="http://localhost:3000/login/oauth2/code/";
+            String scope = String.join(" ", clientRegistration.getScopes());
+            String state = generateState();
+
+            String authorizationUrl = String.format("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code&state=%s",
+                    authorizationUri, clientId, redirectUri, scope, state);
+            return authorizationUrl;
+        }
+        return null;
+    }
+    private String[] authenticateOauth(String state, String code) {
+        if (state.equals(this.state)){
+            ResponseEntity<TokenResponse> responseEntity = oAuth2Helper.getGoogleTokenResponse(code);
+            // Access the returned token and other fields from tokenResponse
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                TokenResponse tokenResponse = responseEntity.getBody();
+                String idToken = tokenResponse.getId_token();
+                String[] userCredentials = oAuth2Helper.parseToken(idToken);
+                return userCredentials;
+            } else {
+                System.out.println("Token exchange failed. Status code: " + responseEntity.getStatusCode());
+                loginFailureCounter.increment();
+                throw new InvalidCredentialException();
+            }
+        } else {
+            System.out.println("Invalid state");
+            loginFailureCounter.increment();
+            throw new InvalidCredentialException();
+        }
     }
     private Optional<Client> getClient(String email) {
         return clientRepository.findByEmail(email);
@@ -165,5 +228,10 @@ public class AuthenticationService {
             dentist.setPassword(newPassword);
             dentistRepository.save(dentist);
         }
+    }
+    private String generateState() {
+        String state = new BigInteger(130, new SecureRandom()).toString(32);
+        this.state = state;
+        return state;
     }
 }

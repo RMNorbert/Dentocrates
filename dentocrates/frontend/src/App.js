@@ -13,6 +13,7 @@ import ClinicRegisterPage from "./components/clinic/ClinicRegisterPage.jsx";
 import Calendar from "./components/clinic/calendar/Calendar";
 import {Appointment} from "./components/client/Appointment";
 import VerifyPage from "./components/client/Verification";
+import AuthLoginPage from "./components/client/AuthLogin";
 function App() {
   return (
       <Router>
@@ -31,6 +32,7 @@ function App() {
           <Route path="/clinic/register" element={<ClinicRegisterPage />} />
           <Route path="/verify/:verificationCode" element={<VerifyPage reset={false} />} />
           <Route path="/verify/reset/:verificationCode" element={<VerifyPage reset={true} />} />
+          <Route path="/login/oauth2/code" element={<AuthLoginPage />} />
         </Routes>
       </Router>
   );

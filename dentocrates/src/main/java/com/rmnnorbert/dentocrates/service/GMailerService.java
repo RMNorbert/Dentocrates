@@ -13,7 +13,6 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
-
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -24,9 +23,9 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.Set;
-
 import static com.google.api.services.gmail.GmailScopes.GMAIL_SEND;
 import static javax.mail.Message.RecipientType.TO;
+
 @Service
 public class GMailerService {
     private final String emailAddress = System.getenv("SENDER_USERNAME");
@@ -52,7 +51,7 @@ public class GMailerService {
                 .setAccessType("offline")
                 .build();
 
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         //returns an authorized Credential object.
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("Dentocrates");
     }
@@ -87,3 +86,4 @@ public class GMailerService {
             }
     }
 }
+
