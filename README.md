@@ -8,8 +8,9 @@
 [![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=555555&style=for-the-badge)](https://spring.io/projects/spring-security)
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
-
-
+[![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
+[![Oauth2](https://img.shields.io/badge/oauth2-323330.svg?logo=goo&logoColor=blue&labelColor=323330&style=for-the-badge)](https://oauth.net/)
+[![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://oauth.net/)
 [![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=323330&style=for-the-badge)](https://www.openapis.org/)
 [![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=748b97&style=for-the-badge)](https://hibernate.org/)
 [![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red)](https://jwt.io/)
@@ -46,7 +47,11 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - Spring Boot (version 3.1.0),Spring Security (version 3.1.0), JWT, Actuator, Webflux
   - JPA Hibernate (version 3.1.0),
   - Lombok,
-    
+  - OAuth 2.0
+  - JavaMail & Gmail API
+  - 2FA logic
+  - Python
+      
  Frontend
   - JavaScript,
   - React,
@@ -61,7 +66,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 ## Features
 
-- **Registration and uthentication for users and dentists**
+- **Registration and authentication for users and dentists**
 
 - **Clinic Registration and Management**
 
@@ -69,11 +74,9 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 - **Appointment booking and management for users and clinics**
 
-- **Notifications (in progress)**
+- **2FA & Notifications & Verifications**
 
 - **Chatbot (in progress)**
-
-- **Reset password (in progress)**
   
 ## Getting Started
 
@@ -91,6 +94,8 @@ Make sure you have the following dependencies installed before proceeding with t
 #### 2.    JDBC Database (e.g., PostgreSQL):
    In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can download and install PostgreSQL from the official PostgreSQL website and configure it as required.
 
+#### 3.   In case of using Oauth:
+  To use Google’s OAuth 2.0 authentication system for login, you must set up a project in the Google API Console to obtain OAuth 2.0 credentials.
 
 ## Installation:
 
@@ -99,9 +104,10 @@ Make sure you have the following dependencies installed before proceeding with t
 1. Clone the repository
     
 2. Set up the necessary environment variables and configure the database connection details. Update the configuration files with the appropriate values.
-   The configuration files located in : dentocrates/src/main/resources/application.yml
+   The configuration files located in : dentocrates/src/main/resources/application.yml, an environment variable called SECRET have to created for the key creation,
+   an environment variable have to be created for the oauthId and the oauthSecret according to the related credentials. 
 
-3. Build and run the project: Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
+4. Build and run the project: Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
 
     Using Maven: Open a terminal or command prompt, navigate to the project's root directory, and run the following command:
         ```

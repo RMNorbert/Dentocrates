@@ -11,13 +11,17 @@ import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
+import com.rmnnorbert.dentocrates.service.VerificationService;
+import com.rmnnorbert.dentocrates.service.OAuth2HelperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -38,6 +42,12 @@ class AuthenticationServiceTest {
     private JwtService jwtService;
     @Mock
     private AuthenticationManager authenticationManager;
+    @Mock
+    private VerificationService verificationService;
+    @Mock
+    private OAuth2HelperService oAuth2Helper;
+    @Mock
+    private ClientRegistrationRepository clientRegistrationRepository;
     private AuthenticationService authenticationService;
     @BeforeEach
     void init() {
@@ -48,8 +58,10 @@ class AuthenticationServiceTest {
                 customerRepository,
                 passwordEncoder,
                 jwtService,
-                authenticationManager
-        );
+                authenticationManager,
+                verificationService,
+                clientRegistrationRepository,
+                oAuth2Helper);
     }
 
     @Test
@@ -105,7 +117,7 @@ class AuthenticationServiceTest {
     @Test
     void authenticateShouldReturnExpectedAuthenticationResponse() {
         AuthenticationRequest request = new AuthenticationRequest("email", "password");
-        Optional<Client> optionalClient = Optional.of(new Client(1L,"email","password","first","last",Role.CUSTOMER));
+        Optional<Client> optionalClient = Optional.of(new Client(1L,"email","password","first","last",Role.CUSTOMER,false, LocalDateTime.now()));
         HashMap<String, Object> additionalClaims = new HashMap<>();
         long expectedId = 1L;
         String jwtToken = "Token";

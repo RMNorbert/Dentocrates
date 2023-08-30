@@ -23,6 +23,7 @@ export const ClientPage = () => {
         else if(role() === "DENTIST"){
             const clinicResponse = await data(`/clinic/dentist/${userId()}`);
             setClinicData(await clinicResponse);
+            setClinicId(clinicResponse[0].id)
             const response = await data(`/dentist/${userId()}`);
             setClientData(await response);
             await fetchLeaveData(await clinicResponse);
@@ -55,6 +56,7 @@ export const ClientPage = () => {
             startOfTheLeave : startDate,
             endOfTheLeave : endDate
         }
+        console.log(registerData)
         const response = await data('/leave/',"POST",registerData);
         if(response){
             setIsLoaded(false);
@@ -102,7 +104,7 @@ export const ClientPage = () => {
                 {clientData && role() === "DENTIST" &&
                 <div>
                     <div className="inputBox">
-                        <label htmlFor="clinic">Zipcode:</label>
+                        <label htmlFor="clinic">Clinic:</label>
                         <select id="clinic"  onClick={handleClinicChange}>
                             {clinicData.map((clinic) =>
                                 <option key={clinic.id} >{clinic.name} - {clinic.id}</option>)}

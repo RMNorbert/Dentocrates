@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 
@@ -26,8 +27,8 @@ public class Client implements UserDetails {
     @Column(unique = true)
     @Email
     protected final String email;
-    @NotBlank
     @Size(min = 8)
+    @NotBlank
     protected String password;
     @NotBlank
     protected final String firstName;
@@ -37,18 +38,25 @@ public class Client implements UserDetails {
     @Enumerated(EnumType.STRING)
     protected final Role role;
 
+    protected boolean verified;
+
+    protected LocalDateTime registrationTime;
     public Client( String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.verified = false;
+        this.registrationTime = LocalDateTime.now();
     }
 
     public void setPassword(@NonNull String password) {
         this.password = password;
     }
-
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

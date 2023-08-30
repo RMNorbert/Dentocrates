@@ -27,6 +27,9 @@ function ClinicRegisterPage (){
         const responseData = await data(`/location/all`);
         setLocations(await responseData);
         setIsDataLoaded(true);
+        setZipCode(parseInt(responseData[0].zipCode))
+        setCity(responseData[0].city)
+        setClinicType('COMMUNITY DENTAL CLINIC')
     };
 
     useEffect(() => {
@@ -97,6 +100,7 @@ function ClinicRegisterPage (){
             openingHours: openingHours,
             dentistId: userId()
         };
+        console.log(registerData)
        await data('/clinic/register', 'Post',registerData);
        navigate('/home');
     };
@@ -133,7 +137,8 @@ function ClinicRegisterPage (){
                             <label htmlFor="zipCode">Zipcode:</label>
                             <select type="text" id="zipCode"  onChange={handleZipCodeChange}>
                                 {locations.map((location) =>
-                                    <option key={location.id} >{location.zipCode} - {location.city}</option>)}
+                                    <option key={location.id} >{location.zipCode} - {location.city}</option>)
+                                }
                             </select>
                         </div>
                         <div className="inputBox">

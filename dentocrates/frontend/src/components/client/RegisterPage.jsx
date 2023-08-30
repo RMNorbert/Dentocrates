@@ -68,7 +68,7 @@ function RegisterPage (){
         })
             .then(response => {
                 if (response.status === 200) {
-                    navigate("/");
+                    navigate('/');
                 } else {
                     setHidden(false);
                     response.text().then(errorMessage => setMessage(errorMessage));

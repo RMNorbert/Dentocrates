@@ -5,6 +5,7 @@ import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.service.LeaveService;
+import com.rmnnorbert.dentocrates.service.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +30,12 @@ class LeaveControllerTest {
     private LeaveController leaveController;
     @Mock
     private LeaveService leaveService;
+    @Mock
+    private NotificationService notificationService;
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
-        this.leaveController = new LeaveController(leaveService);
+        this.leaveController = new LeaveController(leaveService, notificationService);
     }
     @ParameterizedTest
     @MethodSource(value = "provideExpectedList")
