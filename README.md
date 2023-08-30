@@ -66,7 +66,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 ## Features
 
-- **Registration and uthentication for users and dentists**
+- **Registration and authentication for users and dentists**
 
 - **Clinic Registration and Management**
 
@@ -74,7 +74,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 
 - **Appointment booking and management for users and clinics**
 
-- **Notifications & Verifications**
+- **2FA & Notifications & Verifications**
 
 - **Chatbot (in progress)**
   
