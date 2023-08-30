@@ -9,6 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
 [![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
+
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
 [![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
 [![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=323330&style=for-the-badge)](https://www.openapis.org/)
