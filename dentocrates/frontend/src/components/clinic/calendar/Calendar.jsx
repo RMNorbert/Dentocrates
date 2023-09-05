@@ -15,9 +15,13 @@ const Calendar = () => {
     const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
     const getCalendarData = async() =>{
-        const clinicData = await data(`clinic/${id}`);
-        const calendarData = await data(`/calendar/clinic/${id}`);
-        const leaveData = await data(`/leave/${id}`);
+        const clinicDataUrl = `clinic/${id}`;
+        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
+        const clinicLeaveDataUrl = `/leave/${id}`;
+
+        const clinicData = await data(clinicDataUrl);
+        const calendarData = await data(clinicCalendarDataUrl);
+        const leaveData = await data(clinicLeaveDataUrl);
         setClinic(clinicData);
         setAppointments(await calendarData);
         getAllLeaveDates(await leaveData);
@@ -25,13 +29,15 @@ const Calendar = () => {
 
     const getAllLeaveDates = (leaveDates) => {
         const dates = [];
+        const startDateModifier = 1;
+
         for(let i = 0; i < leaveDates.length; i++){
             let startDate = new Date(leaveDates[i].startOfTheLeave);
             let endDate = new Date(leaveDates[i].endOfTheLeave)
 
             while (startDate <= endDate) {
                 dates.push(startDate.getDate());
-                startDate.setDate(startDate.getDate() + 1);
+                startDate.setDate(startDate.getDate() + startDateModifier);
             }
         }
         setLeaveDates(dates);
@@ -62,14 +68,20 @@ const Calendar = () => {
         return times;
     }
     const bookAppointment = async(appointment) => {
+        try {
+        const calendarRegisterUrl = '/calendar/register';
         const formattedAppointment  = appointment.replace(" ","T") + ":00";
         const bookingData = {
             clinicId: id,
             customerId: userId(),
             reservation: formattedAppointment
         };
-        await data('/calendar/register', 'POST', bookingData);
+
+        await data(calendarRegisterUrl, 'POST', bookingData);
         setIsLoaded(false);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
 
@@ -79,6 +91,7 @@ const Calendar = () => {
             setIsLoaded(true);
         }
     },[isLoaded])
+
     if(isLoaded) {
         const times = getTimes();
         return (
@@ -96,7 +109,11 @@ const Calendar = () => {
                             </div>
                         ))}
                         <button
-                            onClick={() => bookAppointment(date.dateTime.toISOString().substring(0, 16).replace("T", " "))}>Book
+                            onClick={() =>
+                                date.dateTime != null ?
+                                bookAppointment(date.dateTime.toISOString().substring(0, 16).replace("T", " ")) :
+                                console.log("No date chosen")}
+                        >Book
                             Appointment
                         </button>
                     </div>

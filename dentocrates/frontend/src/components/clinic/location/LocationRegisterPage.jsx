@@ -27,12 +27,17 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
+        const locationRegisterUrl = '/location/register';
         let locationData = {
             zipCode: zipCode,
             city: city
         }
-        await data('/location/register','POST', locationData);
+        try{
+        await data(locationRegisterUrl,'POST', locationData);
         navigate("/home");
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
     return (
         <div className="clinic-register">

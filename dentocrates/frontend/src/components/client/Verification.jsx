@@ -15,9 +15,9 @@ function VerifyPage (props) {
     const validateVerificationCode = async () => {
         const response = await data(`/verify/${verificationCode}`);
         setVerificationCodeValidated(response);
-        /*if(!props.reset){
+        if(!props.reset){
                 deleteVerification();
-        }*/
+        }
     }
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -31,7 +31,7 @@ function VerifyPage (props) {
         await data(deleteVerifyUrl, 'DELETE', deleteRequest);
     }
     const postPasswordReset = async(password)=>{
-        if(password == passwordVerifier) {
+        if(password === passwordVerifier) {
             const clientUrl = '/api/reset';
             const request = {
                 verificationCode: verificationCode,

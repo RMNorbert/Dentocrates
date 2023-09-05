@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import { useLocation } from 'react-router-dom';
 import {Loading} from "../elements/Loading";
 
-function AuthLoginPage() {
+function OauthLoginPage() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isFetched, setIsFetched] = useState(false);
     const location = useLocation();
@@ -51,5 +51,5 @@ function AuthLoginPage() {
     }
 }
 
-export default AuthLoginPage;
+export default OauthLoginPage;
 
