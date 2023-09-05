@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.client;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;

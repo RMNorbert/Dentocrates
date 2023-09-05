@@ -4,6 +4,7 @@ import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.service.clinic.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

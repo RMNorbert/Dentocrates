@@ -6,6 +6,7 @@ import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
+import com.rmnnorbert.dentocrates.service.client.DentistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

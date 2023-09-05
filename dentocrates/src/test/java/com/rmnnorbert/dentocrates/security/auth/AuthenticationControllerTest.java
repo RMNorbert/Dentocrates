@@ -1,5 +1,8 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
+import com.rmnnorbert.dentocrates.controller.AuthenticationController;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,7 +99,9 @@ class AuthenticationControllerTest {
     void authenticateShouldReturnOkStatusAndExpectedValue() {
         AuthenticationRequest request = new AuthenticationRequest(
                                                             "email@e.com",
-                                                         "password"
+                                                         "password",
+                                                             "CUSTOMER",
+                                                  "0"
                                                                  );
         String token = "token";
         long id = 0;
@@ -116,7 +121,9 @@ class AuthenticationControllerTest {
     void authenticateShouldReturnOkStatusWithoutBody() {
         AuthenticationRequest request = new AuthenticationRequest(
                 "emaile.com",
-                "password"
+                "password",
+                "CUSTOMER",
+                "0"
         );
         ResponseEntity<AuthenticationResponse> actual = authenticationController.authenticate(request);
 

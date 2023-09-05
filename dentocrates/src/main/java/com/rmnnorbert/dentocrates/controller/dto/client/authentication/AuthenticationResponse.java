@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.security.auth;
+package com.rmnnorbert.dentocrates.controller.dto.client.authentication;
 
 import lombok.Builder;
 

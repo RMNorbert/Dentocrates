@@ -2,15 +2,17 @@ package com.rmnnorbert.dentocrates.controller.dto.client.dentist;
 
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.Role;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-public record DentistResponseDTO(long id,
-                                 String email,
-                                 String firstName,
-                                 String lastName,
-                                 Role role,
-                                 String operatingLicenceNo) {
+public record DentistResponseDTO(@Min(1) long id,
+                                 @NotBlank String email,
+                                 @NotBlank String firstName,
+                                 @NotBlank String lastName,
+                                  Role role,
+                                 @NotBlank String operatingLicenceNo) {
     public static DentistResponseDTO of(Dentist dentist) {
         return DentistResponseDTO.builder()
                 .id(dentist.getId())

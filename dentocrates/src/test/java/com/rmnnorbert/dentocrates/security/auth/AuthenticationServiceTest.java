@@ -1,5 +1,7 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
@@ -11,8 +13,8 @@ import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
-import com.rmnnorbert.dentocrates.service.VerificationService;
-import com.rmnnorbert.dentocrates.service.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -84,10 +86,10 @@ class AuthenticationServiceTest {
         CustomerRegisterDTO dto = new CustomerRegisterDTO("email", "password", "name", "last");
         Customer customer = new Customer(1L,dto.email(), dto.password(), dto.firstName(), dto.lastName(),Role.CUSTOMER);
 
-        when(clientRepository.findByEmail(dto.email())).thenReturn(Optional.of(customer));
+        when(clientRepository.getClientByEmail(dto.email())).thenReturn(Optional.of(customer));
 
         assertThrows(InvalidCredentialException.class, () -> authenticationService.register(dto));
-        verify(clientRepository,times(1)).findByEmail(dto.email());
+        verify(clientRepository,times(1)).getClientByEmail(dto.email());
     }
     @Test
     void registerDentistShouldReturnExpectedAuthenticationResponse() {
@@ -109,20 +111,20 @@ class AuthenticationServiceTest {
         DentistRegisterDTO dto = new DentistRegisterDTO("email", "password", "name", "last","opLicence");
         Dentist dentist = new Dentist(1L,dto.email(), dto.password(), dto.firstName(), dto.lastName(),dto.operatingLicenceNo(),Role.DENTIST);
 
-        when(clientRepository.findByEmail(dto.email())).thenReturn(Optional.of(dentist));
+        when(clientRepository.getClientByEmail(dto.email())).thenReturn(Optional.of(dentist));
 
         assertThrows(InvalidCredentialException.class, () -> authenticationService.register(dto));
-        verify(clientRepository,times(1)).findByEmail(dto.email());
+        verify(clientRepository,times(1)).getClientByEmail(dto.email());
     }
     @Test
     void authenticateShouldReturnExpectedAuthenticationResponse() {
-        AuthenticationRequest request = new AuthenticationRequest("email", "password");
+        AuthenticationRequest request = new AuthenticationRequest("email", "password","CUSTOMER","0");
         Optional<Client> optionalClient = Optional.of(new Client(1L,"email","password","first","last",Role.CUSTOMER,false, LocalDateTime.now()));
         HashMap<String, Object> additionalClaims = new HashMap<>();
         long expectedId = 1L;
         String jwtToken = "Token";
 
-        when(clientRepository.findByEmail(request.email())).thenReturn(optionalClient);
+        when(clientRepository.getClientByEmail(request.email())).thenReturn(optionalClient);
         when(jwtService.generateToken(additionalClaims, optionalClient.get())).thenReturn(jwtToken);
 
         AuthenticationResponse expected = new AuthenticationResponse(jwtToken,expectedId);
@@ -130,16 +132,16 @@ class AuthenticationServiceTest {
 
         assertAuthenticationResponse(expected,actual);
         assertEquals(expected.id(),actual.id());
-        verify(clientRepository,times(1)).findByEmail(request.email());
+        verify(clientRepository,times(1)).getClientByEmail(request.email());
     }
     @Test
     void authenticateWithWrongShouldReturnInvalidCredentialException() {
-        AuthenticationRequest request = new AuthenticationRequest("email", "password");
+        AuthenticationRequest request = new AuthenticationRequest("email", "password","CUSTOMER","0");
 
-        when(clientRepository.findByEmail(request.email())).thenReturn(Optional.empty());
+        when(clientRepository.getClientByEmail(request.email())).thenReturn(Optional.empty());
 
         assertThrows(InvalidCredentialException.class, () -> authenticationService.authenticate(request));
-        verify(clientRepository,times(1)).findByEmail(request.email());
+        verify(clientRepository,times(1)).getClientByEmail(request.email());
     }
 
     private boolean assertAuthenticationResponse(AuthenticationResponse expected, AuthenticationResponse actual) {

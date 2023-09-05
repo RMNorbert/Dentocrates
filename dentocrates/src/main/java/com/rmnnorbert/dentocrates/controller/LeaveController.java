@@ -3,8 +3,9 @@ package com.rmnnorbert.dentocrates.controller;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveRegisterDTO;
-import com.rmnnorbert.dentocrates.service.LeaveService;
-import com.rmnnorbert.dentocrates.service.NotificationService;
+import com.rmnnorbert.dentocrates.service.clinic.LeaveService;
+import com.rmnnorbert.dentocrates.service.client.NotificationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,13 @@ public class LeaveController {
         return leaveService.getAllLeavesFromDateOfClinic(id);
     }
     @PostMapping("/")
-    public ResponseEntity<String> registerLeaveToClinic(@RequestBody LeaveRegisterDTO dto) {
+    public ResponseEntity<String> registerLeaveToClinic(@Valid @RequestBody LeaveRegisterDTO dto) {
         ResponseEntity<String> registeredLeave = leaveService.registerLeave(dto);
         notificationService.sendLeaveNotifications(dto);
         return registeredLeave;
     }
     @DeleteMapping("/")
-    public ResponseEntity<String> deleteLeaveOfClinic(@RequestBody LeaveDeleteDTO dto) {
+    public ResponseEntity<String> deleteLeaveOfClinic(@Valid @RequestBody LeaveDeleteDTO dto) {
         return leaveService.deleteLeave(dto);
     }
 }

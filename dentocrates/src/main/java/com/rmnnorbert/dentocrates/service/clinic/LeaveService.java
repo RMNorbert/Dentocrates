@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveDeleteDTO;

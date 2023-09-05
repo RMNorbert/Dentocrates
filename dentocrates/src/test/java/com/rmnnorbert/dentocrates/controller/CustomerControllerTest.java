@@ -5,7 +5,7 @@ import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppoint
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.data.Role;
-import com.rmnnorbert.dentocrates.service.CustomerService;
+import com.rmnnorbert.dentocrates.service.client.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

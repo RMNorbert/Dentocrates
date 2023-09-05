@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface CustomerRepository extends ClientRepository<Customer> {
-    Optional<Customer> findByEmail(String email);
+    Optional<Customer> getClientByEmail(String email);
 }

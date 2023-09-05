@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Entity
 public class Leave {
     @Id

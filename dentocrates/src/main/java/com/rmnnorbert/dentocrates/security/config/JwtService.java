@@ -17,9 +17,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-
     private static final String SECRET_KEY = System.getenv("SECRET");
-
     private static final int EXPIRATION = 1000 * 60 * 24 *7;
 
     private Claims extractAllClaims(String token) {

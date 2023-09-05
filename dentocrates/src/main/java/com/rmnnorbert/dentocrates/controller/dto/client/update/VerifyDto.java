@@ -1,4 +1,6 @@
 package com.rmnnorbert.dentocrates.controller.dto.client.update;
 
-public record VerifyDto(String verificationCode) {
+import jakarta.validation.constraints.NotBlank;
+
+public record VerifyDto(@NotBlank String verificationCode) {
 }

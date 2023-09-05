@@ -3,7 +3,8 @@ package com.rmnnorbert.dentocrates.controller;
 import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
-import com.rmnnorbert.dentocrates.service.CustomerService;
+import com.rmnnorbert.dentocrates.service.client.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<String> deleteCustomer(@RequestBody DeleteDTO dto){
+    public ResponseEntity<String> deleteCustomer(@Valid @RequestBody DeleteDTO dto){
         return customerService.deleteCustomerById(dto);
     }
 }
