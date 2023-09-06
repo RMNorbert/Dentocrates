@@ -31,7 +31,7 @@ public class LocationService {
     }
     public ResponseEntity<String> deleteLocationById(Long id){
         Location location = getLocationById(id);
-        String locationName = location.getZipCode() + location.getCity();
+        String locationName = location.getZipCode() + "-" +  location.getCity();
         locationRepository.deleteById(id);
         return  ResponseEntity.ok("Location: " + locationName + " deleted successfully");
     }

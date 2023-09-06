@@ -126,6 +126,7 @@ class AuthenticationServiceTest {
 
         when(clientRepository.getClientByEmail(request.email())).thenReturn(optionalClient);
         when(jwtService.generateToken(additionalClaims, optionalClient.get())).thenReturn(jwtToken);
+        when(verificationService.validate(request.authenticationCode())).thenReturn(true);
 
         AuthenticationResponse expected = new AuthenticationResponse(jwtToken,expectedId);
         AuthenticationResponse actual = authenticationService.authenticate(request);

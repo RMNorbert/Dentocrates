@@ -71,12 +71,12 @@ class LocationServiceTest {
     @Test
     void deleteLocationByIdWhenLocationExist() {
         long id = 1;
-        Location location = Location.builder().id(id).build();
+        Location location = Location.builder().id(id).city("City").zipCode(1500).build();
 
         when(locationRepository.findById(id)).thenReturn(Optional.ofNullable(location));
 
         ResponseEntity<String> actual = locationService.deleteLocationById(id);
-        ResponseEntity<String> expected = ResponseEntity.ok("Location deleted successfully");
+        ResponseEntity<String> expected = ResponseEntity.ok("Location: 1500-City deleted successfully");
 
         assertEquals(expected, actual);
         verify(locationRepository,times(1)).findById(id);
