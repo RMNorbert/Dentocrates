@@ -3,11 +3,9 @@ import React, { useEffect, useState } from "react"
 import {role, userId} from "../token/TokenDecoder";
 import {MultiFetch} from "../../fetch/MultiFetch";
 import {Loading} from "../elements/Loading";
-import {useNavigate} from "react-router-dom";
 
 export const ClientPage = () => {
     const { data } = MultiFetch();
-    const navigate = useNavigate();
     const [clinicData, setClinicData] = useState([]);
     const [clinicId, setClinicId] = useState(0);
     const [startDate, setStartDate] = useState(null);
@@ -17,14 +15,19 @@ export const ClientPage = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
-            const response = await data(`/client/${userId()}`);
+            const clientDetailsUrl = `/client/${userId()}`;
+            const response = await data(clientDetailsUrl);
             setClientData(await response);
         }
         else if(role() === "DENTIST"){
-            const clinicResponse = await data(`/clinic/dentist/${userId()}`);
+            const clinicDetailsUrl = `/clinic/dentist/${userId()}`;
+            const dentistDetailsUrl = `/dentist/${userId()}`;
+            const clinicResponse = await data(clinicDetailsUrl);
+
             setClinicData(await clinicResponse);
             setClinicId(clinicResponse[0].id)
-            const response = await data(`/dentist/${userId()}`);
+
+            const response = await data(dentistDetailsUrl);
             setClientData(await response);
             await fetchLeaveData(await clinicResponse);
         }
@@ -56,24 +59,39 @@ export const ClientPage = () => {
             startOfTheLeave : startDate,
             endOfTheLeave : endDate
         }
-        console.log(registerData)
-        const response = await data('/leave/',"POST",registerData);
-        if(response){
-            setIsLoaded(false);
+        try {
+            const response = await data('/leave/', "POST", registerData);
+            if (response) {
+                setIsLoaded(false);
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
+    const handleResetRequest = async (email) => {
+        const passwordResetRequestUrl = '/verify/reset/register/';
+        const requestBody = {email: email,  role:role()};
+        try {
+            await data(passwordResetRequestUrl, 'POST', requestBody);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
     const handleDelete = async (currentId) => {
-        const response = role() === "CUSTOMER" ? await data('/client/', 'DELETE', {userId: userId(), targetId: currentId}) :
-            role() === "DENTIST" ? await data('/dentist/', 'DELETE', {userId: userId(), targetId: currentId}) : false
+        const clientDeleteUrl = role() === "CUSTOMER" ? '/client/' : role() === "DENTIST" ? '/dentist/': false;
+        const requestBody = {userId: userId(), targetId: currentId};
+        const response =  await data(clientDeleteUrl, 'DELETE', requestBody);
         if(response) {
             localStorage.clear();
-            navigate('/register');
+            const loginUrl = 'http://localhost:3000/';
+            window.location.replace(loginUrl);
         }
     };
 
     const handleLeaveDelete = async (currentId, clinic) => {
+        const leaveDeleteUrl = '/leave/';
         const requestBody = {dentistId: userId(), leaveId: currentId , clinicId:clinic};
-        const response = await data('/leave/','DELETE',requestBody)
+        const response = await data(leaveDeleteUrl,'DELETE',requestBody)
         if(response) {
             setIsLoaded(false);
         }
@@ -89,6 +107,7 @@ export const ClientPage = () => {
                 setIsLoaded(true);
             }
         },[isLoaded]);
+
     if(isLoaded) {
         return (
             <div className="client-box">
@@ -96,6 +115,11 @@ export const ClientPage = () => {
                         <div>Name: {clientData.firstName} {clientData.lastname}</div>
                         <div>Email: {clientData.email}</div>
                     </div>
+                    <button className="button"
+                        onClick={() => handleResetRequest(clientData.email)}
+                    >
+                        Request reset password link
+                    </button>
                     <button className="button"
                         onClick={() => handleDelete(clientData.id)}
                     >

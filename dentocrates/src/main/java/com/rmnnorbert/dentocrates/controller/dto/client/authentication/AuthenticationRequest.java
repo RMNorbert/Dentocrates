@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.security.auth;
+package com.rmnnorbert.dentocrates.controller.dto.client.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,11 @@ public record AuthenticationRequest(@Email
                                     String email,
                                     @NotBlank
                                     @Size(min = 8)
-                                    String password)
+                                    String password,
+                                    String Role,
+                                    @NotBlank
+                                    String authenticationCode
+                                    )
 {
 
 }

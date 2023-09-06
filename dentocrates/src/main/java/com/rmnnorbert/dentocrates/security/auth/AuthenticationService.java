@@ -1,5 +1,8 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
@@ -15,9 +18,9 @@ import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.security.config.JwtService;
-import com.rmnnorbert.dentocrates.service.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.VerificationService;
 import com.rmnnorbert.dentocrates.utils.DtoMapper;
-import com.rmnnorbert.dentocrates.service.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,18 +101,24 @@ public class AuthenticationService {
     }
     public AuthenticationRequest registerWithOauth(String state, String code) {
         String[] userCredentials = authenticateOauth(state, code);
-        try {
-            if (getClient(userCredentials[0]).isEmpty()) {
-                CustomerRegisterDTO customerRegisterDTO = new CustomerRegisterDTO(userCredentials[0],
-                        userCredentials[1],
-                        userCredentials[2],
-                        userCredentials[3]);
+        String email = userCredentials[0];
+        String password = userCredentials[1];
+        String firstName = userCredentials[2];
+        String lastName = userCredentials[3];
 
+        String authenticationCode;
+        try {
+            Optional<Client> optionalClient = getClient(email);
+            if (optionalClient.isEmpty()) {
+                CustomerRegisterDTO customerRegisterDTO = new CustomerRegisterDTO(email, password, firstName, lastName);
                 register(customerRegisterDTO);
             }
-            return new AuthenticationRequest(userCredentials[0], userCredentials[1]);
+
+            authenticationCode = verificationService.sendAuthenticationCode(email,"CUSTOMER");
+            return new AuthenticationRequest(email, password,"CUSTOMER", authenticationCode);
         }catch (Exception e) {
-            return new AuthenticationRequest(userCredentials[0], userCredentials[1]);
+            authenticationCode = verificationService.sendAuthenticationCode(email,"CUSTOMER");
+            return new AuthenticationRequest(email, password,"CUSTOMER", authenticationCode);
         }
     }
     public ResponseEntity<String> resetPassword(ResetDto dto) {
@@ -138,10 +147,24 @@ public class AuthenticationService {
         }
         return ResponseEntity.ok().body("Verification successful.");
     }
+    public boolean sendAuthenticationCode(VerificationRequestDTO dto) {
+        boolean isEmailExist = clientRepository.existsByEmail(dto.email());
+        if (isEmailExist) {
+            String role = clientRepository.findRoleByEmail(dto.email()).get().toString();
+            verificationService.sendAuthenticationCode(dto.email(), role);
+            return true;
+        }
+        return false;
+    }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         Optional<Client> optionalClient = getClient(request.email());
-            if(optionalClient.isPresent()) {
+
+        if (optionalClient.isPresent()) {
+            boolean isAuthenticationCodeValid = verificationService.validate(request.authenticationCode());
+
+            if(isAuthenticationCodeValid) {
                 Client client = optionalClient.get();
+
                 Authentication a = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.email(),
@@ -149,20 +172,19 @@ public class AuthenticationService {
                         )
                 );
                 loginSuccessCounter.increment();
-
                 HashMap<String, Object> additionalClaims = new HashMap<>();
                 additionalClaims.put("role", client.getRole());
                 String jwtToken = jwtService.generateToken(additionalClaims, client);
+                verificationService.deleteVerification(request.authenticationCode());
 
                 return AuthenticationResponse.builder()
                         .token(jwtToken)
                         .id(client.getId())
                         .build();
             }
-            else {
-                loginFailureCounter.increment();
-                throw new InvalidCredentialException();
-            }
+        }
+        loginFailureCounter.increment();
+        throw new InvalidCredentialException();
     }
     public String getAuthorizationUrl() {
         ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("google");
@@ -200,18 +222,18 @@ public class AuthenticationService {
         }
     }
     private Optional<Client> getClient(String email) {
-        return clientRepository.findByEmail(email);
+        return clientRepository.getClientByEmail(email);
     }
     private Verification getVerification(String verificationCode) {
         return verificationService.getVerification(verificationCode)
                 .orElseThrow(() -> new NotFoundException("Verification"));
     }
     private Customer getCustomer(String email) {
-        return customerRepository.findByEmail(email)
+        return customerRepository.getClientByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Customer"));
     }
     private Dentist getDentist(String email) {
-        return dentistRepository.findByEmail(email)
+        return dentistRepository.getClientByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Dentist"));
     }
     private void updateClientPassword(Verification verification, String password ) {

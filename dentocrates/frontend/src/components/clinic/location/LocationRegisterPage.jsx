@@ -6,7 +6,9 @@ function LocationRegisterPage (){
     const navigate = useNavigate();
     const [zipCode, setZipCode] = useState(1000);
     const [city, setCity] = useState('');
+    const [isErrorMessageHidden, setIsErrorMessageHidden] = useState(true);
     const isMounted = useRef(true);
+    const errorMessage = "Please fill out all required fields, zip code must be between 1000-10.000";
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -27,12 +29,18 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
+        const locationRegisterUrl = '/location/register';
         let locationData = {
             zipCode: zipCode,
             city: city
         }
-        await data('/location/register','POST', locationData);
+        try{
+        await data(locationRegisterUrl,'POST', locationData);
         navigate("/home");
+        } catch (error) {
+            setIsErrorMessageHidden(false);
+            console.error('Error:', error);
+        }
     };
     return (
         <div className="clinic-register">
@@ -51,6 +59,9 @@ function LocationRegisterPage (){
                     <div className="inputBox">
                         <label htmlFor="city">City:</label>
                         <input type="text" id="city" value={city} onChange={handleCityChange} />
+                        <label style={{ display: isErrorMessageHidden ? "none" : "block" }}>
+                            {errorMessage}
+                        </label>
                     </div>
                     <button type="submit">Register</button>
                 </form>

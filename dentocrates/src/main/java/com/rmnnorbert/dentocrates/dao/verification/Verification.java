@@ -13,17 +13,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Entity
 public class Verification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     @Email
     private final String email;
+
     @NotBlank
     private String verificationCode;
 

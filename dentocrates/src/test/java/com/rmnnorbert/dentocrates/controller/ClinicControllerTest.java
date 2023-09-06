@@ -3,7 +3,7 @@ package com.rmnnorbert.dentocrates.controller;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
-import com.rmnnorbert.dentocrates.service.ClinicService;
+import com.rmnnorbert.dentocrates.service.clinic.ClinicService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,9 +1,13 @@
-package com.rmnnorbert.dentocrates.security.auth;
+package com.rmnnorbert.dentocrates.controller;
 
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
 import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
+import com.rmnnorbert.dentocrates.security.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +38,26 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
+           @Valid @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
-
+    @PostMapping("/request/authenticate")
+    public ResponseEntity authenticateRequest(
+            @RequestBody VerificationRequestDTO dto
+    ) {
+        return ResponseEntity.ok(service.sendAuthenticationCode(dto));
+    }
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(
-            @RequestBody ResetDto dto
+           @Valid @RequestBody ResetDto dto
     ) {
         return service.resetPassword(dto);
     }
 
     @PostMapping("/verify")
     public ResponseEntity<String> verify(
-            @RequestBody VerifyDto dto
+           @Valid @RequestBody VerifyDto dto
     ) {
         return service.verifyClient(dto);
     }

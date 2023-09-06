@@ -1,64 +1,61 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {Reset} from "./Reset";
+import {MultiFetch} from "../../fetch/MultiFetch";
+import { handleGoogleLogin } from "./OauthLogin";
 
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [authenticationCode, setAuthenticationCode] = useState('');
+    const [clientIsValid, setClientIsValid] = useState(false);
+    const [isResetPasswordRequested, setIsResetPasswordRequested] = useState(false);
     const isMounted = useRef(true);
     const navigate = useNavigate();
+    const { data } = MultiFetch();
 
     useEffect(() => {
         return () => {
             isMounted.current = false;
         };
     }, []);
-
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
-
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
-
+    const handleAuthenticationCodeChange = (event) => {
+        setAuthenticationCode(event.target.value);
+    }
+    const handleAuthenticationRequest = async () => {
+        const authenticationRequestUrl = '/api/request/authenticate';
+        const requestBody = {email: email};
+        const response = await data(authenticationRequestUrl, "POST", requestBody );
+        if (response === true) {
+            setClientIsValid(true);
+        }
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const authenticationUrl = '/api/authenticate';
+        const requestBody = {
+            email: email,
+            password: password,
+            role:"",
+            authenticationCode: authenticationCode
+        };
 
-        const response =
-            await fetch('/api/authenticate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                }),
-            });
+        const response = await data(authenticationUrl,'POST',  requestBody);
 
-        if (response.ok) {
-            const data = await response.json();
-            const token = data.token;
-            const id = data.id;
+        if (response.id) {
+            const token = response.token;
+            const id = response.id;
             localStorage.setItem('userId', id);
             localStorage.setItem('token', token);
             navigate("/home");
         }
 
-    }
-
-    const handleGoogleLogin = async () => {
-        try {
-            const response = await fetch("/api/oauth2/authorizationPageUrl/google");
-            if (response.ok) {
-                const url = await response.text();
-                window.location.replace(url);
-            } else {
-                console.error("Failed to fetch Google authorization URL");
-            }
-        } catch (error) {
-            console.error("Error fetching Google authorization URL:", error);
-        }
     }
 
     return (
@@ -73,7 +70,22 @@ function LoginPage() {
                     <label htmlFor="password">Password:</label>
                     <input type="password" id="password" value={password} onChange={handlePasswordChange} />
                 </div>
-                <button type="submit">Login</button>
+                {clientIsValid ?
+                    <><label htmlFor="code">Type sent Authentication Code:</label>
+                        <input
+                        type="text"
+                        id="code"
+                        value={authenticationCode}
+                        onChange={handleAuthenticationCodeChange}
+                    />
+                    <button type="submit">Login</button></> :
+                    <button
+                        type="button"
+                        onClick={handleAuthenticationRequest}
+                    >
+                        Login
+                    </button>
+                }
             </form>
             <button onClick={handleGoogleLogin}>Sign in With Google</button>
             <h3 className="register"
@@ -81,6 +93,18 @@ function LoginPage() {
             >
                 Not registered yet?
             </h3>
+            <h3 className="register"
+                onClick={() =>  setIsResetPasswordRequested(true)}
+            >
+                Forgot your password ?
+            </h3>
+            {isResetPasswordRequested ?
+                <div>
+                    <Reset/>
+                </div>
+            :
+                <></>
+            }
         </div>
     );
 }

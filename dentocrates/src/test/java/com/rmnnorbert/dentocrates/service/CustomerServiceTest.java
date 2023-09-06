@@ -8,6 +8,7 @@ import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.service.client.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

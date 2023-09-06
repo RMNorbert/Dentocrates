@@ -9,17 +9,19 @@ import lombok.*;
 
 @Getter
 @Builder
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Entity
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+
     @Min(1000)
     @Max(10000)
+    @Column(unique = true)
     private final int zipCode;
+
     @NotBlank
     private final String city;
 

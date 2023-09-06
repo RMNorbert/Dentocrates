@@ -10,6 +10,7 @@ import com.rmnnorbert.dentocrates.data.ClinicType;
 import com.rmnnorbert.dentocrates.repository.ClinicRepository;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.service.clinic.ClinicService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

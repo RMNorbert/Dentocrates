@@ -4,6 +4,7 @@ import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Location;
 import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.service.clinic.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -70,12 +71,12 @@ class LocationServiceTest {
     @Test
     void deleteLocationByIdWhenLocationExist() {
         long id = 1;
-        Location location = Location.builder().id(id).build();
+        Location location = Location.builder().id(id).city("City").zipCode(1500).build();
 
         when(locationRepository.findById(id)).thenReturn(Optional.ofNullable(location));
 
         ResponseEntity<String> actual = locationService.deleteLocationById(id);
-        ResponseEntity<String> expected = ResponseEntity.ok("Location deleted successfully");
+        ResponseEntity<String> expected = ResponseEntity.ok("Location: 1500-City deleted successfully");
 
         assertEquals(expected, actual);
         verify(locationRepository,times(1)).findById(id);

@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.client;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -42,7 +42,9 @@ public class GMailerService {
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory)
             throws IOException {
         // Load client secrets.
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(GMailerService.class.getResourceAsStream("/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json")));
+        String resourcePath = "/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json";
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory,
+                new InputStreamReader(GMailerService.class.getResourceAsStream(resourcePath)));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -67,7 +69,12 @@ public class GMailerService {
         email.setFrom(new InternetAddress(emailAddress));
         email.addRecipient(TO, new InternetAddress(recipient));
         email.setSubject(subject);
-        email.setText(message + "\n" + link);
+
+        if(!link.isEmpty()) {
+            email.setText(message + "\n" + link);
+        } else {
+            email.setText(message + "\n");
+        }
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);
@@ -85,5 +92,6 @@ public class GMailerService {
                 System.err.println("Unable to create msg");
             }
     }
+
 }
 

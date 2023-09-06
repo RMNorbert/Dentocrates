@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentUpdateDTO;
-import com.rmnnorbert.dentocrates.service.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class AppointmentController {
         return appointmentCalendarService.registerAppointment(appointmentDTO);
     }
     @DeleteMapping("/")
-    public ResponseEntity<String> removeAppointment(@RequestBody DeleteDTO dto){
+    public ResponseEntity<String> removeAppointment(@Valid @RequestBody DeleteDTO dto){
         return appointmentCalendarService.deleteAppointmentById(dto);
     }
     @GetMapping("/clinic/{id}")
@@ -38,7 +38,7 @@ public class AppointmentController {
         return appointmentCalendarService.getAllAppointmentByClinic(id);
     }
     @PutMapping("/")
-    public ResponseEntity<String> updateAppointment(@RequestBody AppointmentUpdateDTO dto) {
+    public ResponseEntity<String> updateAppointment(@Valid @RequestBody AppointmentUpdateDTO dto) {
         return appointmentCalendarService.updateAppointment(dto);
     }
 }

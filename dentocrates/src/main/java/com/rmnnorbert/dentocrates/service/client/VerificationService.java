@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.client;
 
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
 import com.rmnnorbert.dentocrates.data.Role;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 public class VerificationService {
@@ -43,16 +45,30 @@ public class VerificationService {
         gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,link);
         return response;
     }
+    public String sendAuthenticationCode(String email, String role) {
+        String authenticationCode = UUID.randomUUID().toString();
+        String verificationMessage = "Authentication code to login : " + authenticationCode;
+        String subject = "Dentocrates: Authentication code";
+        Role roleAsEnum = Role.valueOf(role);
 
+        registerVerification(email, roleAsEnum, authenticationCode);
+
+        gMailerService.sendMail(email,subject,verificationMessage,"");
+        return authenticationCode;
+    }
     public ResponseEntity<String> deleteVerification(String verificationCode) {
-        Optional<Verification> verification = getVerification(verificationCode);
-
-        if(verification.isPresent()) {
-            String verificationEmail = verification.get().getEmail();
-            verificationRepository.deleteByEmail(verificationEmail);
-            return ResponseEntity.ok("Verification request successfully deleted.");
-        } else {
-            return ResponseEntity.badRequest().body("There is no verification request for the provided email.");
+        try {
+            Optional<Verification> verification = getVerification(verificationCode);
+            if (verification.isPresent()) {
+                verificationRepository.delete(verification.get());
+                return ResponseEntity.ok("Verification request successfully deleted.");
+            } else {
+                return ResponseEntity.badRequest().body("There is no verification request for the provided email.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while processing the request.");
         }
     }
 

@@ -14,8 +14,8 @@ import java.util.Collection;
 
 
 @Getter
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "client_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
@@ -25,13 +25,17 @@ public class Client implements UserDetails {
     protected Long id;
 
     @Column(unique = true)
+
     @Email
     protected final String email;
+
     @Size(min = 8)
     @NotBlank
     protected String password;
+
     @NotBlank
     protected final String firstName;
+
     @NotBlank
     protected final String lastName;
 

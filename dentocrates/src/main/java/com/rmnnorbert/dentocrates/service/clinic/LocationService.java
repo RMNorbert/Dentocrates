@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
@@ -31,8 +31,9 @@ public class LocationService {
     }
     public ResponseEntity<String> deleteLocationById(Long id){
         Location location = getLocationById(id);
+        String locationName = location.getZipCode() + "-" +  location.getCity();
         locationRepository.deleteById(id);
-        return  ResponseEntity.ok("Location deleted successfully");
+        return  ResponseEntity.ok("Location: " + locationName + " deleted successfully");
     }
     private Location getLocationById(long id){
         return locationRepository.findById(id).orElseThrow(() -> new NotFoundException("Location"));

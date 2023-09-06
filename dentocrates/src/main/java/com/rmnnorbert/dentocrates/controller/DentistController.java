@@ -2,7 +2,8 @@ package com.rmnnorbert.dentocrates.controller;
 
 import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
-import com.rmnnorbert.dentocrates.service.DentistService;
+import com.rmnnorbert.dentocrates.service.client.DentistService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class DentistController {
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<String> deleteDentist(@RequestBody DeleteDTO dto){
+    public ResponseEntity<String> deleteDentist(@Valid @RequestBody DeleteDTO dto){
         return dentistService.deleteDentistById(dto);
     }
 }

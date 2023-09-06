@@ -11,8 +11,10 @@ export const Appointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [clinics, setClinics] = useState([]);
     const getData = async () => {
-            const appointmentsData = await data(`/calendar/customer/${userId()}`);
-            const clinicsData = await data('/clinic/all');
+            const appointmentsDataUrl = `/calendar/customer/${userId()}`;
+            const clinicDataUrl = '/clinic/all';
+            const appointmentsData = await data(appointmentsDataUrl);
+            const clinicsData = await data(clinicDataUrl);
 
             const appointmentsClinicIds = await appointmentsData.map((element) => element.clinicId)
             const filteredClinicsData = await clinicsData.filter((clinic) => appointmentsClinicIds.includes(clinic.id));
@@ -29,7 +31,8 @@ export const Appointment = () => {
     }
 
     const handleDelete = async (currentId) => {
-        const response = await data('/calendar/','DELETE',{userId: userId(), targetId: currentId})
+        const calendarDeleteUrl = '/calendar/';
+        const response = await data(calendarDeleteUrl,'DELETE',{userId: userId(), targetId: currentId})
         if(response) {
             setIsLoaded(false);
         }
@@ -54,7 +57,6 @@ export const Appointment = () => {
                                return <div className="appointment-clinic-name">{clinic.name}</div>
                             }
                         })}
-
                         <div className="appointment-element">
                             {appointment.reservation.replace("T"," ")}
                             {appointment.appeared === false  && appointment.reservation < currentDate ?

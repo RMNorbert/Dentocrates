@@ -19,18 +19,22 @@ export const ClinicPage = () => {
     const [customers, setCustomers] = useState([]);
 
     const getClinicData = async () => {
-        const responseData = await data(`/clinic/${id}`);
+        const clinicDataUrl = `/clinic/${id}`;
+        const dentistDataUrl = `/dentist/`;
+        const responseData = await data(clinicDataUrl);
         setClinicData(await responseData);
-        const dentistResponse = await data(`/dentist/${responseData.dentistId}`);
+        const dentistResponse = await data(dentistDataUrl + responseData.dentistId);
         setDentistData(dentistResponse);
     };
 
     const updateAppointment = async (currentId, appearance) => {
+        const calendarDataUrl = '/calendar/';
         const requestBody = {id:currentId, clinicId: id, dentistId: userId(), appeared:!appearance};
-        await data('/calendar/','PUT', requestBody);
+        await data(calendarDataUrl,'PUT', requestBody);
     }
     const getCalendarData = async () => {
-        const calendarData = await data(`/calendar/clinic/${id}`);
+        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
+        const calendarData = await data(clinicCalendarDataUrl);
         const appointmentsData = await calendarData.filter((appointment) =>
             appointment.reservation >= currentDate).sort(
             (a, b) => Number(a.reservation.substring(0,19)
@@ -43,7 +47,8 @@ export const ClinicPage = () => {
     };
 
     const getCustomerDetails = async() => {
-        const responseData = await data(`/client/all`);
+        const customersDataUrl = `/client/all`;
+        const responseData = await data(customersDataUrl);
         setCustomers(await responseData);
     };
 
@@ -60,7 +65,8 @@ export const ClinicPage = () => {
         return date.substring(0,16).replace("T"," ");
     }
     const getCustomerAppointments = async () => {
-        const appointmentsData = await data(`/calendar/customer/${userId()}`);
+        const customerAppointmentsDataUrl = `/calendar/customer/${userId()}`;
+        const appointmentsData = await data(customerAppointmentsDataUrl);
         const sortedAppointments = await appointmentsData.filter((appointment) =>
             appointment.clinicId === Number(id) && appointment.reservation >= currentDate).sort(
                 (a, b) => Number(a.reservation.substring(0,19)
@@ -108,11 +114,11 @@ export const ClinicPage = () => {
                 ) : (
                     <Loading />
                 )}
-                {role() === "DENTIST" ? (
+                {role() === "DENTIST" && clinicData.dentistId === userId() ? (
                     appointments.map((appointment, index) => (
                         <>
                             <div key={index}
-                                 className="listName listMargin"
+                                 className="listName listMargin customer-box"
                             >
                                 {dateFormatter(appointment.reservation)}
                                 <input

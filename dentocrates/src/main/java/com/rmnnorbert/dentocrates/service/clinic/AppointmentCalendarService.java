@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service;
+package com.rmnnorbert.dentocrates.service.clinic;
 
 import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
@@ -45,6 +45,7 @@ public class AppointmentCalendarService {
                 .customer(customer)
                 .reservation(appointmentDTO.reservation())
                 .build();
+
         appointmentCalendarRepository.save(reservation);
         return ResponseEntity.ok("Appointment registered successfully");
     }
