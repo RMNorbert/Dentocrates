@@ -30,6 +30,9 @@
     justify-items: center;
     height: 25px;
 }
+.customer-box{
+    width: 400px;
+}
 .button {
     border-style: solid ;
     border-color: black;

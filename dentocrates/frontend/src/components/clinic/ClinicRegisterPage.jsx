@@ -19,17 +19,18 @@ function ClinicRegisterPage (){
 
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [locations, setLocations] = useState([]);
-    const [message, setMessage] = useState('');
     const [hidden, setHidden] = useState(true);
     const isMounted = useRef(true);
-
+    const errorMessage = "Please fill out all the required fields.";
     const getLocationData = async () => {
-        const responseData = await data(`/location/all`);
+        const locationDataUrl = `/location/all`;
+        const onLoadSelectedClinicType = 'COMMUNITY DENTAL CLINIC';
+        const responseData = await data(locationDataUrl);
         setLocations(await responseData);
         setIsDataLoaded(true);
         setZipCode(parseInt(responseData[0].zipCode))
         setCity(responseData[0].city)
-        setClinicType('COMMUNITY DENTAL CLINIC')
+        setClinicType(onLoadSelectedClinicType)
     };
 
     useEffect(() => {
@@ -74,21 +75,6 @@ function ClinicRegisterPage (){
 
     const HandleSubmit = async (e) => {
         e.preventDefault();
-        await postRegistration(
-            name,
-            clinicType,
-            contactNumber,
-            website,
-            zipCode,
-            city,
-            street,
-            openingHours
-        );
-    }
-
-
-    const postRegistration = async(name,clinicType,contactNumber,website,zipCode,city,street,openingHours
-    )=>{
         let registerData = {
             name: name,
             clinicType: clinicType.split(" ").join("_"),
@@ -100,17 +86,20 @@ function ClinicRegisterPage (){
             openingHours: openingHours,
             dentistId: userId()
         };
-        console.log(registerData)
-       await data('/clinic/register', 'Post',registerData);
-       navigate('/home');
-    };
+        try {
+            await data('/clinic/register', 'Post', registerData);
+            navigate('/home');
+        } catch (error) {
+            setHidden(false);
+            console.error('Error:', error);
+        }
+    }
 
     if(isDataLoaded) {
         return (
             <div className="clinic-register">
             <div className="pageContent">
                 <h1 className="clinic-register-title">Register Clinic</h1>
-                <div hidden={hidden}>{message}</div>
                 <div className="inputs">
                     <form onSubmit={HandleSubmit}>
                         <div className="inputBox">
@@ -131,11 +120,11 @@ function ClinicRegisterPage (){
                         </div>
                         <div className="inputBox">
                             <label htmlFor="website">Website:</label>
-                            <input type="text" id="website" value={website} onChange={handleWebsiteChange}/>
+                            <input type="text" id="website" value={website} placeholder="Optional to fill" onChange={handleWebsiteChange}/>
                         </div>
                         <div className="inputBox">
                             <label htmlFor="zipCode">Zipcode:</label>
-                            <select type="text" id="zipCode"  onChange={handleZipCodeChange}>
+                            <select id="zipCode"  onChange={handleZipCodeChange}>
                                 {locations.map((location) =>
                                     <option key={location.id} >{location.zipCode} - {location.city}</option>)
                                 }
@@ -150,6 +139,9 @@ function ClinicRegisterPage (){
                             <input type="text" id="openingHours" placeholder="6-18" value={openingHours}
                                    onChange={handleOpeningHoursChange}/>
                         </div>
+                        <label style={{ display: hidden ? "none" : "block" }}>
+                            {errorMessage}
+                        </label>
                         <button type="submit">Register</button>
                     </form>
                 </div>

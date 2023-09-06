@@ -114,11 +114,11 @@ export const ClinicPage = () => {
                 ) : (
                     <Loading />
                 )}
-                {role() === "DENTIST" ? (
+                {role() === "DENTIST" && clinicData.dentistId === userId() ? (
                     appointments.map((appointment, index) => (
                         <>
                             <div key={index}
-                                 className="listName listMargin"
+                                 className="listName listMargin customer-box"
                             >
                                 {dateFormatter(appointment.reservation)}
                                 <input
