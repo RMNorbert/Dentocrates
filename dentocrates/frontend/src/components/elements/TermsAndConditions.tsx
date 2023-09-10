@@ -1,16 +1,16 @@
 import "./TermsAndConditions.css";
-import { useState } from "react";
-export const Terms = (title) => {
+import React, { useState } from "react";
+export const Terms = ({ title }: { title: string | null }) => {
     const block = "block";
     const none = "none";
-    const [isAgreed, setIsAgreed] = useState(false);
-    const [isAccepted, setIsAccepted] = useState(false);
-    const [displayTermsOfUse, setDisplayTermsOfUse] = useState(block);
-    const [displayIntellectualRight, setDisplayIntellectualRight] = useState(none);
-    const [displayProhibited, setDisplayProhibited] = useState(none);
-    const [displayGoverningLaw, setDisplayGoverningLaw] = useState(none);
+    const [isAgreed, setIsAgreed] = useState<boolean>(false);
+    const [isAccepted, setIsAccepted] = useState<boolean>(false);
+    const [displayTermsOfUse, setDisplayTermsOfUse] = useState<string>(block);
+    const [displayIntellectualRight, setDisplayIntellectualRight] = useState<string>(none);
+    const [displayProhibited, setDisplayProhibited] = useState<string>(none);
+    const [displayGoverningLaw, setDisplayGoverningLaw] = useState<string>(none);
 
-    function showTab(tab) {
+    function showTab(tab: string | null) {
         switch (tab) {
             case "terms":
                 setDisplayIntellectualRight(none);
@@ -78,7 +78,7 @@ export const Terms = (title) => {
             </div>
             <div className="tabs_content">
                 <div className="tab_head">
-                    <h2>{ title.title } Terms & Conditions</h2>
+                    <h2>{ title } Terms & Conditions</h2>
                 </div>
                 <div className="tab_body">
                     <div className="tab_item tab_item_1"
