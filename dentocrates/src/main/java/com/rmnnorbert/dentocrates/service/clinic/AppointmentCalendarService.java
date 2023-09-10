@@ -45,7 +45,6 @@ public class AppointmentCalendarService {
                 .customer(customer)
                 .reservation(appointmentDTO.reservation())
                 .build();
-
         appointmentCalendarRepository.save(reservation);
         return ResponseEntity.ok("Appointment registered successfully");
     }
