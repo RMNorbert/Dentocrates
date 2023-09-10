@@ -1,3 +1,5 @@
+import React from "react";
+
 function Home() {
     const description = "Dentocrates is an innovative online platform designed to revolutionize the way patients find and schedule dental appointments.\n" +
         "                    Our user-friendly interface and advanced features are aimed at providing a seamless experience for both patients and dental practitioners.\n" +
