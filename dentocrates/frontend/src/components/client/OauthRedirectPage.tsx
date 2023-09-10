@@ -1,28 +1,29 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useLocation } from 'react-router-dom';
 import {Loading} from "../elements/Loading";
 
 function OauthLoginPage() {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [isFetched, setIsFetched] = useState(false);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [isFetched, setIsFetched] = useState<boolean>(false);
     const location = useLocation();
     const params = location.search;
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if(!isLoaded) {
+        if (!isLoaded) {
             setIsLoaded(true);
         }
-        if(isLoaded && !isFetched) {
+        if (isLoaded && !isFetched) {
             fetchCredentials();
         }
-    }, [isLoaded]);
+    }, [isLoaded, isFetched]);
 
     const fetchCredentials = () => {
         getCredentials();
         setIsFetched(true);
-    }
+    };
+
     const getCredentials = async () => {
         try {
             const response = await fetch(`/api/login/oauth2/code/${params}`);
@@ -32,16 +33,17 @@ function OauthLoginPage() {
                 const id = data.id;
                 localStorage.setItem('userId', id);
                 localStorage.setItem('token', token);
-                navigate("/home");
+                navigate('/home');
             } else {
-                console.error("Failed to fetch Google authorization URL");
+                console.error('Failed to fetch Google authorization URL');
             }
         } catch (error) {
-            console.error("Error fetching Google authorization URL:", error);
+            console.error('Error fetching Google authorization URL:', error);
         }
-    }
-    if(!isLoaded) {
-        return (<Loading/>)
+    };
+
+    if (!isLoaded) {
+        return <Loading />;
     } else {
         return (
             <div className='pageContent'>

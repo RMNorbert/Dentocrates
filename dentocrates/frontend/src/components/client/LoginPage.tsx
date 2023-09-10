@@ -1,16 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect, ChangeEvent, FormEvent} from "react";
 import { useNavigate } from "react-router-dom";
 import {Reset} from "./Reset";
 import {MultiFetch} from "../../fetch/MultiFetch";
 import { handleGoogleLogin } from "./OauthLogin";
 
 function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [authenticationCode, setAuthenticationCode] = useState('');
-    const [clientIsValid, setClientIsValid] = useState(false);
-    const [isResetPasswordRequested, setIsResetPasswordRequested] = useState(false);
-    const isMounted = useRef(true);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [authenticationCode, setAuthenticationCode] = useState<string>('');
+    const [clientIsValid, setClientIsValid] = useState<boolean>(false);
+    const [isResetPasswordRequested, setIsResetPasswordRequested] = useState<boolean>(false);
+    const isMounted = useRef<boolean>(true);
     const navigate = useNavigate();
     const { data } = MultiFetch();
 
@@ -19,13 +19,13 @@ function LoginPage() {
             isMounted.current = false;
         };
     }, []);
-    const handleEmailChange = (event) => {
+    const handleEmailChange = (event:ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
-    const handlePasswordChange = (event) => {
+    const handlePasswordChange = (event:ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     };
-    const handleAuthenticationCodeChange = (event) => {
+    const handleAuthenticationCodeChange = (event:ChangeEvent<HTMLInputElement>) => {
         setAuthenticationCode(event.target.value);
     }
     const handleAuthenticationRequest = async () => {
@@ -36,7 +36,7 @@ function LoginPage() {
             setClientIsValid(true);
         }
     }
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event:FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const authenticationUrl = '/api/authenticate';
         const requestBody = {
@@ -45,7 +45,7 @@ function LoginPage() {
             role:"",
             authenticationCode: authenticationCode
         };
-
+        try{
         const response = await data(authenticationUrl,'POST',  requestBody);
 
         if (response.id) {
@@ -55,7 +55,9 @@ function LoginPage() {
             localStorage.setItem('token', token);
             navigate("/home");
         }
-
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
