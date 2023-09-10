@@ -9,6 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
 [![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-00264D.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
 
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
 [![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
@@ -54,6 +55,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - Python
       
  Frontend
+  - TypeScript (on typescript branch)
   - JavaScript,
   - React,
   
