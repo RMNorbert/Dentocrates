@@ -1,36 +1,35 @@
 import "./ClientPage.css"
-import {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import { email } from "../token/TokenDecoder";
 import { useParams } from "react-router-dom";
 import { MultiFetch } from "../../fetch/MultiFetch";
-function VerifyPage (props) {
+function VerifyPage ({ reset }: { reset?: boolean }) {
     const { verificationCode } = useParams();
     const { data } = MultiFetch();
-    const [verificationCodeValidated, setVerificationCodeValidated] = useState(false);
-    const [password, setPassword] = useState('');
-    const [passwordVerifier, setPasswordVerifier] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [message, setMessage] = useState('');
+    const [verificationCodeValidated, setVerificationCodeValidated] = useState<boolean>(false);
+    const [password, setPassword] = useState<string>('');
+    const [passwordVerifier, setPasswordVerifier] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
 
     const validateVerificationCode = async () => {
         const response = await data(`/verify/${verificationCode}`);
         setVerificationCodeValidated(response);
-        if(!props.reset){
+        if(!reset){
                 deleteVerification();
         }
     }
-    const handlePasswordChange = (event) => {
+    const handlePasswordChange = (event:ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     };
-    const handlePasswordVerifierChange = (event) => {
+    const handlePasswordVerifierChange = (event:ChangeEvent<HTMLInputElement>) => {
         setPasswordVerifier(event.target.value);
     };
     const deleteVerification = async () => {
         const deleteVerifyUrl = '/verify/';
-        const deleteRequest = {verificationCode: verificationCode};
-        await data(deleteVerifyUrl, 'DELETE', deleteRequest);
+        return await data(deleteVerifyUrl, 'DELETE', verificationCode);
     }
-    const postPasswordReset = async(password)=>{
+    const postPasswordReset = async(password: string)=>{
         if(password === passwordVerifier) {
             const clientUrl = '/api/reset';
             const request = {
@@ -38,10 +37,10 @@ function VerifyPage (props) {
                 email: email(),
                 password: password
             };
+            console.log("response")
             const response = await data(clientUrl, 'Post', request);
-            if (await response.status === 200) {
-                const deleteResponse = await deleteVerification();
-                console.log(deleteResponse.status)
+            if (response.status === 200) {
+                await deleteVerification();
             }
         }
         setMessage("Passwords do not match");
@@ -51,6 +50,7 @@ function VerifyPage (props) {
             const request = {
                 verificationCode: verificationCode,
             };
+        console.log("response")
             const response = await data(verificationUrl, 'Post', request);
             if (await response.status === 200) {
                 const deleteResponse = await deleteVerification();
@@ -60,12 +60,12 @@ function VerifyPage (props) {
 
     useEffect(() => {
         validateVerificationCode();
-        if(!props.reset) {
+        if(!reset) {
             postClientVerification();
         }
         }, [verificationCodeValidated]);
 
-    if(!props.reset && verificationCodeValidated) {
+    if(!reset && verificationCodeValidated) {
         return(
         <div className="client-box">
             <div className="client-card"

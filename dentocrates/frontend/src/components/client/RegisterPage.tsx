@@ -1,18 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect, ChangeEvent, FormEvent} from "react";
 import { useNavigate } from "react-router-dom";
 import { Terms } from "../elements/TermsAndConditions";
 
 function RegisterPage (){
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [operatingLicenceNo, setOperatingLicenceNo] = useState('');
-    const [message, setMessage] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [dentist, setDentist] = useState(false);
-    const [hidden, setHidden] = useState(true);
-    const isMounted = useRef(true);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [operatingLicenceNo, setOperatingLicenceNo] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [dentist, setDentist] = useState<boolean>(false);
+    const [hidden, setHidden] = useState<boolean>(true);
+    const isMounted = useRef<boolean>(true);
 
     useEffect(() => {
         return () => {
@@ -20,31 +20,31 @@ function RegisterPage (){
         };
     }, []);
 
-    const handleEmailChange = (event) => {
+    const handleEmailChange = (event:ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
 
-    const handleOperatingLicenceNoChange = (event) => {
+    const handleOperatingLicenceNoChange = (event:ChangeEvent<HTMLInputElement>) => {
         setOperatingLicenceNo(event.target.value);
     };
 
-    const handleFirstNameChange = (event) => {
+    const handleFirstNameChange = (event:ChangeEvent<HTMLInputElement>) => {
         setFirstName(event.target.value);
     };
 
-    const handleLastNameChange = (event) => {
+    const handleLastNameChange = (event:ChangeEvent<HTMLInputElement>) => {
         setLastName(event.target.value);
     };
 
-    const handlePasswordChange = (event) => {
+    const handlePasswordChange = (event:ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     };
 
-    const HandleSubmit = async (e) => {
+    const HandleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await postRegistration(email,password);
     }
-    const postRegistration = async(email, password)=>{
+    const postRegistration = async(email:string, password:string)=>{
         const dentistUrl = '/api/register/dentist';
         const customerUrl = '/api/register/customer';
         fetch(dentist ? dentistUrl : customerUrl, {

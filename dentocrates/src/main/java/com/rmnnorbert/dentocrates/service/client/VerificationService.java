@@ -66,7 +66,7 @@ public class VerificationService {
                 return ResponseEntity.badRequest().body("There is no verification request for the provided email.");
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception details
+            e.printStackTrace();
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body("An error occurred while processing the request.");
         }

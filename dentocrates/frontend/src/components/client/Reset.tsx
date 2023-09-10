@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {MultiFetch} from "../../fetch/MultiFetch";
 
 export const Reset = () => {
-    const [requesterEmail, setRequesterEmail] = useState("");
+    const [requesterEmail, setRequesterEmail] = useState<string>("");
     const { data } = MultiFetch();
-    const handleEmailChange = (event) => {setRequesterEmail(event.target.value);};
+    const handleEmailChange = (event:ChangeEvent<HTMLInputElement>) => {setRequesterEmail(event.target.value);};
 
     async function postResetRequest() {
         const resetUrl = "/api/request/authenticate";

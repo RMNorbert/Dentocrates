@@ -10,6 +10,7 @@ import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.security.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,10 +44,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
     @PostMapping("/request/authenticate")
-    public ResponseEntity authenticateRequest(
+    public ResponseEntity<Boolean> authenticateRequest(
             @RequestBody VerificationRequestDTO dto
     ) {
-        return ResponseEntity.ok(service.sendAuthenticationCode(dto));
+        return ResponseEntity.status(HttpStatus.OK).body(service.sendAuthenticationCode(dto));
     }
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(
