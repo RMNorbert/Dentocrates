@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect, ChangeEvent, FormEvent} from "react";
 import { MultiFetch } from "../../../fetch/MultiFetch";
 import { useNavigate } from "react-router-dom";
 function LocationRegisterPage (){
     const { data } = MultiFetch();
     const navigate = useNavigate();
-    const [zipCode, setZipCode] = useState(1000);
-    const [city, setCity] = useState('');
-    const [isErrorMessageHidden, setIsErrorMessageHidden] = useState(true);
-    const isMounted = useRef(true);
+    const [zipCode, setZipCode] = useState<number>(1000);
+    const [city, setCity] = useState<string>('');
+    const [isErrorMessageHidden, setIsErrorMessageHidden] = useState<boolean>(true);
+    const isMounted = useRef<boolean>(true);
     const errorMessage = "Please fill out all required fields, zip code must be between 1000-10.000";
     useEffect(() => {
         return () => {
@@ -15,20 +15,25 @@ function LocationRegisterPage (){
         };
     }, []);
 
-    const handleZipCodeChange = (event) => {
-        setZipCode(event.target.value);
+    const handleZipCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = parseInt(event.target.value, 10);
+        if (!isNaN(newValue)) {
+            setZipCode(newValue);
+        } else {
+            setZipCode(1000);
+        }
     };
 
-    const handleCityChange = (event) => {
+    const handleCityChange = (event: ChangeEvent<HTMLInputElement>) => {
         setCity(event.target.value);
     };
-    const HandleSubmit = async (e) => {
+    const HandleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await postRegistration(zipCode,city);
     }
 
 
-    const postRegistration = async(zipCode, city)=>{
+    const postRegistration = async(zipCode:number, city:string)=>{
         const locationRegisterUrl = '/location/register';
         let locationData = {
             zipCode: zipCode,
