@@ -29,7 +29,7 @@ function LoginPage() {
         setAuthenticationCode(event.target.value);
     }
     const handleAuthenticationRequest = async () => {
-        const authenticationRequestUrl = '/api/request/authenticate';
+        const authenticationRequestUrl = '/java-backend/api/request/authenticate';
         const requestBody = {email: email};
         const response = await data(authenticationRequestUrl, "POST", requestBody );
         if (response === true) {
@@ -38,7 +38,7 @@ function LoginPage() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const authenticationUrl = '/api/authenticate';
+        const authenticationUrl = '/java-backend/api/authenticate';
         const requestBody = {
             email: email,
             password: password,

@@ -1,6 +1,6 @@
 export const handleGoogleLogin = async () => {
         try {
-            const googleRedirectUrl = "/api/oauth2/authorizationPageUrl/google";
+            const googleRedirectUrl = "/java-backend/api/oauth2/authorizationPageUrl/google";
             const response = await fetch(googleRedirectUrl);
             if (response.ok) {
                 const url = await response.text();

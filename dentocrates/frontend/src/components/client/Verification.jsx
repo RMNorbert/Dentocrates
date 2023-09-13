@@ -13,7 +13,7 @@ function VerifyPage (props) {
     const [message, setMessage] = useState('');
 
     const validateVerificationCode = async () => {
-        const response = await data(`/verify/${verificationCode}`);
+        const response = await data(`/java-backend/verify/${verificationCode}`);
         setVerificationCodeValidated(response);
         if(!props.reset){
                 deleteVerification();
@@ -26,13 +26,13 @@ function VerifyPage (props) {
         setPasswordVerifier(event.target.value);
     };
     const deleteVerification = async () => {
-        const deleteVerifyUrl = '/verify/';
+        const deleteVerifyUrl = '/java-backend/verify/';
         const deleteRequest = {verificationCode: verificationCode};
         await data(deleteVerifyUrl, 'DELETE', deleteRequest);
     }
     const postPasswordReset = async(password)=>{
         if(password === passwordVerifier) {
-            const clientUrl = '/api/reset';
+            const clientUrl = '/java-backend/api/reset';
             const request = {
                 verificationCode: verificationCode,
                 email: email(),
@@ -47,7 +47,7 @@ function VerifyPage (props) {
         setMessage("Passwords do not match");
     };
     const postClientVerification = async ()=>{
-            const verificationUrl = '/api/verify';
+            const verificationUrl = '/java-backend/api/verify';
             const request = {
                 verificationCode: verificationCode,
             };

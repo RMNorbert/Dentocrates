@@ -45,8 +45,8 @@ function RegisterPage (){
         await postRegistration(email,password);
     }
     const postRegistration = async(email, password)=>{
-        const dentistUrl = '/api/register/dentist';
-        const customerUrl = '/api/register/customer';
+        const dentistUrl = '/java-backend/api/register/dentist';
+        const customerUrl = '/java-backend/api/register/customer';
         fetch(dentist ? dentistUrl : customerUrl, {
             method: 'POST',
             headers: {

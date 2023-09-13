@@ -10,7 +10,7 @@ export const ClinicSelectorPage = () => {
     const [filteredData, setFilteredData] = useState([]);
 
     const getClinicData = async () => {
-        const clinicDataUrl = `/clinic/all`;
+        const clinicDataUrl = `/java-backend/clinic/all`;
         const responseData = await data(clinicDataUrl);
         setClinicData(await responseData);
         setFilteredData(await responseData);

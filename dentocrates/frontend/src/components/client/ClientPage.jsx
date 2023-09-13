@@ -15,13 +15,13 @@ export const ClientPage = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
-            const clientDetailsUrl = `/client/${userId()}`;
+            const clientDetailsUrl = `/java-backend/client/${userId()}`;
             const response = await data(clientDetailsUrl);
             setClientData(await response);
         }
         else if(role() === "DENTIST"){
-            const clinicDetailsUrl = `/clinic/dentist/${userId()}`;
-            const dentistDetailsUrl = `/dentist/${userId()}`;
+            const clinicDetailsUrl = `/java-backend/clinic/dentist/${userId()}`;
+            const dentistDetailsUrl = `/java-backend/dentist/${userId()}`;
             const clinicResponse = await data(clinicDetailsUrl);
 
             setClinicData(await clinicResponse);
@@ -36,7 +36,7 @@ export const ClientPage = () => {
     const fetchLeaveData = async (clinic) => {
         let leaves = [];
         for (let i = 0; i < clinic.length; i++) {
-            const clinicLeaves = await data(`/leave/${clinic[i].id}`);
+            const clinicLeaves = await data(`/java-backend/leave/${clinic[i].id}`);
             leaves.push(clinicLeaves);
         }
         setLeaveData(leaves);
@@ -60,7 +60,7 @@ export const ClientPage = () => {
             endOfTheLeave : endDate
         }
         try {
-            const response = await data('/leave/', "POST", registerData);
+            const response = await data('/java-backend/leave/', "POST", registerData);
             if (response) {
                 setIsLoaded(false);
             }
@@ -69,7 +69,7 @@ export const ClientPage = () => {
         }
     }
     const handleResetRequest = async (email) => {
-        const passwordResetRequestUrl = '/verify/reset/register/';
+        const passwordResetRequestUrl = '/java-backend/verify/reset/register/';
         const requestBody = {email: email,  role:role()};
         try {
             await data(passwordResetRequestUrl, 'POST', requestBody);
@@ -78,7 +78,7 @@ export const ClientPage = () => {
         }
     };
     const handleDelete = async (currentId) => {
-        const clientDeleteUrl = role() === "CUSTOMER" ? '/client/' : role() === "DENTIST" ? '/dentist/': false;
+        const clientDeleteUrl = role() === "CUSTOMER" ? '/java-backend/client/' : role() === "DENTIST" ? '/java-backend/dentist/': false;
         const requestBody = {userId: userId(), targetId: currentId};
         const response =  await data(clientDeleteUrl, 'DELETE', requestBody);
         if(response) {
@@ -89,7 +89,7 @@ export const ClientPage = () => {
     };
 
     const handleLeaveDelete = async (currentId, clinic) => {
-        const leaveDeleteUrl = '/leave/';
+        const leaveDeleteUrl = '/java-backend/leave/';
         const requestBody = {dentistId: userId(), leaveId: currentId , clinicId:clinic};
         const response = await data(leaveDeleteUrl,'DELETE',requestBody)
         if(response) {

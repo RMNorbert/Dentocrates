@@ -29,11 +29,11 @@ button:active {
 }
 .home {
     position: absolute;
-    top: 120px;
+    top: 140px;
     left: 50px;
     width: 1437px;
     height: 1077px;
-    background-image:url("../../public/clinic/clinicaigeneratedpicture.jpg");
+    background-image:url("../../../public/clinic/clinicaigeneratedpicture.jpg");
 }
 .homeContent{
     margin-top: -50px;
@@ -101,6 +101,14 @@ button:active {
 }
 
 .home-logo {
-    margin-top: 4.5%;
-    margin-left: 39%;
+    margin-top: 6.5%;
+    margin-left: 37%;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    background: transparent;
 }

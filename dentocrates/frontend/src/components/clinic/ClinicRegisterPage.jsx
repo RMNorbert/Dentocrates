@@ -23,7 +23,7 @@ function ClinicRegisterPage (){
     const isMounted = useRef(true);
     const errorMessage = "Please fill out all the required fields.";
     const getLocationData = async () => {
-        const locationDataUrl = `/location/all`;
+        const locationDataUrl = `/java-backend/location/all`;
         const onLoadSelectedClinicType = 'COMMUNITY DENTAL CLINIC';
         const responseData = await data(locationDataUrl);
         setLocations(await responseData);
@@ -87,7 +87,7 @@ function ClinicRegisterPage (){
             dentistId: userId()
         };
         try {
-            await data('/clinic/register', 'Post', registerData);
+            await data('/java-backend/clinic/register', 'Post', registerData);
             navigate('/home');
         } catch (error) {
             setHidden(false);
