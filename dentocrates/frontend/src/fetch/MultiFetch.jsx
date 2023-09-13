@@ -38,9 +38,11 @@ export const MultiFetch = () => {
         } catch (error) {
             console.error(error);
             throw error;
+        } finally {
+            setLoading(false);
         }
+
     };
 
     return { data, isLoading };
 };
-

@@ -2,7 +2,7 @@ import './NavigationBar.css'
 import './Element.css'
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {email, role} from "./token/TokenDecoder";
+import {email, role} from "../token/TokenDecoder";
 
 function NavigationBar() {
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ function NavigationBar() {
                     <button id='tabs' onClick={() => navigate("/location")}>Register location</button>
                 </>
             }
-      {loggedInUserEmail != null ? <div className='logout'
+      {loggedInUserEmail != null ? <div className='logout'  style={role() === "DENTIST" ? { left: "14%" } : { left: "34%" }}
       >
                 <p
                   onMouseEnter={() => setIsHidden(!isHidden)}

@@ -5,11 +5,12 @@ export const ClinicList = ({ clinicDatas }) => {
         <div>
             {clinicDatas &&
                 clinicDatas.map((clinic) => {
+                    const clinicUrl = `/clinic/${clinic.id}`
                     return (
                         <div
                             key={clinic.name}
                             className="listBox"
-                            onClick={() => navigate(`/clinic/${clinic.id}`)}
+                            onClick={() => navigate(clinicUrl)}
                         >
                             <div>
                             <h1 className="listMargin">{clinic.name}</h1>
