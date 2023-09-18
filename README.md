@@ -132,14 +132,13 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 #### 1. Clone the repository
 
 
-#### 2. To use chatbot
-   Clone the following repository as well : ```https://github.com/RMNorbert/Chat``` and follow the instructions in it's Installation section. 
-    
+#### 2. To use the ChatBot
+   Clone the following repository as well : [https://github.com/RMNorbert/ConvoCat](https://github.com/RMNorbert/ConvoCat) and follow the instructions in it's Installation section.
 
 #### 3. Set up the necessary environment variables and configure the database connection details.
    Update the configuration files with the appropriate values.
-   The configuration files located in : dentocrates/src/main/resources/application.yml, an environment variable called SECRET have to created for the key creation,
-   an environment variable have to be created for the oauthId and the oauthSecret according to the related credentials. 
+   The configuration file for the database connection located in : dentocrates/src/main/resources/application.yml, an environment variable called SECRET have to created for the JWT related key creation,
+   an environment variable have to be created for the oauthId and the oauthSecret according to the related credentials also in case of using the email related services a SENDER_PASSWORD and a SENDER_USERNAME have to be created as well. 
 
 
 #### 4. Build and run the project: 
@@ -147,13 +146,26 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 
   ___
    ##### 4.1,  Using Maven:
-   
-   Open a terminal or command prompt, navigate to the project's root directory, and run the following command:
+
+
+**4.1.1**, Open a terminal or command prompt, navigate to the project's dentocrates directory, and run the following command:
         ```
         mvn spring-boot:run
         ```
    
-   This command will build the project, resolve the dependencies, and start the server.
+   This command will build the project, resolve the dependencies, and start the backend server.
+
+**4.1.2**, Navigate to the project's dentocrates/frontend directory, and run the following command:
+       ```
+       npm run proxy
+       ```
+   This command will start the proxy server.
+   
+   Run the following command:
+   ```
+   npm start
+   ```
+   This command will start the frontend server.
    ___
 
    #### 4.2, Run the dockerized version with:
@@ -166,9 +178,11 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
    It simplifies deployment and ensures consistent setups across environments.
   ___
 
+   #### 4.2, Run with the application-lifecycle.sh:
+    
 #### 5. Access the application:
 
-  Access the application: Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g., http://localhost:3000) to access the application. You can create an account, explore dentists, and schedule appointments.
+Access the application: Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of mvn spring-boot:run or in case of using the application-lifecycle.sh file http://localhost:3000 , in case of docker http://localhost:8080) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
 
 Note: The URL and port number may vary depending on your configuration.
 

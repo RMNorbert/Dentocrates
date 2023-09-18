@@ -116,7 +116,7 @@ cd "$FRONTEND_DIR" || { log_message "Error: Unable to change to frontend directo
 log_message "Starting Frontend..."
 npm start &
 log_message "Starting Proxy Server..."
-npm run start-proxy &
+npm run proxy &
 
 cd "$CHAT_BOT_DIR" || { log_message "Error: Unable to change to chatbot directory."; shutdown_frontend; }
 log_message "Starting ChatBot..."
