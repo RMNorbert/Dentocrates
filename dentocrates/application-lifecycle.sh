@@ -92,6 +92,12 @@ CHAT_BOT_DIR="your_absolute_path_to/ConvoCat/"
 log_message "Changing to the backend directory..."
 cd "$BACKEND_DIR" || { log_message "Error: Unable to change to backend directory."; exit 1; }
 
+# Generate the Maven Wrapper (if not already generated)
+if [ ! -f "mvnw" ]; then
+    log_message "Generating Maven Wrapper..."
+    mvn wrapper:wrapper
+fi
+
 # Start the backend (Spring-Java)
 log_message "Cleaning and building the backend..."
 ./mvnw clean install -Dmaven.test.skip=true
