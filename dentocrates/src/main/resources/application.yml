@@ -1,13 +1,4 @@
 spring:
-    security:
-      oauth2:
-        client:
-          registration:
-            google:
-              provider: google
-              client-id: your-id
-              client-secret: your-secret
-              redirect-uri: http://localhost:3000/login/oauth2/code/
     datasource:
         url: jdbc:postgresql://localhost:5432/dentocrates
         username: postgres

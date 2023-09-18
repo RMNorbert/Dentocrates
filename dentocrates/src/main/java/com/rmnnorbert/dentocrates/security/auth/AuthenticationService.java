@@ -216,7 +216,6 @@ public class AuthenticationService {
                 throw new InvalidCredentialException();
             }
         } else {
-            System.out.println("Invalid state");
             loginFailureCounter.increment();
             throw new InvalidCredentialException();
         }
