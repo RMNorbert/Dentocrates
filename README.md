@@ -3,25 +3,29 @@
 
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/dentocrates/frontend/public/dentocrates-dark-logo.png" alt="Dentocrates" width="200">](README.md)
 
-[![Java](https://img.shields.io/badge/Java-blue.svg?logo=openjdk&logoColor=white&labelColor=555555&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-[![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-brightgreen.svg?logo=spring&labelColor=555555&style=for-the-badge)](https://spring.io/projects/spring-boot)
-[![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=555555&style=for-the-badge)](https://spring.io/projects/spring-security)
-[![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=555555&style=for-the-badge)](https://www.postgresql.org)
-[![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=white&style=for-the-badge)](https://www.docker.com/)
-[![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=748b97&style=for-the-badge)](https://hibernate.org/)
+[![Java](https://img.shields.io/badge/Java-blue.svg?logo=openjdk&logoColor=white&labelColor=black&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+[![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-66ff00.svg?logo=spring&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-boot)
+[![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-security)
+[![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.postgresql.org)
+[![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.docker.com/)
+[![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=black&style=for-the-badge)](https://hibernate.org/)
 
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
 [![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
-[![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=323330&style=for-the-badge)](https://www.openapis.org/)
-[![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red)](https://jwt.io/)
+[![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=black&style=for-the-badge)](https://www.openapis.org/)
+[![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red&labelColor=black)](https://jwt.io/)
 [![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
-[![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com/)
+[![Flask](https://img.shields.io/badge/Flask-008080.svg?logo=flask&logoColor=white&labelColor=black&style=for-the-badge)](https://flask.palletsprojects.com/en/2.3.x/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-812CE5.svg?logo=pytorch&logoColor=DE3412&labelColor=black&style=for-the-badge)](https://pytorch.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-navy.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
+
+[![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
 [![Express](https://img.shields.io/badge/Express-00264D.svg?logo=Express&logoColor=gold&labelColor=black&style=for-the-badge)](https://expressjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-00264D.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-323330.svg?logo=react&logoColor=blue&labelColor=black&style=for-the-badge)](https://vitejs.dev/)
 
-[![React](https://img.shields.io/badge/React-323330.svg?logo=react&logoColor=blue&labelColor=323330&style=for-the-badge)](https://vitejs.dev/)
 [![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
-[![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&style=for-the-badge&display_timestamp=committer)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
+[![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&labelColor=323330&style=for-the-badge&display_timestamp=committer&color=darkgreen)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
 
 </div>
 <!-- MANPAGE: END EXCLUDED SECTION -->
@@ -47,7 +51,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
 ---
 ## Used technologies:
 
- Backend
+ #### Backend
   - Java (version 17.0.7),
   - Spring Boot (version 3.1.0),Spring Security (version 3.1.0), JWT, Actuator, Webflux
   - JPA Hibernate (version 3.1.0),
@@ -59,15 +63,15 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - Flask
   - Express
         
- Frontend
+ #### Frontend
   - TypeScript (on typescript branch)
   - JavaScript,
   - React,
   
- Database
+ #### Database
   - PostgreSQL
   
-  Others
+  #### Others
   - Docker,
   - CI/CD GitHub workflows
   - OpenApi (version 3.0)
@@ -105,22 +109,25 @@ To set up the project, follow these steps:
     
 Make sure you have the following dependencies installed before proceeding with the installation:
 
-#### 1.   Java Development Kit (JDK):
+### 1.   Java Development Kit (JDK):
    Ensure that you have the Java Development Kit installed on your machine. You can download the JDK from the Oracle website and install it according to the provided instructions.
 
-#### 2.    JDBC Database (e.g., PostgreSQL):
+### 2.    JDBC Database (e.g., PostgreSQL):
    In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can download and install PostgreSQL from the official PostgreSQL website and configure it as required.
 
-#### 3.   In case of using Oauth:
+### 3.   In case of using Oauth:
   To use Google’s OAuth 2.0 authentication system for login, you must set up a project in the Google API Console and obtain OAuth 2.0 credentials.
 
-#### 4.   To deploy Dentocrates using Docker containers, follow these steps:
+### 4.   To deploy Dentocrates using Docker containers, follow these steps:
 
-Install Docker:
+#### [Install Docker](https://www.docker.com/get-started/):
+  
   For Linux: Follow the instructions on the official Docker website.
+  
   For Windows or macOS: Install Docker Desktop for an easy-to-use Docker environment.
 
-After installing Docker, ensure it's running by opening a terminal or command prompt and running the command docker --version.
+#### After installing Docker:
+ Ensure it's running by opening a terminal or command prompt and running the command ```docker --version```.
 
 Note: Docker is optional and recommended for deployment scenarios. If you're using Docker, it can help manage dependencies and ensure consistent environments.
 
@@ -133,12 +140,19 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 
 
 #### 2. To use the ChatBot
-   Clone the following repository as well : [https://github.com/RMNorbert/ConvoCat](https://github.com/RMNorbert/ConvoCat) and follow the instructions in it's Installation section.
+   Clone the following repository as well : [https://github.com/RMNorbert/ConvoCat](https://github.com/RMNorbert/ConvoCat) and follow the instructions in it's **Installation section**.
 
 #### 3. Set up the necessary environment variables and configure the database connection details.
    Update the configuration files with the appropriate values.
-   The configuration file for the database connection located in : dentocrates/src/main/resources/application.yml, an environment variable called SECRET have to created for the JWT related key creation,
-   an environment variable have to be created for the oauthId and the oauthSecret according to the related credentials also in case of using the email related services a SENDER_PASSWORD and a SENDER_USERNAME have to be created as well. 
+   The configuration for the database connection located in : dentocrates/src/main/resources/application.yml, the following variables have to be updated according to your Postgresql user: username , password.
+   
+   Other environment variables that have to be updated before running the application: 
+     In case of using the application-lifecycle.sh to run then application the variables in the file have to be updated. The sh file is located in: dentocrates/
+     In case of using the docker commpose file  
+     In other case:
+        - SECRET : This variable have to be created for the JWT related key creation, it is located in: dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService;
+        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials, it is located in : dentocrates/src/main/java/com.rmnnorber.dentocrates/security/config/SecurityConfiguration;
+        - SENDER_USERNAME: have to be created to use the email related services, update it according to the email you whish to use, it is located in : dentocrates/src/main/java/com.rmnnorber.dentocrates/service/GMailerService. 
 
 
 #### 4. Build and run the project: 
