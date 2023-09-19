@@ -36,12 +36,12 @@ public class VerificationService {
 
         ResponseEntity<String> response = registerVerification(email, roleAsEnum, verificationCode);
         String link;
-        if(!reset) {
-            link = verificationUrl + verificationCode;
-        } else {
+
+        if(reset) {
             verificationUrl += "reset/";
-            link = verificationUrl + verificationCode;
         }
+
+        link = verificationUrl + verificationCode;
         gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,link);
         return response;
     }
