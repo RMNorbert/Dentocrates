@@ -63,4 +63,21 @@ public class OAuth2HelperService {
         throw new InvalidCredentialException();
     }
 
+    public String[] getOauthCredentials(String generatedState , String state, String code) {
+        if (state.equals(generatedState)){
+            ResponseEntity<TokenResponse> responseEntity = getGoogleTokenResponse(code);
+            // Access the returned token and other fields from tokenResponse
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                TokenResponse tokenResponse = responseEntity.getBody();
+                String idToken = tokenResponse.getId_token();
+                String[] userCredentials = parseToken(idToken);
+                return userCredentials;
+            } else {
+                System.out.println("Token exchange failed. Status code: " + responseEntity.getStatusCode());
+                throw new InvalidCredentialException();
+            }
+        } else {
+            throw new InvalidCredentialException();
+        }
+    }
 }
