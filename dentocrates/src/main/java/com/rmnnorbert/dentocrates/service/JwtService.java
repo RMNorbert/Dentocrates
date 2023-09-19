@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.security.config;
+package com.rmnnorbert.dentocrates.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
