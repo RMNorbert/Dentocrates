@@ -82,7 +82,6 @@ export EMAIL="dentocrates@dentocrates.com"
 export oauthId=your_oauth_id
 export oauthSecret=your_oauth_secret
 export SECRET=your_jwt_secret
-export SENDER_PASSWORD=your_email_sender_authenticating_password
 export SENDER_USERNAME=your_email_sender_authenticating_username
 
 BACKEND_DIR="your_absolute_path_to/Dentocrates/dentocrates/"
@@ -96,6 +95,7 @@ cd "$BACKEND_DIR" || { log_message "Error: Unable to change to backend directory
 if [ ! -f "mvnw" ]; then
     log_message "Generating Maven Wrapper..."
     mvn wrapper:wrapper
+    chmod +x mvnw  # Make mvnw executable
 fi
 
 # Start the backend (Spring-Java)
@@ -116,7 +116,7 @@ cd "$FRONTEND_DIR" || { log_message "Error: Unable to change to frontend directo
 log_message "Starting Frontend..."
 npm start &
 log_message "Starting Proxy Server..."
-npm run start-proxy &
+npm run proxy &
 
 cd "$CHAT_BOT_DIR" || { log_message "Error: Unable to change to chatbot directory."; shutdown_frontend; }
 log_message "Starting ChatBot..."

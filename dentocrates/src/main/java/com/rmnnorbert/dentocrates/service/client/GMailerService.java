@@ -41,7 +41,7 @@ public class GMailerService {
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory)
             throws IOException {
-        // Load client secrets.
+        // Load client secrets. Replace the resourcePath with your client_secret json file
         String resourcePath = "/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json";
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory,
                 new InputStreamReader(GMailerService.class.getResourceAsStream(resourcePath)));
@@ -53,7 +53,7 @@ public class GMailerService {
                 .setAccessType("offline")
                 .build();
 
-     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         //returns an authorized Credential object.
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("Dentocrates");
     }

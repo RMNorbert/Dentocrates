@@ -12,7 +12,7 @@ import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
-import com.rmnnorbert.dentocrates.security.config.JwtService;
+import com.rmnnorbert.dentocrates.service.JwtService;
 import com.rmnnorbert.dentocrates.service.client.VerificationService;
 import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
 import org.junit.jupiter.api.BeforeEach;

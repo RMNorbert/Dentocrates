@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.security.config;
 
+import com.rmnnorbert.dentocrates.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
