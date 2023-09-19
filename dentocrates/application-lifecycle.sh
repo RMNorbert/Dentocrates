@@ -96,6 +96,7 @@ cd "$BACKEND_DIR" || { log_message "Error: Unable to change to backend directory
 if [ ! -f "mvnw" ]; then
     log_message "Generating Maven Wrapper..."
     mvn wrapper:wrapper
+    chmod +x mvnw  # Make mvnw executable
 fi
 
 # Start the backend (Spring-Java)
