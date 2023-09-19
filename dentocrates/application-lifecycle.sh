@@ -82,7 +82,6 @@ export EMAIL="dentocrates@dentocrates.com"
 export oauthId=your_oauth_id
 export oauthSecret=your_oauth_secret
 export SECRET=your_jwt_secret
-export SENDER_PASSWORD=your_email_sender_authenticating_password
 export SENDER_USERNAME=your_email_sender_authenticating_username
 
 BACKEND_DIR="your_absolute_path_to/Dentocrates/dentocrates/"
