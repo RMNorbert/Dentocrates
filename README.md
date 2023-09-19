@@ -17,11 +17,11 @@
 [![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-008080.svg?logo=flask&logoColor=white&labelColor=black&style=for-the-badge)](https://flask.palletsprojects.com/en/2.3.x/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-812CE5.svg?logo=pytorch&logoColor=DE3412&labelColor=black&style=for-the-badge)](https://pytorch.org/)
-[![NumPy](https://img.shields.io/badge/NumPy-navy.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
 
-[![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
+[![NumPy](https://img.shields.io/badge/NumPy-navy.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
 [![Express](https://img.shields.io/badge/Express-00264D.svg?logo=Express&logoColor=gold&labelColor=black&style=for-the-badge)](https://expressjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-00264D.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
+[![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
 [![React](https://img.shields.io/badge/React-323330.svg?logo=react&logoColor=blue&labelColor=black&style=for-the-badge)](https://vitejs.dev/)
 
 [![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
