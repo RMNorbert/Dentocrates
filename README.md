@@ -42,7 +42,9 @@
 ---
 ## Description:
 
-Dentocrates is an online platform for dental appointments designed to streamline the process of finding and booking dental services. The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, search for dentists in their area, and view available appointments.
+Dentocrates is an online platform for dental appointments designed to streamline the process of finding and booking dental services. 
+
+The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, search for dentists in their area, and view available appointments.
 
 ---
 # Dockerized version can be pulled from DockerHub:
@@ -110,10 +112,10 @@ To set up the project, follow these steps:
 Make sure you have the following dependencies installed before proceeding with the installation:
 
 ### 1.   Java Development Kit (JDK):
-   Ensure that you have the Java Development Kit installed on your machine. You can download the JDK from the Oracle website and install it according to the provided instructions.
+   Ensure that you have the Java Development Kit installed on your machine. You can [download](https://www.oracle.com/java/technologies/downloads/) the JDK from the Oracle website and install it according to the provided instructions.
 
 ### 2.    JDBC Database (e.g., PostgreSQL):
-   In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can download and install PostgreSQL from the official PostgreSQL website and configure it as required.
+   In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can [download](https://www.postgresql.org/download/) and install PostgreSQL from the official PostgreSQL website and configure it as required.
 
 ### 3.   In case of using Oauth:
   To use Google’s OAuth 2.0 authentication system for login, you must set up a project in the Google API Console and obtain OAuth 2.0 credentials.
@@ -122,9 +124,9 @@ Make sure you have the following dependencies installed before proceeding with t
 
 #### [Install Docker](https://www.docker.com/get-started/):
   
-  For Linux: Follow the instructions on the official Docker website.
+  **For Linux**: Follow the instructions on the official Docker website.
   
-  For Windows or macOS: Install Docker Desktop for an easy-to-use Docker environment.
+  **For Windows or macOS**: Install Docker Desktop for an easy-to-use Docker environment.
 
 #### After installing Docker:
  Ensure it's running by opening a terminal or command prompt and running the command ```docker --version```.
@@ -138,65 +140,80 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 
 #### 1. Clone the repository
 
-
+---
 #### 2. To use the ChatBot
    Clone the following repository as well : [https://github.com/RMNorbert/ConvoCat](https://github.com/RMNorbert/ConvoCat) and follow the instructions in it's **Installation section**.
 
+---
 #### 3. Set up the necessary environment variables and configure the database connection details.
    Update the configuration files with the appropriate values.
-   The configuration for the database connection located in : dentocrates/src/main/resources/application.yml, the following variables have to be updated according to your Postgresql user: username , password.
    
-   Other environment variables that have to be updated before running the application: 
-     In case of using the application-lifecycle.sh to run then application the variables in the file have to be updated. The sh file is located in: dentocrates/
-     In case of using the docker commpose file  
-     In other case:
-        - SECRET : This variable have to be created for the JWT related key creation, it is located in: dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService;
-        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials, it is located in : dentocrates/src/main/java/com.rmnnorber.dentocrates/security/config/SecurityConfiguration;
-        - SENDER_USERNAME: have to be created to use the email related services, update it according to the email you whish to use, it is located in : dentocrates/src/main/java/com.rmnnorber.dentocrates/service/GMailerService. 
+  - **3.1, Configuration for database connection:**
+     
+     - Located in ```dentocrates/src/main/resources/application.yml```, the following variables have to be updated according to your Postgresql user: **username , password**.
+   
+  - **3.2, Other environment variables to updated** before running the application: 
+   
+     - **3.2.1, Using the application-lifecycle.sh** to run then application the variables in the file have to be updated. The sh file is located in: ```dentocrates/```
+   
+     - **3.2.2, Using the docker commpose file** to run the application. The file located in: ```dentocrates/``` , update all services environment variables in the file.
+   
+     - **3.2.3, In other case:**
+       - SECRET : This variable have to be created for the JWT related key creation, it is located in: ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService```
+      
+        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials, it is located in : ```dentocrates/src/main/java/com.rmnnorber.dentocrates/security/config/SecurityConfiguration```
+      
+         - SENDER_USERNAME: have to be created to use the email related services, update it according to the email you whish to use, it is located in : ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/GMailerService``` 
 
-
-#### 4. Build and run the project: 
+---
+### 4. Build and run the project: 
    Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
 
   ___
-   ##### 4.1,  Using Maven:
+  - #### 4.1,  Using Maven:
 
 
-**4.1.1**, Open a terminal or command prompt, navigate to the project's dentocrates directory, and run the following command:
+     - **4.1.1**, Open a terminal or command prompt, navigate to the project's dentocrates directory, and run the following command:
         ```
         mvn spring-boot:run
         ```
    
-   This command will build the project, resolve the dependencies, and start the backend server.
+       This command will build the project, resolve the dependencies, and start the backend server.
 
-**4.1.2**, Navigate to the project's dentocrates/frontend directory, and run the following command:
+    - **4.1.2**, Navigate to the project's dentocrates/frontend directory, and run the following command:
        ```
        npm run proxy
        ```
-   This command will start the proxy server.
+       This command will start the proxy server.
    
-   Run the following command:
-   ```
-   npm start
-   ```
-   This command will start the frontend server.
+       Run the following command:
+       ```
+       npm start
+       ```
+       This command will start the frontend server.
    ___
 
-   #### 4.2, Run the dockerized version with:
+ - #### 4.2, Run the dockerized version with:
   
-   Navigate to the project directory containing the docker-deploy.yml file.
+    - Navigate to the project directory containing the docker-deploy.yml file.
 
-   Run the command docker-compose up --build to build and start the project.
+      Run the command ```docker-compose up --build``` to build and start the project.
 
-   The docker-deploy.yml file defines the services and configurations needed for running your application in a Docker container.
-   It simplifies deployment and ensures consistent setups across environments.
+      The docker-deploy.yml file defines the services and configurations needed for running your application in a Docker container.
+      It simplifies deployment and ensures consistent setups across environments.
   ___
 
-   #### 4.2, Run with the application-lifecycle.sh:
-    
+  - #### 4.3, Run with the application-lifecycle.sh:
+  
+    **Unix-like Systems:(Linux, macOs)**
+    - First make the file executable by running the following command:
+      ```chmod +x application-lifecycle.sh```
+    - Run the sh file with the following command or just by clicking on it
+      ```./application-lifecycle.sh```
+---
 #### 5. Access the application:
 
-Access the application: Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of mvn spring-boot:run or in case of using the application-lifecycle.sh file http://localhost:3000 , in case of docker http://localhost:8080) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
+Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of mvn spring-boot:run or in case of using the application-lifecycle.sh file http://localhost:3000 , in case of docker http://localhost:8080) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
 
 Note: The URL and port number may vary depending on your configuration.
 
