@@ -64,10 +64,10 @@ export const DentistPage = () => {
                 </div>
                 <div className="list">
                     {filteredData.length > 0 ? (
-                        filteredData.map((dentist) => {
+                        filteredData.map((dentist, index) => {
                     const name = `Dentist: Dr.${dentist.firstName} ${dentist.lastName}`;
                     return (
-                    <div  key={dentist.name}
+                    <div  key={index}
                           className="listBox"
                     >
                         {filterClinics(name,dentist.id)}
