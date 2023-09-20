@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -23,9 +24,8 @@ public class VerificationService {
         this.verificationRepository = verificationRepository;
     }
 
-    public Verification getVerification(String verificationCode) {
-        return verificationRepository.findByVerificationCode(verificationCode)
-                .orElseThrow(() -> new NotFoundException("Verification"));
+    public Optional<Verification> getVerification(String verificationCode) {
+        return verificationRepository.findByVerificationCode(verificationCode);
     }
     public boolean validate(String verificationCode) {
         return verificationRepository.findByVerificationCode(verificationCode).isPresent();
@@ -60,7 +60,9 @@ public class VerificationService {
     }
     public ResponseEntity<String> deleteVerification(String verificationCode) {
         try {
-            Verification verification = getVerification(verificationCode);
+            Verification verification = getVerification(verificationCode)
+                    .orElseThrow(() -> new NotFoundException("Verification"));
+
             verificationRepository.delete(verification);
             return ResponseEntity.ok("Verification request successfully deleted.");
 
@@ -72,16 +74,19 @@ public class VerificationService {
     }
 
     private ResponseEntity<String> registerVerification(String email, Role role, String code) {
-        getVerification(code);
+        Optional<Verification> searchedVerification = getVerification(code);
 
-        Verification verification = Verification.builder()
+        if(searchedVerification.isEmpty()) {
+            Verification verification = Verification.builder()
                     .verificationCode(code)
                     .email(email)
                     .role(role)
                     .build();
 
-        verificationRepository.save(verification);
-        return ResponseEntity.ok("Verification request successfully registered.");
+            verificationRepository.save(verification);
+            return ResponseEntity.ok("Verification request successfully registered.");
+        }
+        return ResponseEntity.badRequest().body("Verification code already registered.");
     }
 
 }
