@@ -122,7 +122,7 @@ class CustomerServiceTest {
 
         when(customerRepository.findById(id)).thenReturn(Optional.ofNullable(customer));
 
-        CustomerResponseDTO actual = customerService.getClient(id);
+        CustomerResponseDTO actual = customerService.getCustomerResponse(id);
         CustomerResponseDTO expected = CustomerResponseDTO.of(customer);
 
         assertEquals(expected, actual);
@@ -135,7 +135,7 @@ class CustomerServiceTest {
 
         when(customerRepository.findById(id)).thenThrow(new NotFoundException("Customer"));
 
-        assertThrows(NotFoundException.class, () -> customerService.getClient(id));
+        assertThrows(NotFoundException.class, () -> customerService.getCustomerResponse(id));
 
         verify(customerRepository,times(1)).findById(id);
     }
