@@ -26,7 +26,7 @@ public class CustomerController {
     }
     @GetMapping("/{id}")
     public CustomerResponseDTO getCustomer(@PathVariable Long id){
-        return customerService.getClient(id);
+        return customerService.getCustomerResponse(id);
     }
 
     @DeleteMapping("/")
