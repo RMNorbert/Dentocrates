@@ -5,8 +5,6 @@ import com.rmnnorbert.dentocrates.controller.dto.client.authentication.Authentic
 import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.security.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +45,6 @@ public class AuthenticationController {
             @RequestBody VerificationRequestDTO dto
     ) {
         return ResponseEntity.ok(service.sendAuthenticationCode(dto));
-    }
-    @PostMapping("/reset")
-    public ResponseEntity<String> resetPassword(
-           @Valid @RequestBody ResetDto dto
-    ) {
-        return service.resetPassword(dto);
-    }
-
-    @PostMapping("/verify")
-    public ResponseEntity<String> verify(
-           @Valid @RequestBody VerifyDto dto
-    ) {
-        return service.verifyClient(dto);
     }
 
     @GetMapping("/oauth2/authorizationPageUrl/google")
