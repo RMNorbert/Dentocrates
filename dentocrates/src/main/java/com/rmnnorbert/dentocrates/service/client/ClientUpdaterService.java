@@ -3,6 +3,7 @@ package com.rmnnorbert.dentocrates.service.client;
 import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
 import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
+import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
 import com.rmnnorbert.dentocrates.data.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class ClientUpdaterService {
     }
 
     public ResponseEntity<String> resetPassword(ResetDto dto) {
-        Verification verification = verificationService.getVerification(dto.verificationCode());
+        Verification verification = verificationService.getVerification(dto.verificationCode())
+                .orElseThrow(() -> new NotFoundException("Verification"));
 
         if(verification.getEmail().equals(dto.email())) {
             updateClientPassword(verification, dto.password());
@@ -36,7 +38,8 @@ public class ClientUpdaterService {
     }
 
     public ResponseEntity<String> verifyClient(VerifyDto dto) {
-        Verification verification = verificationService.getVerification(dto.verificationCode());
+        Verification verification = verificationService.getVerification(dto.verificationCode())
+                .orElseThrow(() -> new NotFoundException("Verification"));
 
         if(verification.getRole().equals(Role.CUSTOMER)) {
             customerService.verifyCustomer(verification.getEmail());
