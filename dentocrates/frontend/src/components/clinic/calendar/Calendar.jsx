@@ -99,9 +99,9 @@ const Calendar = () => {
                 {date.justDate ? (
                     <div className="date">
                         {times?.map((time, i) => (
-                            <div>
+                            <div key={`time-${i}`} >
                                 <button type="button"
-                                        key={`time-${i}`} className="times"
+                                        className="times"
                                         onClick={() => setDate((prev) => ({...prev, dateTime: time}))}
                                 >
                                     {format(time, 'kk:mm')}
