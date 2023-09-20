@@ -52,21 +52,21 @@ class CustomerControllerTest {
         long searchedId = 1;
         CustomerResponseDTO expected = new CustomerResponseDTO(1,"email","fisrt","last",Role.CUSTOMER);
 
-        when(customerService.getClient(searchedId)).thenReturn(expected);
+        when(customerService.getCustomerResponse(searchedId)).thenReturn(expected);
 
         CustomerResponseDTO actual = customerController.getCustomer(searchedId);
 
         assertEquals(expected, actual);
-        verify(customerService,times(1)).getClient(searchedId);
+        verify(customerService,times(1)).getCustomerResponse(searchedId);
     }
     @Test
     void getCustomerShouldReturnNotFoundException() {
         long searchedId = 1;
 
-        when(customerService.getClient(searchedId)).thenThrow(NotFoundException.class);
+        when(customerService.getCustomerResponse(searchedId)).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, () -> customerController.getCustomer(searchedId));
-        verify(customerService,times(1)).getClient(searchedId);
+        verify(customerService,times(1)).getCustomerResponse(searchedId);
     }
 
     @ParameterizedTest
@@ -81,10 +81,10 @@ class CustomerControllerTest {
     @Test
     void deleteCustomerShouldReturnNotFoundException() {
         DeleteDTO dto = new DeleteDTO(1,1);
-        when(customerService.getClient(dto.targetId())).thenThrow(NotFoundException.class);
+        when(customerService.getCustomerResponse(dto.targetId())).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, () -> customerController.getCustomer(dto.targetId()));
-        verify(customerService,times(1)).getClient(dto.targetId());
+        verify(customerService,times(1)).getCustomerResponse(dto.targetId());
     }
     private static Stream<Arguments> provideExpectedList() {
         return Stream.of(

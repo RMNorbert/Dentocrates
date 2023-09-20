@@ -11,10 +11,10 @@ import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
-import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.service.JwtService;
-import com.rmnnorbert.dentocrates.service.client.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.DentistService;
 import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.VerificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -35,7 +35,7 @@ class AuthenticationServiceTest {
     @Mock
     private ClientRepository clientRepository;
     @Mock
-    private DentistRepository dentistRepository;
+    private DentistService dentistService;
     @Mock
     private CustomerRepository customerRepository;
     @Mock
@@ -56,7 +56,7 @@ class AuthenticationServiceTest {
         MockitoAnnotations.openMocks(this);
         authenticationService = new AuthenticationService(
                 clientRepository,
-                dentistRepository,
+                dentistService,
                 customerRepository,
                 passwordEncoder,
                 jwtService,

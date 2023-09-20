@@ -54,7 +54,7 @@ export const Appointment = () => {
                     >
                         {clinics.map((clinic) => {
                             if (clinic.id === appointment.clinicId) {
-                               return <div className="appointment-clinic-name">{clinic.name}</div>
+                               return <div key={clinic.name} className="appointment-clinic-name">{clinic.name}</div>
                             }
                         })}
                         <div className="appointment-element">

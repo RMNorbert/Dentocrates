@@ -5,29 +5,22 @@ import com.rmnnorbert.dentocrates.controller.dto.client.authentication.Authentic
 import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
-import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
-import com.rmnnorbert.dentocrates.dao.verification.Verification;
-import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
-import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import com.rmnnorbert.dentocrates.service.JwtService;
+import com.rmnnorbert.dentocrates.service.client.DentistService;
 import com.rmnnorbert.dentocrates.service.client.VerificationService;
 import com.rmnnorbert.dentocrates.utils.DtoMapper;
 import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -42,7 +35,7 @@ import java.util.Optional;
 public class AuthenticationService {
     private String state;
     private final ClientRepository clientRepository;
-    private final DentistRepository dentistRepository;
+    private final DentistService dentistService;
     private final CustomerRepository customerRepository;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -53,9 +46,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final VerificationService verificationService;
     @Autowired
-    public AuthenticationService(ClientRepository clientRepository, DentistRepository dentistRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService, ClientRegistrationRepository clientRegistrationRepository, OAuth2HelperService oAuth2Helper) {
+    public AuthenticationService(ClientRepository clientRepository, DentistService dentistService, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService, ClientRegistrationRepository clientRegistrationRepository, OAuth2HelperService oAuth2Helper) {
         this.clientRepository = clientRepository;
-        this.dentistRepository = dentistRepository;
+        this.dentistService = dentistService;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -88,7 +81,7 @@ public class AuthenticationService {
             String password = passwordEncoder.encode(request.password());
             Dentist dentist = DtoMapper.toEntity(request,password);
 
-            dentistRepository.save(dentist);
+            dentistService.saveDentist(dentist);
             verificationService.sendVerification(request.email(), "DENTIST","registration", false);
 
             String jwtToken = jwtService.generateToken(dentist);
@@ -100,7 +93,7 @@ public class AuthenticationService {
         }
     }
     public AuthenticationRequest registerWithOauth(String state, String code) {
-        String[] userCredentials = authenticateOauth(state, code);
+        String[] userCredentials = oAuth2Helper.getOauthCredentials(this.state , state, code);
         String email = userCredentials[0];
         String password = userCredentials[1];
         String firstName = userCredentials[2];
@@ -121,32 +114,7 @@ public class AuthenticationService {
             return new AuthenticationRequest(email, password,"CUSTOMER", authenticationCode);
         }
     }
-    public ResponseEntity<String> resetPassword(ResetDto dto) {
-        Verification verification = getVerification(dto.verificationCode());
 
-        if(verification.getEmail().equals(dto.email())) {
-            updateClientPassword(verification, dto.password());
-            return ResponseEntity.ok().body("Password changed successfully.");
-        } else {
-            throw new InvalidCredentialException();
-        }
-    }
-
-    public ResponseEntity<String> verifyClient(VerifyDto dto) {
-        Verification verification = getVerification(dto.verificationCode());
-
-        if(verification.getRole().equals(Role.CUSTOMER)) {
-            Customer customer = getCustomer(verification.getEmail());
-            customer.setVerified(true);
-            customerRepository.save(customer);
-        }
-        else if (verification.getRole().equals(Role.DENTIST)) {
-            Dentist dentist = getDentist(verification.getEmail());
-            dentist.setVerified(true);
-            dentistRepository.save(dentist);
-        }
-        return ResponseEntity.ok().body("Verification successful.");
-    }
     public boolean sendAuthenticationCode(VerificationRequestDTO dto) {
         boolean isEmailExist = clientRepository.existsByEmail(dto.email());
         if (isEmailExist) {
@@ -165,7 +133,7 @@ public class AuthenticationService {
             if(isAuthenticationCodeValid) {
                 Client client = optionalClient.get();
 
-                Authentication a = authenticationManager.authenticate(
+                authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.email(),
                                 request.password()
@@ -201,54 +169,8 @@ public class AuthenticationService {
         }
         return null;
     }
-    private String[] authenticateOauth(String state, String code) {
-        if (state.equals(this.state)){
-            ResponseEntity<TokenResponse> responseEntity = oAuth2Helper.getGoogleTokenResponse(code);
-            // Access the returned token and other fields from tokenResponse
-            if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                TokenResponse tokenResponse = responseEntity.getBody();
-                String idToken = tokenResponse.getId_token();
-                String[] userCredentials = oAuth2Helper.parseToken(idToken);
-                return userCredentials;
-            } else {
-                System.out.println("Token exchange failed. Status code: " + responseEntity.getStatusCode());
-                loginFailureCounter.increment();
-                throw new InvalidCredentialException();
-            }
-        } else {
-            loginFailureCounter.increment();
-            throw new InvalidCredentialException();
-        }
-    }
     private Optional<Client> getClient(String email) {
         return clientRepository.getClientByEmail(email);
-    }
-    private Verification getVerification(String verificationCode) {
-        return verificationService.getVerification(verificationCode)
-                .orElseThrow(() -> new NotFoundException("Verification"));
-    }
-    private Customer getCustomer(String email) {
-        return customerRepository.getClientByEmail(email)
-                .orElseThrow(() -> new NotFoundException("Customer"));
-    }
-    private Dentist getDentist(String email) {
-        return dentistRepository.getClientByEmail(email)
-                .orElseThrow(() -> new NotFoundException("Dentist"));
-    }
-    private void updateClientPassword(Verification verification, String password ) {
-        String newPassword = passwordEncoder.encode(password);
-
-        if (verification.getRole().equals(Role.CUSTOMER)) {
-            Customer customer = getCustomer(verification.getEmail());
-            customer.setPassword(newPassword);
-            customerRepository.save(customer);
-        }
-
-        else if (verification.getRole().equals(Role.DENTIST)) {
-            Dentist dentist = getDentist(verification.getEmail());
-            dentist.setPassword(newPassword);
-            dentistRepository.save(dentist);
-        }
     }
     private String generateState() {
         String state = new BigInteger(130, new SecureRandom()).toString(32);

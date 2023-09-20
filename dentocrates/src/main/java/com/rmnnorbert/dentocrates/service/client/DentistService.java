@@ -3,6 +3,7 @@ package com.rmnnorbert.dentocrates.service.client;
 import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
+import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,22 @@ public class DentistService {
         return DentistResponseDTO.of(dentistRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Dentist")));
     }
+    public Dentist getDentist(String email) {
+        return dentistRepository.getClientByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Dentist"));
+    }
 
+    public Dentist saveDentist(Dentist dentist) {
+        return dentistRepository.save(dentist);
+    }
+    public Dentist verifyDentist(String email){
+        Dentist dentist = getDentist(email);
+        dentist.setVerified(true);
+        return saveDentist(dentist);
+    }
+    public Dentist updateDentistPassword(String email, String newPassword){
+        Dentist dentist = getDentist(email);
+        dentist.setPassword(newPassword);
+        return saveDentist(dentist);
+    }
 }

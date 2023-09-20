@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.service.client;
 
+import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
 import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.VerificationRepository;
@@ -22,11 +23,12 @@ public class VerificationService {
         this.gMailerService = gMailerService;
         this.verificationRepository = verificationRepository;
     }
+
     public Optional<Verification> getVerification(String verificationCode) {
         return verificationRepository.findByVerificationCode(verificationCode);
     }
     public boolean validate(String verificationCode) {
-        return getVerification(verificationCode).isPresent();
+        return verificationRepository.findByVerificationCode(verificationCode).isPresent();
     }
     public ResponseEntity<String> sendVerification(String email, String role, String action, boolean reset) {
         String verificationCode = UUID.randomUUID().toString();
@@ -36,12 +38,12 @@ public class VerificationService {
 
         ResponseEntity<String> response = registerVerification(email, roleAsEnum, verificationCode);
         String link;
-        if(!reset) {
-            link = verificationUrl + verificationCode;
-        } else {
+
+        if(reset) {
             verificationUrl += "reset/";
-            link = verificationUrl + verificationCode;
         }
+
+        link = verificationUrl + verificationCode;
         gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,link);
         return response;
     }
@@ -58,13 +60,12 @@ public class VerificationService {
     }
     public ResponseEntity<String> deleteVerification(String verificationCode) {
         try {
-            Optional<Verification> verification = getVerification(verificationCode);
-            if (verification.isPresent()) {
-                verificationRepository.delete(verification.get());
-                return ResponseEntity.ok("Verification request successfully deleted.");
-            } else {
-                return ResponseEntity.badRequest().body("There is no verification request for the provided email.");
-            }
+            Verification verification = getVerification(verificationCode)
+                    .orElseThrow(() -> new NotFoundException("Verification"));
+
+            verificationRepository.delete(verification);
+            return ResponseEntity.ok("Verification request successfully deleted.");
+
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
@@ -84,9 +85,8 @@ public class VerificationService {
 
             verificationRepository.save(verification);
             return ResponseEntity.ok("Verification request successfully registered.");
-        } else {
-            return ResponseEntity.badRequest().body("A verification request already registered.");
         }
+        return ResponseEntity.badRequest().body("Verification code already registered.");
     }
 
 }

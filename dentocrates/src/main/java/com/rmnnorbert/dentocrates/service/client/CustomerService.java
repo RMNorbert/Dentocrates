@@ -39,11 +39,29 @@ public class CustomerService {
         }
         return ResponseEntity.badRequest().body("Invalid delete request.");
     }
-    public CustomerResponseDTO getClient(long id){
+    public CustomerResponseDTO getCustomerResponse(long id){
         return CustomerResponseDTO.of(customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer")));
     }
+
     private Customer getClientById(long id){
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer"));
+    }
+    public Customer getCustomer(String email) {
+        return customerRepository.getClientByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Customer"));
+    }
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+    public Customer verifyCustomer(String email){
+        Customer customer = getCustomer(email);
+        customer.setVerified(true);
+        return saveCustomer(customer);
+    }
+    public Customer updateCustomerPassword(String email, String newPassword){
+        Customer customer = getCustomer(email);
+        customer.setPassword(newPassword);
+        return saveCustomer(customer);
     }
 
 }

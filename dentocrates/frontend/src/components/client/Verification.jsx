@@ -32,7 +32,7 @@ function VerifyPage (props) {
     }
     const postPasswordReset = async(password)=>{
         if(password === passwordVerifier) {
-            const clientUrl = '/java-backend/api/reset';
+            const clientUrl = '/java-backend/update/password';
             const request = {
                 verificationCode: verificationCode,
                 email: email(),
@@ -47,7 +47,7 @@ function VerifyPage (props) {
         setMessage("Passwords do not match");
     };
     const postClientVerification = async ()=>{
-            const verificationUrl = '/java-backend/api/verify';
+            const verificationUrl = '/java-backend/update/verify';
             const request = {
                 verificationCode: verificationCode,
             };
