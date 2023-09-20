@@ -26,7 +26,7 @@ import java.util.Arrays;
 import static com.rmnnorbert.dentocrates.data.Role.*;
 
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity()
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -75,7 +75,8 @@ public class SecurityConfiguration {
                         "/oauth2/**",
                         "/login/**",
                         "/api/**",
-                        "/login/oauth2/**"
+                        "/login/oauth2/**",
+                        "/update"
                     ).permitAll()
                     .requestMatchers("/client/{id}",
                         "/verify/**",
