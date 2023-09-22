@@ -208,7 +208,7 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
     **Unix-like Systems:(Linux, macOs)**
     - First make the file executable by running the following command:
       ```chmod +x application-lifecycle.sh```
-    - Run the sh file with the following command or just by clicking on it
+    - Run the sh file with the following command or run it as a program
       ```./application-lifecycle.sh```
 ---
 #### 5. Access the application:
