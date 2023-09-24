@@ -6,6 +6,7 @@
 [![Java](https://img.shields.io/badge/Java-blue.svg?logo=openjdk&logoColor=white&labelColor=black&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 [![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-66ff00.svg?logo=spring&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-boot)
 [![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-security)
+[![Liquibase](https://img.shields.io/badge/-Liquibase-blue.svg?logo=Liquibase&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.liquibase.com/)
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.docker.com/)
 [![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=black&style=for-the-badge)](https://hibernate.org/)
@@ -71,6 +72,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - React,
   
  #### Database
+  - Liquibase (in progress)
   - PostgreSQL
   
   #### Others
