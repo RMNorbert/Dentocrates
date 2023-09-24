@@ -3,27 +3,29 @@
 
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/dentocrates/frontend/public/dentocrates-dark-logo.png" alt="Dentocrates" width="200">](README.md)
 
-[![Java](https://img.shields.io/badge/Java-blue.svg?logo=openjdk&logoColor=white&labelColor=black&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+[![Java](https://img.shields.io/badge/Java-009400.svg?logo=openjdk&logoColor=white&labelColor=black&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 [![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-66ff00.svg?logo=spring&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-boot)
 [![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-security)
+[![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red&labelColor=black)](https://jwt.io/)
+[<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
+[![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
+
+[![Hibernate](https://img.shields.io/badge/Hibernate-0CBAA6.svg?logo=Hibernate&logoColor=4d6b53&labelColor=black&style=for-the-badge)](https://hibernate.org/)
 [![Liquibase](https://img.shields.io/badge/-Liquibase-blue.svg?logo=Liquibase&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.liquibase.com/)
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-blue.svg?logo=postgresql&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/-docker-blue.svg?logo=docker&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.docker.com/)
-[![Hibernate](https://img.shields.io/badge/Hibernate-323330.svg?logo=Hibernate&logoColor=4d6b53&labelColor=black&style=for-the-badge)](https://hibernate.org/)
-
-[<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
-[![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
 [![OpenAPI 3](https://img.shields.io/badge/OpenApi-323330.svg?logo=openapiinitiative&logoColor=66FF01&labelColor=black&style=for-the-badge)](https://www.openapis.org/)
-[![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red&labelColor=black)](https://jwt.io/)
-[![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-008080.svg?logo=flask&logoColor=white&labelColor=black&style=for-the-badge)](https://flask.palletsprojects.com/en/2.3.x/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-812CE5.svg?logo=pytorch&logoColor=DE3412&labelColor=black&style=for-the-badge)](https://pytorch.org/)
 
-[![NumPy](https://img.shields.io/badge/NumPy-navy.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
-[![Express](https://img.shields.io/badge/Express-00264D.svg?logo=Express&logoColor=gold&labelColor=black&style=for-the-badge)](https://expressjs.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-00264D.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
-[![Java Script](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
-[![React](https://img.shields.io/badge/React-323330.svg?logo=react&logoColor=blue&labelColor=black&style=for-the-badge)](https://vitejs.dev/)
+[![Python](https://img.shields.io/badge/Python-00264D.svg?logo=python&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-00264D.svg?logo=flask&logoColor=white&labelColor=black&style=for-the-badge)](https://flask.palletsprojects.com/en/2.3.x/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-00264D.svg?logo=pytorch&logoColor=DE3412&labelColor=black&style=for-the-badge)](https://pytorch.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-00264D.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
+[![Express](https://img.shields.io/badge/Express-black.svg?logo=Express&logoColor=gold&labelColor=black&style=for-the-badge)](https://expressjs.com/)
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-black.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
+[![Java Script](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
+[![React](https://img.shields.io/badge/React-black.svg?logo=react&logoColor=blue&labelColor=black&style=for-the-badge)](https://vitejs.dev/)
+
 
 [![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
 [![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&labelColor=323330&style=for-the-badge&display_timestamp=committer&color=darkgreen)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
