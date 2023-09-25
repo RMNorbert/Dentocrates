@@ -6,11 +6,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
     <changeSet id="create-location-table" author="RMNorbert">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="location"/>
-            </not>
-        </preConditions>
         <createTable tableName="location">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
