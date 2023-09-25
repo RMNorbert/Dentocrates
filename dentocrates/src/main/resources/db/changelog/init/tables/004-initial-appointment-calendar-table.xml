@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="create-appointment-calendar-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="client"/>
+                <tableExists tableName="clinic"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="appointment_calendar">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="clinic_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reservation" type="TIMESTAMP"/>
+
+            <column name="appeared" type="BOOLEAN" defaultValueBoolean="false" />
+
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
