@@ -5,7 +5,6 @@ import {MultiFetch} from "../../fetch/MultiFetch";
 import {userId} from "../token/TokenDecoder";
 
 export const Appointment = () => {
-    const { data } = MultiFetch();
     const currentDate = new Date().toJSON();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [appointments, setAppointments] = useState<AppointmentDTO[]>([]);
@@ -13,12 +12,12 @@ export const Appointment = () => {
     const getData = async () => {
         const appointmentsDataUrl = `/calendar/customer/${userId()}`;
         const clinicDataUrl = '/clinic/all';
-        const appointmentsData = await data(appointmentsDataUrl);
-        const clinicsData = await data(clinicDataUrl);
+        const appointmentsRespond = await MultiFetch<AppointmentDTO[]>(appointmentsDataUrl);
+        const clinicsResponse = await MultiFetch<ClinicResponseDTO[]>(clinicDataUrl);
 
-        const appointmentsClinicIds = await appointmentsData.map((element:AppointmentDTO ) => element.clinicId);
-        const filteredClinicsData = await clinicsData.filter((clinic: ClinicResponseDTO) => appointmentsClinicIds.includes(clinic.id));
-        const sortedAppointments = await appointmentsData.sort(
+        const appointmentsClinicIds = appointmentsRespond.map((element: AppointmentDTO) => element.clinicId);
+        const filteredClinicsData = clinicsResponse.filter((clinic: ClinicResponseDTO) => appointmentsClinicIds.includes(clinic.id));
+        const sortedAppointments = appointmentsRespond.sort(
             (a: AppointmentDTO, b: AppointmentDTO) =>
                 Number(
                     a.reservation.substring(0, 19).replace(/[T:-]/g, '')
@@ -36,7 +35,7 @@ export const Appointment = () => {
 
     const handleDelete = async (currentId: number) => {
         const calendarDeleteUrl:string = '/calendar/';
-        const response = await data(calendarDeleteUrl,'DELETE',{userId: userId(), targetId: currentId})
+        const response = await MultiFetch(calendarDeleteUrl,'DELETE',{userId: userId(), targetId: currentId})
         if(response) {
             setIsLoaded(false);
         }
