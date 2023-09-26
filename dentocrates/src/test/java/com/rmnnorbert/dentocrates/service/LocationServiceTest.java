@@ -12,9 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,9 +59,11 @@ class LocationServiceTest {
     @Test
     void registerLocation() {
         LocationDTO dto = new LocationDTO(1000,"City");
-
-        ResponseEntity<String> actual = locationService.registerLocation(dto);
-        ResponseEntity<String> expected = ResponseEntity.ok("Location registered successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Location registered successfully");
+        ResponseEntity<Map<String,String>> actual = locationService.registerLocation(dto);
+        ResponseEntity<Map<String,String>> expected = ResponseEntity.ok(response);
 
         assertEquals(expected, actual);
     }

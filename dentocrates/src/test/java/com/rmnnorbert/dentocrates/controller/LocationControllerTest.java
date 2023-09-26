@@ -13,7 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,10 +44,13 @@ class LocationControllerTest {
     @Test
     void registerLocationShouldReturnExpectedValue() {
         LocationDTO dto = new LocationDTO(1000,"city");
-        ResponseEntity<String> expected = ResponseEntity.ok("Location registered successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Location registered successfully");
+        ResponseEntity<Map<String, String>> expected = ResponseEntity.ok(response);
         when(service.registerLocation(dto)).thenReturn(expected);
 
-        ResponseEntity<String> actual = locationController.registerLocation(dto);
+        ResponseEntity<Map<String,String>> actual = locationController.registerLocation(dto);
         assertEquals(expected,actual);
         verify(service,times(1)).registerLocation(dto);
     }
