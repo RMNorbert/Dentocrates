@@ -4,16 +4,15 @@ import { ClinicList } from "./ClinicList"
 import { Loading } from "../elements/Loading";
 import { MultiFetch } from "../../fetch/MultiFetch";
 export const ClinicSelectorPage: React.FC = () => {
-    const { data } = MultiFetch();
     const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
     const [clinicData, setClinicData] = useState<ClinicResponseDTO[]>([]);
     const [filteredData, setFilteredData] = useState<ClinicResponseDTO[]>([]);
 
     const getClinicData = async () => {
         const clinicDataUrl = `/clinic/all`;
-        const responseData = await data(clinicDataUrl);
-        setClinicData(responseData);
-        setFilteredData(responseData);
+        const response = await MultiFetch<ClinicResponseDTO[]>(clinicDataUrl);
+        setClinicData(response);
+        setFilteredData(response);
         setIsDataLoaded(true);
     };
 
@@ -43,7 +42,7 @@ export const ClinicSelectorPage: React.FC = () => {
                     />
                 </div>
                 <div className="list">
-                    {filteredData.length > 0 ? (
+                    {filteredData && filteredData.length > 0 ? (
                         <ClinicList clinicDatas={filteredData} />
                     ) : (
                         <p>No results found.</p>
