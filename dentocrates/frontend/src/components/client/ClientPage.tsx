@@ -5,39 +5,38 @@ import {MultiFetch} from "../../fetch/MultiFetch";
 import {Loading} from "../elements/Loading";
 
 export const ClientPage: React.FC = () => {
-    const { data } = MultiFetch();
     const [clinicData, setClinicData] = useState<ClinicResponseDTO[]>([]);
     const [clinicId, setClinicId] = useState<number>(0);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
-    const [leaveData, setLeaveData] = useState<Leave[]>([]);
+    const [leaveData, setLeaveData] = useState<LeaveDTO[]>([]);
     const [clientData, setClientData] = useState<CustomerResponseDTO | DentistResponseDTO | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const getClientDetails = async () => {
         if (role() === 'CUSTOMER') {
             const clientDetailsUrl = `/client/${userId()}`;
-            const response:CustomerResponseDTO = await data(clientDetailsUrl);
+            const response = await MultiFetch<CustomerResponseDTO>(clientDetailsUrl);
             setClientData(response);
         } else if (role() === 'DENTIST') {
             const clinicDetailsUrl = `/clinic/dentist/${userId()}`;
             const dentistDetailsUrl = `/dentist/${userId()}`;
-            const clinicResponse = await data(clinicDetailsUrl);
+            const clinicResponse = await MultiFetch<ClinicResponseDTO[]>(clinicDetailsUrl);
 
             setClinicData(clinicResponse);
             setClinicId(clinicResponse[0].id);
 
-            const response:DentistResponseDTO = await data(dentistDetailsUrl);
+            const response = await MultiFetch<DentistResponseDTO>(dentistDetailsUrl);
             setClientData(response);
             await fetchLeaveData(clinicResponse);
         }
     };
 
     const fetchLeaveData = async (clinic: ClinicResponseDTO[]) => {
-        const leaves: Leave[] = [];
+        const leaves: LeaveDTO[] = [];
         for (let i = 0; i < clinic.length; i++) {
-            const clinicLeaves = await data(`/leave/${clinic[i].id}`);
-            if (clinicLeaves.status === 200) {
+            const clinicLeaves = await MultiFetch<LeaveDTO[]>(`/leave/${clinic[i].id}`);
+            if (clinicLeaves) {
                 leaves.push(...clinicLeaves);
             }
         }
@@ -66,7 +65,7 @@ export const ClientPage: React.FC = () => {
             endOfTheLeave: endDate,
         };
         try {
-            const response = await data('/leave/', 'POST', registerData);
+            const response = await MultiFetch('/leave/', 'POST', registerData);
             if (response) {
                 setIsLoaded(false);
             }
@@ -79,7 +78,7 @@ export const ClientPage: React.FC = () => {
         const passwordResetRequestUrl = '/verify/reset/register/';
         const requestBody = { email: email, role: role() };
         try {
-            await data(passwordResetRequestUrl, 'POST', requestBody);
+            await MultiFetch(passwordResetRequestUrl, 'POST', requestBody);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -93,7 +92,7 @@ export const ClientPage: React.FC = () => {
                     ? '/dentist/'
                     : '';
         const requestBody = { userId: userId(), targetId: currentId };
-        const response = await data(clientDeleteUrl, 'DELETE', requestBody);
+        const response = await MultiFetch(clientDeleteUrl, 'DELETE', requestBody);
         if (response) {
             localStorage.clear();
             const loginUrl = 'http://localhost:3000/';
@@ -104,7 +103,7 @@ export const ClientPage: React.FC = () => {
     const handleLeaveDelete = async (currentId: number, clinic: number) => {
         const leaveDeleteUrl = '/leave/';
         const requestBody = { dentistId: userId(), leaveId: currentId, clinicId: clinic };
-        const response = await data(leaveDeleteUrl, 'DELETE', requestBody);
+        const response = await MultiFetch(leaveDeleteUrl, 'DELETE', requestBody);
         if (response) {
             setIsLoaded(false);
         }
@@ -156,7 +155,7 @@ export const ClientPage: React.FC = () => {
                             Register leave
                         </button>
                         <div className="leave-box">
-                            {leaveData.map((leave: Leave) =>
+                            {leaveData.map((leave) =>
                                     leave.id ? (
                                         <div key={leave.id} className="leave-card">
                                             <div className="leave-start">
