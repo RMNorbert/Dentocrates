@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect, ChangeEvent, FormEvent} from "react"
 import { MultiFetch } from "../../../fetch/MultiFetch";
 import { useNavigate } from "react-router-dom";
 function LocationRegisterPage (){
-    const { data } = MultiFetch();
     const navigate = useNavigate();
     const [zipCode, setZipCode] = useState<number>(1000);
     const [city, setCity] = useState<string>('');
@@ -40,7 +39,7 @@ function LocationRegisterPage (){
             city: city
         }
         try{
-        await data(locationRegisterUrl,'POST', locationData);
+        await MultiFetch(locationRegisterUrl,'POST', locationData);
         navigate("/home");
         } catch (error) {
             setIsErrorMessageHidden(false);
