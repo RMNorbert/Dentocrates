@@ -158,7 +158,7 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
    
   - **3.2, Other environment variables to updated** before running the application: 
    
-     - **3.2.1, Using the application-lifecycle.sh** to run then application the variables in the file have to be updated. The sh file is located in: ```dentocrates/```
+     - **3.2.1, Using the application-lifecycle.sh** to run the application the variables in the file have to be updated. The sh file is located in: ```dentocrates/```
    
      - **3.2.2, Using the docker commpose file** to run the application. The file located in: ```dentocrates/``` , update all services environment variables in the file.
    
