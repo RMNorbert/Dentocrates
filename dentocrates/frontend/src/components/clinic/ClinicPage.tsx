@@ -2,13 +2,12 @@ import "./ClinicPage.css";
 import React, { useEffect, useState } from "react";
 import { Loading } from "../elements/Loading";
 import { role , userId} from "../token/TokenDecoder";
-import { MultiFetch, ApiResponse } from "../../fetch/MultiFetch";
+import { MultiFetch } from "../../fetch/MultiFetch";
 import { useParams, useNavigate } from "react-router-dom";
 
 
 export const ClinicPage = () => {
     const { id } = useParams<{ id: string }>();
-    const { data } = MultiFetch();
     const currentDate = new Date().toJSON();
     const navigate = useNavigate();
     const [isLoaded, setDataLoaded] = useState<boolean>(false);
@@ -16,28 +15,38 @@ export const ClinicPage = () => {
     const [clinicData, setClinicData] = useState<ClinicResponseDTO | null>(null);
     const [dentistData, setDentistData] = useState<DentistResponseDTO | null>(null);
     const [appointments, setAppointments] = useState<AppointmentDTO[]>([]);
-    const [customerAppointments, setCustomerAppointments] = useState<CustomerAppointmentResponseDTO[]>([]);
-    const [customers, setCustomers] = useState<ApiResponse[]>([]);
+    const [customerAppointments, setCustomerAppointments] = useState<AppointmentDTO[]>([]);
+    const [customers, setCustomers] = useState<CustomerResponseDTO[]>([]);
 
 
     const getClinicData = async () => {
         const clinicDataUrl = `/clinic/${id}`;
         const dentistDataUrl = `/dentist/`;
-        const responseData = await data(clinicDataUrl);
-        setClinicData(responseData);
-        const dentistResponse = await data(dentistDataUrl + responseData.dentistId);
+        const response = await MultiFetch<ClinicResponseDTO>(clinicDataUrl);
+        setClinicData(response);
+        const dentistResponse = await MultiFetch<DentistResponseDTO>(dentistDataUrl + response.dentistId);
         setDentistData(dentistResponse);
     };
     const updateAppointment = async (currentId: number, appearance: boolean) => {
         const calendarDataUrl = '/calendar/';
-        const requestBody = { id: currentId, clinicId: id, dentistId: userId(), appeared: !appearance };
-        await data(calendarDataUrl, 'PUT', requestBody);
+        let requestBody: AppointmentUpdate;
+        if (id != null) {
+            requestBody = {
+                id: currentId, clinicId: parseInt(id), dentistId: userId(), appeared: !appearance
+            };
+        } else {
+            const nullCaseId: number = 0;
+            requestBody = {
+                id: currentId, clinicId: nullCaseId, dentistId: userId(), appeared: !appearance
+            };
+        }
+        await MultiFetch<AppointmentUpdate>(calendarDataUrl, 'PUT', requestBody);
     };
 
     const getCalendarData = async () => {
         const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
-        const calendarData = await data(clinicCalendarDataUrl);
-        const appointmentsData = await calendarData.filter((appointment: AppointmentDTO) =>
+        const calendarData = await MultiFetch<AppointmentDTO[]>(clinicCalendarDataUrl);
+        const appointmentsData = calendarData.filter((appointment: AppointmentDTO) =>
             appointment.reservation >= currentDate).sort(
             (a: any, b: any) => Number(a.reservation.substring(0, 19)
                     .replace(/[T:-]/g, ''))
@@ -46,13 +55,13 @@ export const ClinicPage = () => {
                     .replace(/[T:-]/g, ''))
         );
 
-        setAppointments(await appointmentsData);
+        setAppointments(appointmentsData);
     };
 
     const getCustomerDetails = async () => {
         const customersDataUrl = '/client/all';
-        const responseData = await data(customersDataUrl);
-        setCustomers(responseData);
+        const response = await MultiFetch<CustomerResponseDTO[]>(customersDataUrl);
+        setCustomers(response);
     };
 
     const filterCustomerDetails = (customerId: number) => {
@@ -70,8 +79,8 @@ export const ClinicPage = () => {
 
     const getCustomerAppointments = async () => {
         const customerAppointmentsDataUrl = `/calendar/customer/${userId()}`;
-        const appointmentsData = await data(customerAppointmentsDataUrl);
-        const sortedAppointments = await appointmentsData.filter((appointment: AppointmentDTO) =>
+        const appointmentsResponse = await MultiFetch<AppointmentDTO[]>(customerAppointmentsDataUrl);
+        const sortedAppointments = appointmentsResponse.filter((appointment: AppointmentDTO) =>
             appointment.clinicId === Number(id) && appointment.reservation >= currentDate).sort(
             (a: any, b: any) => Number(a.reservation.substring(0, 19)
                     .replace(/[T:-]/g, ''))
