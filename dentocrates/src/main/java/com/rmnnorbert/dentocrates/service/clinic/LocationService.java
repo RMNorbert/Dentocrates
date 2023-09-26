@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LocationService {
@@ -24,10 +26,13 @@ public class LocationService {
                 .map(LocationDTO::of)
                 .toList();
     }
-    public ResponseEntity<String> registerLocation(LocationDTO locationDTO){
+    public ResponseEntity<Map<String, String>> registerLocation(LocationDTO locationDTO){
         Location location = Location.of(locationDTO);
         locationRepository.save(location);
-        return ResponseEntity.ok("Location registered successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Location registered successfully");
+        return ResponseEntity.ok(response);
     }
     public ResponseEntity<String> deleteLocationById(Long id){
         Location location = getLocationById(id);

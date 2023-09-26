@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -24,7 +25,7 @@ public class LocationController {
         return locationService.getAllLocation();
     }
     @PostMapping("/register")
-    public ResponseEntity<String> registerLocation(@Valid @RequestBody LocationDTO locationDTO){
+    public ResponseEntity<Map<String,String>> registerLocation(@Valid @RequestBody LocationDTO locationDTO){
         return locationService.registerLocation(locationDTO);
     }
     @DeleteMapping("/{id}")
