@@ -12,7 +12,6 @@ function LoginPage() {
     const [isResetPasswordRequested, setIsResetPasswordRequested] = useState<boolean>(false);
     const isMounted = useRef<boolean>(true);
     const navigate = useNavigate();
-    const { data } = MultiFetch();
 
     useEffect(() => {
         return () => {
@@ -31,7 +30,8 @@ function LoginPage() {
     const handleAuthenticationRequest = async () => {
         const authenticationRequestUrl = '/api/request/authenticate';
         const requestBody = {email: email};
-        const response = await data(authenticationRequestUrl, "POST", requestBody );
+        const response = await MultiFetch(authenticationRequestUrl, "POST", requestBody );
+
         if (response === true) {
             setClientIsValid(true);
         }
@@ -46,12 +46,11 @@ function LoginPage() {
             authenticationCode: authenticationCode
         };
         try{
-        const response = await data(authenticationUrl,'POST',  requestBody);
-
+            const response = await MultiFetch<AuthenticationResponse>(authenticationUrl,'POST',  requestBody);
         if (response.id) {
             const token = response.token;
             const id = response.id;
-            localStorage.setItem('userId', id);
+            localStorage.setItem('userId', id.toString());
             localStorage.setItem('token', token);
             navigate("/home");
         }
