@@ -4,7 +4,6 @@ import {MultiFetch} from "../../fetch/MultiFetch";
 import {useNavigate} from "react-router-dom";
 
 export const DentistPage = () => {
-    const { data } = MultiFetch();
     const navigate = useNavigate();
     const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
     const [dentistData, setDentistData] = useState<DentistResponseDTO[]>([]);
@@ -12,14 +11,14 @@ export const DentistPage = () => {
     const [clinicData, setClinicData] = useState<ClinicResponseDTO[]>([]);
     const getDentistDetails = async() =>{
         await getClinicData();
-        const responseData = await data(`/dentist/all`);
+        const responseData = await MultiFetch<DentistResponseDTO[]>(`/dentist/all`);
         setDentistData(responseData);
         setFilteredData(responseData);
         setIsDataLoaded(true);
     }
     const getClinicData = async () => {
-        const responseData = await data(`/clinic/all`);
-        setClinicData(responseData);
+        const response = await MultiFetch<ClinicResponseDTO[]>(`/clinic/all`);
+        setClinicData(response);
     }
 
     const filterClinics = (currentName: string, currentId: number) => {
