@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { MultiFetch } from "../../fetch/MultiFetch";
 function VerifyPage ({ reset }: { reset?: boolean }) {
     const { verificationCode } = useParams();
-    const { data } = MultiFetch();
     const [verificationCodeValidated, setVerificationCodeValidated] = useState<boolean>(false);
     const [password, setPassword] = useState<string>('');
     const [passwordVerifier, setPasswordVerifier] = useState<string>('');
@@ -13,10 +12,10 @@ function VerifyPage ({ reset }: { reset?: boolean }) {
     const [message, setMessage] = useState<string>('');
 
     const validateVerificationCode = async () => {
-        const response = await data(`/verify/${verificationCode}`);
+        const response = await MultiFetch<boolean>(`/verify/${verificationCode}`);
         setVerificationCodeValidated(response);
         if(!reset){
-                deleteVerification();
+                await deleteVerification();
         }
     }
     const handlePasswordChange = (event:ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +26,7 @@ function VerifyPage ({ reset }: { reset?: boolean }) {
     };
     const deleteVerification = async () => {
         const deleteVerifyUrl = '/verify/';
-        return await data(deleteVerifyUrl, 'DELETE', verificationCode);
+        return await MultiFetch<string>(deleteVerifyUrl, 'DELETE', verificationCode);
     }
     const postPasswordReset = async(password: string)=>{
         if(password === passwordVerifier) {
@@ -37,9 +36,8 @@ function VerifyPage ({ reset }: { reset?: boolean }) {
                 email: email(),
                 password: password
             };
-            console.log("response")
-            const response = await data(clientUrl, 'Post', request);
-            if (response.status === 200) {
+            const response = await MultiFetch<object>(clientUrl, 'Post', request);
+            if (response) {
                 await deleteVerification();
             }
         }
@@ -50,11 +48,9 @@ function VerifyPage ({ reset }: { reset?: boolean }) {
             const request = {
                 verificationCode: verificationCode,
             };
-        console.log("response")
-            const response = await data(verificationUrl, 'Post', request);
-            if (await response.status === 200) {
-                const deleteResponse = await deleteVerification();
-                console.log(deleteResponse.status)
+            const response = await MultiFetch(verificationUrl, 'Post', request);
+            if (response) {
+                await deleteVerification();
             }
         };
 
