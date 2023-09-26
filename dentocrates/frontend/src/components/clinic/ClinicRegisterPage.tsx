@@ -6,7 +6,6 @@ import { MultiFetch } from "../../fetch/MultiFetch";
 import { userId } from "../token/TokenDecoder";
 
 const ClinicRegisterPage: React.FC = () => {
-    const { data } = MultiFetch();
     const navigate = useNavigate();
     const [name, setName] = useState<string>('');
     const [clinicType, setClinicType] = useState<string>('');
@@ -27,11 +26,13 @@ const ClinicRegisterPage: React.FC = () => {
         const onLoadSelectedClinicType = 'COMMUNITY DENTAL CLINIC';
 
         try {
-            const responseData = await data(locationDataUrl);
-            setLocations(responseData);
+            const response = await MultiFetch<LocationDTO[]>(locationDataUrl);
+            console.log(response)
+            setLocations(response);
             setIsDataLoaded(true);
-            setZipCode(parseInt(responseData[0].zipCode));
-            setCity(responseData[0].city);
+
+            setZipCode(response[0].zipCode);
+            setCity(response[0].city);
             setClinicType(onLoadSelectedClinicType);
         } catch (error) {
             console.log(error)
@@ -90,7 +91,8 @@ const ClinicRegisterPage: React.FC = () => {
             dentistId: userId() || null,
         };
         try {
-            await data('/clinic/register', 'Post', registerData);
+            const clinicRegisterUrl : string = '/clinic/register';
+            await MultiFetch<ClinicData>(clinicRegisterUrl, 'POST', registerData);
             navigate('/home');
         } catch (error) {
             setHidden(false);
