@@ -10,7 +10,6 @@ import {Loading} from "../../elements/Loading";
 
 const Calendar = () => {
     const { id } = useParams<{ id: string }>();
-    const { data } = MultiFetch();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [leaveDates, setLeaveDates] = useState<number[]>([]);
     const [clinic, setClinic] = useState<ClinicResponseDTO | null>(null);
@@ -26,9 +25,9 @@ const Calendar = () => {
         const clinicLeaveDataUrl = `/leave/${id}`;
 
         const [clinicData, calendarData, leaveData] = await Promise.all([
-            data(clinicDataUrl),
-            data(clinicCalendarDataUrl),
-            data(clinicLeaveDataUrl),
+            MultiFetch<ClinicResponseDTO>(clinicDataUrl),
+            MultiFetch<AppointmentDTO[]>(clinicCalendarDataUrl),
+            MultiFetch<LeaveDTO[]>(clinicLeaveDataUrl),
         ]);
 
         setClinic(clinicData);
@@ -36,7 +35,7 @@ const Calendar = () => {
         getAllLeaveDates(leaveData);
     };
 
-    const getAllLeaveDates = (leaveDates: { startOfTheLeave: string; endOfTheLeave: string }[]) => {
+    const getAllLeaveDates = (leaveDates: LeaveDTO[]) => {
         const dates: number[] = [];
         const startDateModifier = 1;
 
@@ -90,7 +89,7 @@ const Calendar = () => {
                 reservation: formattedAppointment,
             };
 
-            await data(calendarRegisterUrl, 'POST', bookingData);
+            await MultiFetch(calendarRegisterUrl, 'POST', bookingData);
             setIsLoaded(false);
         } catch (error) {
             console.error('Error:', error);
