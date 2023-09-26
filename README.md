@@ -74,7 +74,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - React,
   
  #### Database
-  - Liquibase (in progress)
+  - Liquibase
   - PostgreSQL
   
   #### Others
