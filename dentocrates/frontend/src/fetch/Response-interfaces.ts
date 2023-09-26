@@ -9,6 +9,12 @@ interface AppointmentDTO {
     reservation: string;
     appeared: boolean;
 }
+interface AppointmentUpdate {
+    id: number | undefined;
+    clinicId: number  | undefined;
+    dentistId: number | null;
+    appeared: boolean;
+}
 
 interface ClinicResponseDTO {
     id: number;
@@ -21,12 +27,6 @@ interface ClinicResponseDTO {
     street: string;
     openingHours: string;
     dentistId: number;
-}
-interface Leave {
-    id: number;
-    clinicId: number;
-    startOfTheLeave: string;
-    endOfTheLeave: string;
 }
 
 interface CustomerAppointmentResponseDTO {
@@ -60,4 +60,14 @@ interface ClinicData {
     street: string;
     openingHours: string;
     dentistId: number | null;
+}
+interface LeaveDTO {
+    id: number;
+    clinicId: number;
+    startOfTheLeave: string;
+    endOfTheLeave: string;
+}
+interface AuthenticationResponse {
+    token: string;
+    id: number;
 }
