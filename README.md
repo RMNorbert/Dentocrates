@@ -133,7 +133,10 @@ Make sure you have the following dependencies installed before proceeding with t
   **For Windows or macOS**: Install Docker Desktop for an easy-to-use Docker environment.
 
 #### After installing Docker:
- Ensure it's running by opening a terminal or command prompt and running the command ```docker --version```.
+ Ensure it's running by opening a terminal or command prompt and running the command 
+ ```
+ docker --version
+ ```
 
 Note: Docker is optional and recommended for deployment scenarios. If you're using Docker, it can help manage dependencies and ensure consistent environments.
 
@@ -201,7 +204,10 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
   
     - Navigate to the project directory containing the docker-deploy.yml file.
 
-      Run the command ```docker-compose up --build``` to build and start the project.
+      Run the following command to build and start the project:
+      ```
+      docker-compose up --build
+      ```
 
       The docker-deploy.yml file defines the services and configurations needed for running your application in a Docker container.
       It simplifies deployment and ensures consistent setups across environments.
@@ -211,9 +217,13 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
   
     **Unix-like Systems:(Linux, macOs)**
     - First make the file executable by running the following command:
-      ```chmod +x application-lifecycle.sh```
+      ```
+      chmod +x application-lifecycle.sh
+      ```
     - Run the sh file with the following command or run it as a program
-      ```./application-lifecycle.sh```
+      ```
+      ./application-lifecycle.sh
+      ```
 ---
 #### 5. Access the application:
 
