@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
     <changeSet id="create-client-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+        </preConditions>
         <createTable tableName="client">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -29,9 +34,11 @@
 
             <column name="role" type="VARCHAR(255)"/>
 
-            <column name="verified" type="BOOLEAN"/>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
 
-            <column name="registration_time" type="TIMESTAMP"/>
+            <column name="registration_time" type="TIMESTAMP" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
 
             <column name="client_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>

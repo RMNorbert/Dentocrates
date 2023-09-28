@@ -5,7 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-        <changeSet id="add-clinic-foreign-key-constraints" author="RMNorbert">
+        <changeSet id="add-clinic-location-foreign-key-constraints" author="RMNorbert">
+            <preConditions onFail="MARK_RAN">
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_clinic_location"/>
+                </not>
+            </preConditions>
+
             <addForeignKeyConstraint
                     baseTableName="clinic"
                     baseColumnNames="location_id"
@@ -15,15 +21,23 @@
                     onUpdate="CASCADE"
                     constraintName="fk_clinic_location"
             />
-
-            <addForeignKeyConstraint
-                                  baseTableName="clinic"
-                                  baseColumnNames="dentist_in_contract"
-                                  referencedColumnNames="id"
-                                  referencedTableName="client"
-                                  onDelete="CASCADE"
-                                  onUpdate="CASCADE"
-                                  constraintName="fk_clinic_dentist"
-            />
         </changeSet>
+
+    <changeSet id="add-clinic-dentist-foreign-key-constraints" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_clinic_dentist"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint
+                baseTableName="clinic"
+                baseColumnNames="dentist_in_contract"
+                referencedColumnNames="id"
+                referencedTableName="client"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+                constraintName="fk_clinic_dentist"
+        />
+    </changeSet>
 </databaseChangeLog>

@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
     <changeSet id="create-verification-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="verification"/>
+            </not>
+        </preConditions>
         <createTable tableName="verification">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
