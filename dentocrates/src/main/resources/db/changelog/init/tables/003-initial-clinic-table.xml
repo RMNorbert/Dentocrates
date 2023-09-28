@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
     <changeSet id="create-clinic-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="clinic"/>
+            </not>
+        </preConditions>
         <createTable tableName="clinic">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

@@ -2,7 +2,7 @@ version: '3.8'
 services:
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:15
     networks:
       - mynetwork
     restart: unless-stopped
@@ -30,10 +30,26 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SECRET=048492546432436A442848F3147319D665857603B6B272848F751725773475237A5E567A66564
+      - oauthId=yourOauthId
+      - oauthSecret=yourOauthSecret
+      - SENDER_USERNAME=yourEmail@gmail.com
     volumes:
       - ./resources/static/dist:/app/src/main/resources/frontend
+
+  proxy:
+    container_name: proxy
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile-proxy
+    networks:
+      - mynetwork
+    ports:
+      - '3001:3001'
+    depends_on:
+      - postgres
+      - dentocrates
+
 networks:
   mynetwork:
     driver: bridge

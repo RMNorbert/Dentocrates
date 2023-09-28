@@ -5,7 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="add-leave-foreign-key" author="RMNorbert">
+    <changeSet id="add-leave-clinic-foreign-key" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_leave_clinic"/>
+            </not>
+        </preConditions>
+
         <addForeignKeyConstraint
                 baseTableName="leave"
                 baseColumnNames="clinic_id"

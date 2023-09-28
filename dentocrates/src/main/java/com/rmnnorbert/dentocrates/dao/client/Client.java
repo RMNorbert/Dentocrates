@@ -42,6 +42,7 @@ public class Client implements UserDetails {
     @Enumerated(EnumType.STRING)
     protected final Role role;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     protected boolean verified;
 
     protected LocalDateTime registrationTime;

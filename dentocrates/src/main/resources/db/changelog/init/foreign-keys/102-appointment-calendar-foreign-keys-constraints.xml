@@ -5,7 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="add-appointment-calendar-foreign-keys-constraints" author="RMNorbert">
+    <changeSet id="add-appointment-calendar-clinic-foreign-keys-constraints" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_appointment_calendar_clinic"/>
+            </not>
+        </preConditions>
 
         <addForeignKeyConstraint
                 baseTableName="appointment_calendar"
@@ -14,7 +19,16 @@
                 referencedTableName="clinic"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <changeSet id="add-appointment-calendar-client-foreign-keys-constraints" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+          <not>
+            <foreignKeyConstraintExists foreignKeyName="fk_appointment_calendar_customer"/>
+          </not>
+        </preConditions>
 
         <addForeignKeyConstraint
                 baseTableName="appointment_calendar"
@@ -23,7 +37,7 @@
                 referencedTableName="client"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
     </changeSet>
-
 </databaseChangeLog>

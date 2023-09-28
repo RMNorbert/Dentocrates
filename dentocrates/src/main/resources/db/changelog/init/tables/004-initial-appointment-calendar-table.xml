@@ -8,11 +8,9 @@
     <changeSet id="create-appointment-calendar-table" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="client"/>
-                <tableExists tableName="clinic"/>
+                <tableExists tableName="appointment_calendar"/>
             </not>
         </preConditions>
-
         <createTable tableName="appointment_calendar">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
