@@ -5,7 +5,7 @@ const app = express();
 
 // Proxy requests to the Java backend
 app.use('/java-backend', createProxyMiddleware({
-    target: 'http://localhost:8080/',
+    target: 'http://127.0.0.1:8080/',
     changeOrigin: true,
     pathRewrite: {
         '^/java-backend': '', // Remove the /java-backend part from the URL
