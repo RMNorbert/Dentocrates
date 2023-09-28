@@ -159,14 +159,19 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
      
      - Located in ```dentocrates/src/main/resources/application.yml```, the following variables have to be updated according to your Postgresql user: **username , password**.
    
-  - **3.2, Other environment variables to updated** before running the application: 
+  - **3.2, Other environment variables to update** before running the application: 
    
-     - **3.2.1, Using the application-lifecycle.sh** to run the application the variables in the file have to be updated. The sh file is located in: ```dentocrates/```
+     - **3.2.1, In case of using the application-lifecycle.sh** to run the application, the variables in the application-lifecycle.sh file have to be updated. The sh file is located in:
+       ```dentocrates/```
    
-     - **3.2.2, Using the docker commpose file** to run the application. The file located in: ```dentocrates/``` , update all services environment variables in the file.
+     - **3.2.2, In case of using the docker commpose file** to run the application, all the dentocrates service environment variables in the docker commpose file have to be updated, the file               located in: ```dentocrates/``` , and replace the datasource url in the application.yml located in :```dentocrates/src/main/resources```  with the following url :
+       ```
+       jdbc:postgresql://postgres:5432/dentocrates
+       ```
    
      - **3.2.3, In other case:**
-       - SECRET : This variable have to be created for the JWT related key creation, it is located in: ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService```
+       - SECRET : This variable have to be created for the JWT related key creation, it is located in:
+         ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService```
       
         - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials, it is located in : ```dentocrates/src/main/java/com.rmnnorber.dentocrates/security/config/SecurityConfiguration```
       
