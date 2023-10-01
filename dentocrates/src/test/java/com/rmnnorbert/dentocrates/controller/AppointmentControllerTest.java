@@ -2,10 +2,10 @@ package com.rmnnorbert.dentocrates.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentUpdateDTO;
+import com.rmnnorbert.dentocrates.dto.DeleteDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
 import org.junit.jupiter.api.BeforeEach;

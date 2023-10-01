@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.ClinicType;

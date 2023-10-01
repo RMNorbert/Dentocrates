@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.service.client;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
+import com.rmnnorbert.dentocrates.dto.client.update.ResetDto;
+import com.rmnnorbert.dentocrates.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;

@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.service.client;
 
-import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistResponseDTO;
+import com.rmnnorbert.dentocrates.dto.DeleteDTO;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.DentistRepository;

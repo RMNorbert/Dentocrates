@@ -2,7 +2,7 @@ import "./ClientPage.css";
 import React, { useEffect, useState } from "react"
 import {role, userId} from "../token/TokenDecoder";
 import {MultiFetch} from "../../fetch/MultiFetch";
-import {Loading} from "../elements/Loading";
+import {Loading} from "../lodaingPage/Loading";
 
 export const ClientPage = () => {
     const { data } = MultiFetch();

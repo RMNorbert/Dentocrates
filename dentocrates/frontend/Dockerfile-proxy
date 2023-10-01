@@ -4,7 +4,7 @@ FROM node:18
 # Set the working directory in the container
 WORKDIR /app
 COPY . /app
-WORKDIR /app
+
 # Copy files to the container
 COPY package*.json ./
 COPY proxy-server.js ./

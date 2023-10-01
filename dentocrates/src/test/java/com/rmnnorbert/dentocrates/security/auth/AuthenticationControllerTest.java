@@ -1,10 +1,10 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
 import com.rmnnorbert.dentocrates.controller.AuthenticationController;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
-import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

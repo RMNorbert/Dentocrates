@@ -1,0 +1,17 @@
+.clinic-register {
+    background-image: url("../../../../../public/clinic/roomaigeneratedpicture.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+.clinic-register-title {
+    background-color: #4068ca;
+    width: 100%;
+}
+.inputBox{
+    width: 100%;
+    display:grid;
+}
+label{
+   background-color: #6682c9;
+}

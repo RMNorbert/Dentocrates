@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.service.clinic;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;

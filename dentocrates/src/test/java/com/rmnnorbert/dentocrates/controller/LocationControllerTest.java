@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.service.clinic.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,10 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.authentication.VerificationRequestDTO;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.security.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

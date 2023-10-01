@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.location.LocationDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

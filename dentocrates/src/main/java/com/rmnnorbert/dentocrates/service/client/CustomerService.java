@@ -1,8 +1,8 @@
 package com.rmnnorbert.dentocrates.service.client;
 
-import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerAppointmentResponseDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerResponseDTO;
+import com.rmnnorbert.dentocrates.dto.DeleteDTO;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerAppointmentResponseDTO;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;

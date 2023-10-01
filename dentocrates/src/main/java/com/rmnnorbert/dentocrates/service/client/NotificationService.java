@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.service.client;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import org.springframework.stereotype.Service;

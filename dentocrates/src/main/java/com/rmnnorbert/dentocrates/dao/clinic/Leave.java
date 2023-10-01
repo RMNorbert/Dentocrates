@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.leave.LeaveRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

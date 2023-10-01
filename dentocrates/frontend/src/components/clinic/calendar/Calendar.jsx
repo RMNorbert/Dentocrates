@@ -5,7 +5,7 @@ import {add, format} from "date-fns";
 import { userId } from "../../token/TokenDecoder";
 import { useParams } from "react-router-dom";
 import {MultiFetch} from "../../../fetch/MultiFetch";
-import {Loading} from "../../elements/Loading";
+import {Loading} from "../../lodaingPage/Loading";
 const Calendar = () => {
     const { id } = useParams();
     const { data } = MultiFetch();

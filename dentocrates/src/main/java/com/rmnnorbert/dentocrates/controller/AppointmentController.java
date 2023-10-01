@@ -1,9 +1,9 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.DeleteDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.appointment.AppointmentUpdateDTO;
+import com.rmnnorbert.dentocrates.dto.DeleteDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

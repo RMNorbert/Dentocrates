@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.controller.dto.client.update.VerifyDto;
+import com.rmnnorbert.dentocrates.dto.client.update.ResetDto;
+import com.rmnnorbert.dentocrates.dto.client.update.VerifyDto;
 import com.rmnnorbert.dentocrates.service.client.ClientUpdaterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

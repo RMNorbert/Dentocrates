@@ -17,6 +17,7 @@ export const MultiFetch = () => {
                 }
             const response = await fetch((url[0] === "/" ? "" : "/") + url, {
                 method: method ?? "GET",
+                credentials: 'include',
                 body: answerObject ? JSON.stringify(answerObject) : undefined,
                 headers: headers,
             });

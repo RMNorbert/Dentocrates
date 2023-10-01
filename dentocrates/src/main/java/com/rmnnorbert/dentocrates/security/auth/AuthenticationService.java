@@ -1,10 +1,10 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationRequest;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.AuthenticationResponse;
-import com.rmnnorbert.dentocrates.controller.dto.client.authentication.VerificationRequestDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.customer.CustomerRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.client.dentist.DentistRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.authentication.VerificationRequestDTO;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
