@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.client;
+package com.rmnnorbert.dentocrates.service.client.communicationServices;
 
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;

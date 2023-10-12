@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.client;
+package com.rmnnorbert.dentocrates.service.client.oauth2;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -17,13 +17,14 @@ import java.text.ParseException;
 public class OAuth2HelperService {
     private final String id = System.getenv("oauthId");
     private final String secret = System.getenv("oauthSecret");
+    private final String redirectUri = System.getenv("REDIRECT_URI");
 
     public ResponseEntity<TokenResponse> getGoogleTokenResponse(String code) {
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("code", code);
         requestBody.add("client_id", id);
         requestBody.add("client_secret", secret);
-        requestBody.add("redirect_uri", "http://localhost:3000/login/oauth2/code/");
+        requestBody.add("redirect_uri", redirectUri);
         requestBody.add("grant_type", "authorization_code");
 
         // Set the headers for the request
@@ -35,13 +36,12 @@ public class OAuth2HelperService {
 
         // Make the POST request to the token endpoint
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<TokenResponse> responseEntity = restTemplate.exchange(
+        return restTemplate.exchange(
                 "https://www.googleapis.com/oauth2/v4/token",
                 HttpMethod.POST,
                 requestEntity,
                 TokenResponse.class
         );
-        return responseEntity;
     }
     public String[] parseToken(String idToken) {
         try {
@@ -70,8 +70,7 @@ public class OAuth2HelperService {
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 TokenResponse tokenResponse = responseEntity.getBody();
                 String idToken = tokenResponse.getId_token();
-                String[] userCredentials = parseToken(idToken);
-                return userCredentials;
+                return parseToken(idToken);
             } else {
                 System.out.println("Token exchange failed. Status code: " + responseEntity.getStatusCode());
                 throw new InvalidCredentialException();

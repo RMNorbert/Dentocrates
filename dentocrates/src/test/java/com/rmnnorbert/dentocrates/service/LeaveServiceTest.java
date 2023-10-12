@@ -9,7 +9,7 @@ import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
 import com.rmnnorbert.dentocrates.dao.clinic.Leave;
 import com.rmnnorbert.dentocrates.repository.ClinicRepository;
 import com.rmnnorbert.dentocrates.repository.LeaveRepository;
-import com.rmnnorbert.dentocrates.service.clinic.LeaveService;
+import com.rmnnorbert.dentocrates.service.clinic.leave.LeaveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

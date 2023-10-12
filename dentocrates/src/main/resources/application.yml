@@ -10,7 +10,7 @@ spring:
       hibernate:
         format_sql: false
         type:
-          json_format_mapper: com.rmnnorbert.dentocrates.security.config.JacksonJsonFormatMapperCustom
+          json_format_mapper: com.rmnnorbert.dentocrates.config.JacksonJsonFormatMapperCustom
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   web:
@@ -50,3 +50,4 @@ management:
         enabled: true
     metrics:
         enabled: true
+

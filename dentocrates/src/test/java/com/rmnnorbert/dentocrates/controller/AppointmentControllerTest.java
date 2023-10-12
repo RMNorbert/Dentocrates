@@ -7,7 +7,7 @@ import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
-import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

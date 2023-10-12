@@ -28,6 +28,8 @@
 
             <column name="appeared" type="BOOLEAN" defaultValueBoolean="false" />
 
+            <column name="reviewed" type="BOOLEAN" defaultValueBoolean="false" />
+
         </createTable>
     </changeSet>
 </databaseChangeLog>

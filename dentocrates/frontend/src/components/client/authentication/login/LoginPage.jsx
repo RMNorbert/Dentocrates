@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {Reset} from "../reset-password/Reset";
 import {MultiFetch} from "../../../../fetch/MultiFetch";
-import { handleGoogleLogin } from "./OauthLogin";
+import { handleGoogleLogin } from "../oauth/OauthLogin";
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -29,7 +29,7 @@ function LoginPage() {
         setAuthenticationCode(event.target.value);
     }
     const handleAuthenticationRequest = async () => {
-        const authenticationRequestUrl = '/java-backend/api/request/authenticate';
+        const authenticationRequestUrl = '/api/request/authenticate';
         const requestBody = {email: email};
         const response = await data(authenticationRequestUrl, "POST", requestBody );
         if (response === true) {
@@ -38,7 +38,7 @@ function LoginPage() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const authenticationUrl = '/java-backend/api/authenticate';
+        const authenticationUrl = '/api/authenticate';
         const requestBody = {
             email: email,
             password: password,
@@ -60,6 +60,7 @@ function LoginPage() {
 
     return (
         <div className='pageContent'>
+            <div>
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -81,13 +82,15 @@ function LoginPage() {
                     <button type="submit">Login</button></> :
                     <button
                         type="button"
-                        onClick={handleAuthenticationRequest}
+                        onClick={() => handleAuthenticationRequest()}
                     >
                         Login
                     </button>
                 }
             </form>
-            <button onClick={handleGoogleLogin}>Sign in With Google</button>
+            </div>
+            <div>
+            <button onClick={() => handleGoogleLogin()}>Sign in With Google</button>
             <h3 className="register"
                 onClick={() =>  navigate("/register")}
             >
@@ -105,6 +108,7 @@ function LoginPage() {
             :
                 <></>
             }
+            </div>
         </div>
     );
 }

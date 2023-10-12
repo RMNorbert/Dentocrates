@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.controller;
 
 import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
-import com.rmnnorbert.dentocrates.service.clinic.LocationService;
+import com.rmnnorbert.dentocrates.service.clinic.location.LocationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

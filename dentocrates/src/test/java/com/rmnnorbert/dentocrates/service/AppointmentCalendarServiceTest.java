@@ -13,7 +13,7 @@ import com.rmnnorbert.dentocrates.data.Role;
 import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
 import com.rmnnorbert.dentocrates.repository.ClinicRepository;
 import com.rmnnorbert.dentocrates.repository.CustomerRepository;
-import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

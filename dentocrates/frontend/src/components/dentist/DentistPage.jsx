@@ -12,13 +12,13 @@ export const DentistPage = () => {
     const [clinicData, setClinicData] = useState([]);
     const getDentistDetails = async() =>{
         await getClinicData();
-        const responseData = await data(`/java-backend/dentist//all`);
+        const responseData = await data(`/dentist/all`);
         setDentistData(await responseData);
         setFilteredData(await responseData);
         setIsDataLoaded(true);
     }
     const getClinicData = async () => {
-        const responseData = await data(`/java-backend/clinic/all`);
+        const responseData = await data(`/clinic/all`);
         setClinicData(await responseData);
     }
 

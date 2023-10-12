@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.client.dentist.DentistResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.data.Role;
-import com.rmnnorbert.dentocrates.service.client.DentistService;
+import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

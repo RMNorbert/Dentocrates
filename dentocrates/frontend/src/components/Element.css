@@ -112,3 +112,6 @@ button:active {
     padding: 10px;
     background: transparent;
 }
+.register{
+    cursor: pointer;
+}

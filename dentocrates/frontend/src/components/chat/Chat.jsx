@@ -9,7 +9,7 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [chatIcon, setChatIcon] = useState(iconList[0]);
     const [inputValue, setInputValue] = useState('');
-    const chatUrl = "/python-service/predict";
+    const chatUrl = "/chat";
     const { data } = MultiFetch();
 
     function getRandomInt(max) {
@@ -29,8 +29,7 @@ function Chat() {
         const msg1 = { name: 'User', message: inputValue };
         setMessages((prevMessages) => [msg1, ...prevMessages]);
         try {
-            const response = await data(chatUrl, "POST", inputValue);
-            const answer = response.answer;
+            const answer = await data(chatUrl, "POST", inputValue);
             if(answer !== '') {
                 const responseMessage = {name: 'AI', message: answer};
                 setMessages((prevMessages) => [responseMessage, ...prevMessages]);

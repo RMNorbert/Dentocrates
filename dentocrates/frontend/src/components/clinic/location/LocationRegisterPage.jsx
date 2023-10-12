@@ -29,7 +29,7 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
-        const locationRegisterUrl = '/java-backend/location/register';
+        const locationRegisterUrl = '/location/register';
         let locationData = {
             zipCode: zipCode,
             city: city

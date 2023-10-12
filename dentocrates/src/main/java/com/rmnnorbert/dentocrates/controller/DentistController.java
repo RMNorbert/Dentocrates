@@ -2,7 +2,7 @@ package com.rmnnorbert.dentocrates.controller;
 
 import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.client.dentist.DentistResponseDTO;
-import com.rmnnorbert.dentocrates.service.client.DentistService;
+import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

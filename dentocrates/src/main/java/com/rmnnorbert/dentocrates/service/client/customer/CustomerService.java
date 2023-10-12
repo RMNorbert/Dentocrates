@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.client;
+package com.rmnnorbert.dentocrates.service.client.customer;
 
 import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerAppointmentResponseDTO;

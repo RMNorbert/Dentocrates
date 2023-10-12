@@ -4,6 +4,7 @@ import { Loading } from "../../lodaingPage/Loading";
 import { role , userId} from "../../token/TokenDecoder";
 import { MultiFetch } from "../../../fetch/MultiFetch";
 import { useParams, useNavigate } from "react-router-dom";
+import {ReviewPage} from "../../review/Reviews";
 
 export const ClinicPage = () => {
     const { id } = useParams();
@@ -19,8 +20,8 @@ export const ClinicPage = () => {
     const [customers, setCustomers] = useState([]);
 
     const getClinicData = async () => {
-        const clinicDataUrl = `/java-backend/clinic/${id}`;
-        const dentistDataUrl = `/java-backend/dentist/`;
+        const clinicDataUrl = `/clinic/${id}`;
+        const dentistDataUrl = `/dentist/`;
         const responseData = await data(clinicDataUrl);
         setClinicData(await responseData);
         const dentistResponse = await data(dentistDataUrl + responseData.dentistId);
@@ -28,12 +29,12 @@ export const ClinicPage = () => {
     };
 
     const updateAppointment = async (currentId, appearance) => {
-        const calendarDataUrl = '/java-backend/calendar/';
+        const calendarDataUrl = '/calendar/';
         const requestBody = {id:currentId, clinicId: id, dentistId: userId(), appeared:!appearance};
         await data(calendarDataUrl,'PUT', requestBody);
     }
     const getCalendarData = async () => {
-        const clinicCalendarDataUrl = `/java-backend/calendar/clinic/${id}`;
+        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
         const calendarData = await data(clinicCalendarDataUrl);
         const appointmentsData = await calendarData.filter((appointment) =>
             appointment.reservation >= currentDate).sort(
@@ -47,7 +48,7 @@ export const ClinicPage = () => {
     };
 
     const getCustomerDetails = async() => {
-        const customersDataUrl = `/java-backend/client/all`;
+        const customersDataUrl = `/client/all`;
         const responseData = await data(customersDataUrl);
         setCustomers(await responseData);
     };
@@ -65,7 +66,7 @@ export const ClinicPage = () => {
         return date.substring(0,16).replace("T"," ");
     }
     const getCustomerAppointments = async () => {
-        const customerAppointmentsDataUrl = `/java-backend/calendar/customer/${userId()}`;
+        const customerAppointmentsDataUrl = `/calendar/customer/${userId()}`;
         const appointmentsData = await data(customerAppointmentsDataUrl);
         const sortedAppointments = await appointmentsData.filter((appointment) =>
             appointment.clinicId === Number(id) && appointment.reservation >= currentDate).sort(
@@ -149,6 +150,12 @@ export const ClinicPage = () => {
                         ))}
                     </div>
                 )}
+                <div>
+                    <ReviewPage
+                        id={id}
+                        byClinic={true}
+                    />
+                </div>
             </div>
         );
     } else {

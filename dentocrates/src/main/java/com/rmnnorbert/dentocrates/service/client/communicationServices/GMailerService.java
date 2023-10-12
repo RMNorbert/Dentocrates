@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.client;
+package com.rmnnorbert.dentocrates.service.client.communicationServices;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;

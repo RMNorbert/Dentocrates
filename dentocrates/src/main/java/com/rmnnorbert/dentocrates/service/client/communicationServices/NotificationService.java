@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.client;
+package com.rmnnorbert.dentocrates.service.client.communicationServices;
 
 import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;

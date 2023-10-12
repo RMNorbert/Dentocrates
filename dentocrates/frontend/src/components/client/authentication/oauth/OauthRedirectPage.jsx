@@ -25,14 +25,17 @@ function OauthLoginPage() {
     }
     const getCredentials = async () => {
         try {
-            const response = await fetch(`/java-backend/api/login/oauth2/code/${params}`);
+            const response = await fetch(`/api/login/oauth2/code/${params}`);
+            console.log(response)
             if (response.ok) {
                 const data = await response.json();
                 const token = data.token;
                 const id = data.id;
                 localStorage.setItem('userId', id);
                 localStorage.setItem('token', token);
-                navigate("/home");
+                setTimeout(() => {
+                    navigate("/home");
+                }, "2000");
             } else {
                 console.error("Failed to fetch Google authorization URL");
             }

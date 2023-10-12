@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.clinic;
+package com.rmnnorbert.dentocrates.service.clinic.location;
 
 import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;

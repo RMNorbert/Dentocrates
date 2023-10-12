@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {Loading} from "../lodaingPage/Loading";
 import {MultiFetch} from "../../fetch/MultiFetch";
 import {userId} from "../token/TokenDecoder";
+import {ReviewRegister} from "../review/ReviewRegister";
 
 export const Appointment = () => {
     const { data } = MultiFetch();
@@ -11,8 +12,8 @@ export const Appointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [clinics, setClinics] = useState([]);
     const getData = async () => {
-            const appointmentsDataUrl = `/java-backend/calendar/customer/${userId()}`;
-            const clinicDataUrl = '/java-backend/clinic/all';
+            const appointmentsDataUrl = `/calendar/customer/${userId()}`;
+            const clinicDataUrl = '/clinic/all';
             const appointmentsData = await data(appointmentsDataUrl);
             const clinicsData = await data(clinicDataUrl);
 
@@ -31,12 +32,13 @@ export const Appointment = () => {
     }
 
     const handleDelete = async (currentId) => {
-        const calendarDeleteUrl = '/java-backend/calendar/';
+        const calendarDeleteUrl = '/calendar/';
         const response = await data(calendarDeleteUrl,'DELETE',{userId: userId(), targetId: currentId})
         if(response) {
             setIsLoaded(false);
         }
     };
+
 
     useEffect(() => {
         if(!isLoaded){
@@ -86,6 +88,14 @@ export const Appointment = () => {
                         >
                             Delete
                         </button>
+                            {appointment.reservation < new Date() && !appointment.reviewed??
+                            <div>
+                                <ReviewRegister
+                                    clinicId={appointment.clinicId}
+                                    appointmentId={appointment.id}
+                                />
+                            </div>
+                            }
                         </div>
                     </div>
                 ))}

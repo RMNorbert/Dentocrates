@@ -15,9 +15,9 @@ const Calendar = () => {
     const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
     const getCalendarData = async() =>{
-        const clinicDataUrl = `/java-backend/clinic/${id}`;
-        const clinicCalendarDataUrl = `/java-backend/calendar/clinic/${id}`;
-        const clinicLeaveDataUrl = `/java-backend/leave/${id}`;
+        const clinicDataUrl = `/clinic/${id}`;
+        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
+        const clinicLeaveDataUrl = `/leave/${id}`;
 
         const clinicData = await data(clinicDataUrl);
         const calendarData = await data(clinicCalendarDataUrl);
@@ -69,7 +69,7 @@ const Calendar = () => {
     }
     const bookAppointment = async(appointment) => {
         try {
-        const calendarRegisterUrl = '/java-backend/calendar/register';
+        const calendarRegisterUrl = '/calendar/register';
         const formattedAppointment  = appointment.replace(" ","T") + ":00";
         const bookingData = {
             clinicId: id,
