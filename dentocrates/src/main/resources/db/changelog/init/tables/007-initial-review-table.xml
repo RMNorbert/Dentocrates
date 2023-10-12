@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="create-review-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="review"/>
+            </not>
+        </preConditions>
+        <createTable tableName="review">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="reviewer" type="BIGINT" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reviewed_clinic" type="BIGINT" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reviewed_appointment" type="BIGINT" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="rating" type="INT"/>
+
+            <column name="review" type="TEXT"/>
+
+            </createTable>
+    </changeSet>
+
+</databaseChangeLog>
