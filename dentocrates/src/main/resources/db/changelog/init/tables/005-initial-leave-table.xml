@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="create-leave-table" author="RMNorbert">
+    <changeSet id="create-of-leave-table" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="leave"/>
@@ -20,11 +20,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="start_of_leave" type="TIMESTAMP">
+            <column name="start_of_the_leave" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="end_of_leave" type="TIMESTAMP">
+            <column name="end_of_the_leave" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
