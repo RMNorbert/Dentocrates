@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
-import com.rmnnorbert.dentocrates.service.clinic.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,10 @@ public class AppointmentController {
     @PostMapping("/register")
     public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentRegisterDTO appointmentDTO){
         return appointmentCalendarService.registerAppointment(appointmentDTO);
+    }
+    @PostMapping("/")
+    public ResponseEntity<String> reviewAppointment(@RequestBody Long id) {
+        return appointmentCalendarService.updateReviewStateOfAppointment(id);
     }
     @DeleteMapping("/")
     public ResponseEntity<String> removeAppointment(@Valid @RequestBody DeleteDTO dto){

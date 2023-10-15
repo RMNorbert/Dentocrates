@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.service.clinic;
+package com.rmnnorbert.dentocrates.service.clinic.calendar;
 
 import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
@@ -83,5 +83,15 @@ public class AppointmentCalendarService {
     private AppointmentCalendar getAppointmentById(long id) {
         return appointmentCalendarRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Appointment"));
+    }
+
+    public ResponseEntity<String> updateReviewStateOfAppointment(Long id) {
+        try {
+        AppointmentCalendar appointment = appointmentCalendarRepository.getReferenceById(id).withReviewed(true);
+        appointmentCalendarRepository.save(appointment);
+        return ResponseEntity.ok("Appointment updated successfully");
+        } catch (Exception e) {
+            throw new NotFoundException("Appointment");
+        }
     }
 }
