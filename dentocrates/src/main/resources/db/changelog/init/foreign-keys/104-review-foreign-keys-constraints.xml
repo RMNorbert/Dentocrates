@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+        <changeSet id="add-review-reviewer-foreign-key-constraints" author="RMNorbert">
+            <preConditions onFail="MARK_RAN">
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_review_reviewer"/>
+                </not>
+            </preConditions>
+
+            <addForeignKeyConstraint
+                    baseTableName="review"
+                    baseColumnNames="reviewer"
+                    referencedColumnNames="id"
+                    referencedTableName="client"
+                    onDelete="CASCADE"
+                    onUpdate="CASCADE"
+                    constraintName="fk_review"
+            />
+        </changeSet>
+
+    <changeSet id="add-review-clinic-foreign-key-constraints" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_review_clinic"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint
+                baseTableName="review"
+                baseColumnNames="reviewed_clinic"
+                referencedColumnNames="id"
+                referencedTableName="clinic"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+                constraintName="fk_review_clinic"
+        />
+    </changeSet>
+    <changeSet id="add-review-appointment-foreign-key-constraints" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_review_appointment"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint
+                baseTableName="review"
+                baseColumnNames="reviewed_appointment"
+                referencedColumnNames="id"
+                referencedTableName="appointment_calendar"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+                constraintName="fk_review_appointment"
+        />
+    </changeSet>
+</databaseChangeLog>
