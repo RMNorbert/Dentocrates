@@ -13,7 +13,8 @@ import ClinicRegisterPage from "./components/clinic/clinic/registration/ClinicRe
 import Calendar from "./components/clinic/calendar/Calendar";
 import {Appointment} from "./components/appointment/Appointment";
 import VerifyPage from "./components/client/authentication/verification/Verification";
-import OauthLoginPage from "./components/client/authentication/login/OauthRedirectPage";
+import OauthLoginPage from "./components/client/authentication/oauth/OauthRedirectPage";
+import Map from "./components/map/Map";
 function App() {
   return (
       <Router>
@@ -33,6 +34,7 @@ function App() {
           <Route path="/verify/:verificationCode" element={<VerifyPage reset={false} />} />
           <Route path="/verify/reset/:verificationCode" element={<VerifyPage reset={true} />} />
           <Route path="/login/oauth2/code" element={<OauthLoginPage />} />
+          <Route path="/map" element={<Map />} />
         </Routes>
       </Router>
   );
