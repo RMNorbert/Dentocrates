@@ -1,4 +1,3 @@
-<!-- MANPAGE: BEGIN EXCLUDED SECTION -->
 <div align="center">
 
 [<img src="https://github.com/RMNorbert/Dentocrates/blob/main/dentocrates/frontend/public/dentocrates-dark-logo.png" alt="Dentocrates" width="200">](README.md)
@@ -6,9 +5,6 @@
 [![Java](https://img.shields.io/badge/Java-009400.svg?logo=openjdk&logoColor=white&labelColor=black&style=for-the-badge)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 [![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-66ff00.svg?logo=spring&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-boot)
 [![Spring Security](https://img.shields.io/badge/-Spring%20Security-darkgreen.svg?logo=springsecurity&labelColor=black&style=for-the-badge)](https://spring.io/projects/spring-security)
-[![JWT](https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=jsonwebtokens&logoColor=red&labelColor=black)](https://jwt.io/)
-[<img src="https://github.com/RMNorbert/Dentocrates/blob/main/Oauth.png" alt="oauth" width="115">](https://oauth.net/)
-[![GMAIL](https://img.shields.io/badge/gmail-323330.svg?logo=gmail&logoColor=DB4437&labelColor=white&style=for-the-badge)](https://console.cloud.google.com/)
 
 [![Hibernate](https://img.shields.io/badge/Hibernate-0CBAA6.svg?logo=Hibernate&logoColor=4d6b53&labelColor=black&style=for-the-badge)](https://hibernate.org/)
 [![Liquibase](https://img.shields.io/badge/-Liquibase-blue.svg?logo=Liquibase&logoColor=0197f6&labelColor=black&style=for-the-badge)](https://www.liquibase.com/)
@@ -25,14 +21,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-black.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
 [![Java Script](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
 [![React](https://img.shields.io/badge/React-black.svg?logo=react&logoColor=blue&labelColor=black&style=for-the-badge)](https://vitejs.dev/)
+[![MapBox GL JS](https://img.shields.io/badge/MapBox%20GL%20JS-black.svg?logo=mapbox&logoColor=blue&labelColor=black&style=for-the-badge)](https://www.mapbox.com/)
 
 
 [![License: Unlicense](https://img.shields.io/badge/-Unlicense-blue.svg?logo=unlicense&logoColor=white&style=for-the-badge)](LICENSE "License")
 [![Last Commit](https://img.shields.io/github/last-commit/RMNorbert/Dentocrates?logo=github&label=Last%20Commit&labelColor=323330&style=for-the-badge&display_timestamp=committer&color=darkgreen)](https://github.com/RMNorbert/Dentocrates/commits "Commit History")
 
 </div>
-<!-- MANPAGE: END EXCLUDED SECTION -->
-
 
 ---
 # Dentocrates
@@ -49,6 +44,31 @@ Dentocrates is an online platform for dental appointments designed to streamline
 
 The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, search for dentists in their area, and view available appointments.
 
+---
+## Features
+
+- **Registration and Authentication for users and dentists**
+
+- **Clinic Registration and Management**
+
+- **Search for Dentists and Clinics**
+
+- **Appointment Booking and Management for users and clinics**
+
+- **2FA & Notifications & Verifications**
+
+- **Chatbot**
+
+- **Reviews & Ratings**
+
+- **Interactive map with route planning to clinics (in progress)**
+
+- **Logging (in progress)** 
+  
+- **Proxy Server (replacing by Eureka in progress)**
+
+- **Upload & Manage Medical Documents(in progress)**
+  
 ---
 # Dockerized version can be pulled from DockerHub:
 https://hub.docker.com/repository/docker/7nrm/dentocrates/general
@@ -72,7 +92,8 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - TypeScript (on typescript branch)
   - JavaScript,
   - React,
-  
+  - MapBox GL JS (in progress)
+    
  #### Database
   - Liquibase
   - PostgreSQL
@@ -82,27 +103,6 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - CI/CD GitHub workflows
   - OpenApi (version 3.0)
 
----
-## Features
-
-- **Registration and Authentication for users and dentists**
-
-- **Clinic Registration and Management**
-
-- **Search for Dentists and Clinics**
-
-- **Appointment Booking and Management for users and clinics**
-
-- **2FA & Notifications & Verifications**
-
-- **Chatbot**
-  
-- **Proxy Server**
-
-- **Reviews & Ratings(in progress)**
-
-- **Upload & Manage Medical Documents(in progress)**
-  
 ---
 ## Getting Started
 
