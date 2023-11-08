@@ -1,9 +1,11 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
+import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
+import com.rmnnorbert.dentocrates.dao.location.Location;
 import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
-import com.rmnnorbert.dentocrates.data.ClinicType;
+import com.rmnnorbert.dentocrates.data.clinic.ClinicType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

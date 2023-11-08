@@ -1,8 +1,8 @@
 import "./ClinicPage.css";
 import { useEffect, useState } from "react";
 import { Loading } from "../../lodaingPage/Loading";
-import { role , userId} from "../../token/TokenDecoder";
-import { MultiFetch } from "../../../fetch/MultiFetch";
+import { role , userId} from "../../../utils/token/TokenDecoder";
+import { MultiFetch } from "../../../utils/fetch/MultiFetch";
 import { useParams, useNavigate } from "react-router-dom";
 import {ReviewPage} from "../../review/Reviews";
 
@@ -18,7 +18,7 @@ export const ClinicPage = () => {
     const [appointments, setAppointments] = useState([]);
     const [customerAppointments, setCustomerAppointments] = useState([]);
     const [customers, setCustomers] = useState([]);
-
+    const [rating, setRating] = useState(0.0);
     const getClinicData = async () => {
         const clinicDataUrl = `/clinic/${id}`;
         const dentistDataUrl = `/dentist/`;
@@ -26,6 +26,8 @@ export const ClinicPage = () => {
         setClinicData(await responseData);
         const dentistResponse = await data(dentistDataUrl + responseData.dentistId);
         setDentistData(dentistResponse);
+        const rating = await getRatingOfClinic();
+        setRating(await rating);
     };
 
     const updateAppointment = async (currentId, appearance) => {
@@ -47,6 +49,10 @@ export const ClinicPage = () => {
         setAppointments(await appointmentsData);
     };
 
+    const getRatingOfClinic = async() => {
+        const ratingUrl = `/review/rating/clinic/${id}`;
+        return await data(ratingUrl);
+    }
     const getCustomerDetails = async() => {
         const customersDataUrl = `/client/all`;
         const responseData = await data(customersDataUrl);
@@ -104,13 +110,22 @@ export const ClinicPage = () => {
             <div className="clinic">
                 {clinicData ? (
                     <div className="selected-clinic">
-                        <h1 className="selected-name">{clinicData.name}</h1>
+                        <h1 className="selected-name">
+                            {clinicData.name}
+                        </h1>
                         <h2>
                             Location: {clinicData.zipCode} {clinicData.city} {clinicData.street}
                         </h2>
                         <h3>{clinicData.clinicType.replaceAll("_"," ")}</h3>
                         <h3>Open: {clinicData.openingHours}</h3>
                         <h3>Dentist: Dr. {dentistData.firstName} {dentistData.lastName}</h3>
+                        { rating > 0 ?
+                            <h4 className="clinic-rating">
+                                Rating: {rating}
+                            </h4>
+                            :
+                            <></>
+                        }
                     </div>
                 ) : (
                     <Loading />
@@ -160,5 +175,7 @@ export const ClinicPage = () => {
         );
     } else {
         return <Loading />;
+
     }
-};
+}
+

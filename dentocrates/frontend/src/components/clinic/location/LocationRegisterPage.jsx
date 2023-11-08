@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MultiFetch } from "../../../fetch/MultiFetch";
+import { MultiFetch } from "../../../utils/fetch/MultiFetch";
 import { useNavigate } from "react-router-dom";
 function LocationRegisterPage (){
     const { data } = MultiFetch();
