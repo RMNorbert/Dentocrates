@@ -1,8 +1,8 @@
 import "./Appointment.css";
 import {useEffect, useState} from "react";
 import {Loading} from "../lodaingPage/Loading";
-import {MultiFetch} from "../../fetch/MultiFetch";
-import {userId} from "../token/TokenDecoder";
+import {MultiFetch} from "../../utils/fetch/MultiFetch";
+import {userId} from "../../utils/token/TokenDecoder";
 import {ReviewRegister} from "../review/ReviewRegister";
 
 export const Appointment = () => {
@@ -88,13 +88,14 @@ export const Appointment = () => {
                         >
                             Delete
                         </button>
-                            {appointment.reservation < new Date() && !appointment.reviewed??
-                            <div>
+                            {(!appointment.reviewed && new Date(appointment.reservation) < new Date() ) ?
                                 <ReviewRegister
                                     clinicId={appointment.clinicId}
                                     appointmentId={appointment.id}
                                 />
-                            </div>
+                                :
+                                <>
+                                </>
                             }
                         </div>
                     </div>
