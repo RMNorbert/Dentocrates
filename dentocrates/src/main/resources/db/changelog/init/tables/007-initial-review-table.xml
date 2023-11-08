@@ -5,8 +5,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="create-review-table" author="RMNorbert">
+    <changeSet id="create-of-reviews-table" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="client" />
+            <tableExists tableName="clinic" />
+            <tableExists tableName="appointment_calendar" />
             <not>
                 <tableExists tableName="review"/>
             </not>

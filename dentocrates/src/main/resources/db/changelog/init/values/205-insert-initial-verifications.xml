@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="insert-initial-verifications" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="verification"/>
+            <tableIsEmpty tableName="verification"/>
+        </preConditions>
+        <insert tableName="verification">
+            <column name="id">101</column>
+            <column name="email">test@email.com</column>
+            <column name="verification_code">vc123450</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">CUSTOMER</column>
+        </insert>
+        <insert tableName="verification">
+            <column name="id">102</column>
+            <column name="email">test@email.com</column>
+            <column name="verification_code">vc123451</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">CUSTOMER</column>
+        </insert>
+        <insert tableName="verification">
+            <column name="id">103</column>
+            <column name="email">test@email.com</column>
+            <column name="verification_code">vc123452</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">CUSTOMER</column>
+        </insert>
+        <insert tableName="verification">
+            <column name="id">104</column>
+            <column name="email">dentist@email.com</column>
+            <column name="verification_code">vc123453</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">DENTIST</column>
+        </insert>
+        <insert tableName="verification">
+            <column name="id">105</column>
+            <column name="email">dentist@email.com</column>
+            <column name="verification_code">vc123454</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">DENTIST</column>
+        </insert>
+        <insert tableName="verification">
+            <column name="id">106</column>
+            <column name="email">dentist@email.com</column>
+            <column name="verification_code">vc123455</column>
+            <column name="registration_time">2023-10-11 10:00:00</column>
+            <column name="role">DENTIST</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

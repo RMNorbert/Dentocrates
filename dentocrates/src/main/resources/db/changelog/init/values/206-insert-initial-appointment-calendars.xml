@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="insert-initial-appointments-calendar" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="client"/>
+            <tableExists tableName="appointment_calendar"/>
+            <tableIsEmpty tableName="appointment_calendar"/>
+        </preConditions>
+        <insert tableName="appointment_calendar">
+            <column name="id">11</column>
+            <column name="clinic_id">101</column>
+            <column name="customer_id">11</column>
+            <column name="reservation">2023-10-11 10:00:00</column>
+            <column name="appeared">true</column>
+            <column name="reviewed">true</column>
+        </insert>
+        <insert tableName="appointment_calendar">
+            <column name="id">102</column>
+            <column name="clinic_id">102</column>
+            <column name="customer_id">11</column>
+            <column name="reservation">2023-10-11 10:30:00</column>
+            <column name="appeared">true</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
