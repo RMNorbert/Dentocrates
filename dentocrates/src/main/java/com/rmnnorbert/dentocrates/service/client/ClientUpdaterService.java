@@ -1,11 +1,11 @@
 package com.rmnnorbert.dentocrates.service.client;
 
 import com.rmnnorbert.dentocrates.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.dto.client.update.VerifyDto;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDto;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
-import com.rmnnorbert.dentocrates.data.Role;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
 import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
 import com.rmnnorbert.dentocrates.service.client.customer.CustomerService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
