@@ -1,7 +1,7 @@
 import './PopUp.css'
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
-import {mapSettings, routeSettings} from "./MapConfig";
+import {mapSettings, routeSettings} from "../MapConfig";
 
 export const initializeMap = (addMarker, clinicProperties) => {
   const geocoder = createGeocoder(addMarker)

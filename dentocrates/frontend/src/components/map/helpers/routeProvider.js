@@ -1,4 +1,4 @@
-import {routeSettings} from "./MapConfig";
+import {routeSettings} from "../MapConfig";
 
 export async function getFastestRouteDetails (routeType, coordinates) {
   const response = await fetch(

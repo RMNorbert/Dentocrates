@@ -12,7 +12,7 @@ import {
   buildLocationList,
   createClinicProperties
 } from './helpers/clinic-mapping'
-import {routeSettings} from "./helpers/MapConfig";
+import {routeSettings} from "./MapConfig";
 import { MultiFetch } from "../../utils/fetch/MultiFetch";
 function Map () {
   const { data } = MultiFetch();
