@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/dentocrates
-    username: postgres
-    password: postgres
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,11 +13,12 @@ spring:
           json_format_mapper: com.rmnnorbert.dentocrates.config.JacksonJsonFormatMapperCustom
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
   web:
     resources:
         static-locations: classpath:/frontend/
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
 springdoc:
     api-docs:
         path: /api-docs
