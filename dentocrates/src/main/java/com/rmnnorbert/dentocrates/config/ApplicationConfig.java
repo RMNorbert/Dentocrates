@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.config;
 
-import com.rmnnorbert.dentocrates.repository.ClientRepository;
+import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Random;
 
 
 @Configuration
@@ -29,13 +31,11 @@ public class ApplicationConfig {
             try {
                 return (UserDetails) clientRepository.getClientByEmail(email)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
         };
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -43,16 +43,17 @@ public class ApplicationConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Bean
+    public Random randomProvider() {
+        return new Random();
+    }
 }
 
