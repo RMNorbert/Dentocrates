@@ -6,7 +6,9 @@
     align-items: center;
     background-color: #e1e6f0;
 }
-
+.clinic-rating {
+    text-align: end;
+}
 .selected-clinic {
     width: 700px;
     text-align: center;
