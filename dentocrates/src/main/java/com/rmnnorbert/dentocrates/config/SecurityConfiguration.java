@@ -18,11 +18,6 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 import static com.rmnnorbert.dentocrates.data.authentication.Role.*;
 
@@ -38,27 +33,6 @@ public class SecurityConfiguration {
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:8080",
-                "http://localhost:3000",
-                "http://127.0.0.1:8080",
-                "http://127.0.0.1:3000",
-                "https://accounts.google.com",
-                "https://www.googleapis.com",
-                "http://localhost:8080/oauth2/authorization/google"
-        ));
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -86,7 +60,8 @@ public class SecurityConfiguration {
                         "/login/**",
                         "/api/**",
                         "/login/oauth2/**",
-                        "/update"
+                        "/update",
+                        "/chat"
                     ).permitAll()
                     .requestMatchers("/client/{id}",
                         "/verify/**",
