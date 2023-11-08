@@ -1,0 +1,34 @@
+.clinic-marker {
+    background-image: url("./../../../../public/clinic.png");
+    background-size: cover;
+    cursor: pointer;
+    height: 36px;
+    width: 36px;
+    z-index: 99999;
+}
+#button-list {
+    justify-content: center;
+    display: flex;
+}
+#closePopup {
+    padding-left: 25%;
+}
+#closePopup:hover {
+    color: red;
+    cursor: pointer;
+}
+#markPopup:hover {
+    background-color: green;
+    cursor: pointer;
+}
+.mapboxgl-popup-content{
+    background-color: #5a7691 !important;
+    align-items: center;
+    text-align: center;
+    height: fit-content;
+}
+.mapboxgl-popup-tip{
+    border-top-color: #5a7691 !important;
+    border-bottom-color: #5a7691 !important;
+
+}

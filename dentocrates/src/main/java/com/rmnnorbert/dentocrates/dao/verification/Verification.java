@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.dao.verification;
 
-import com.rmnnorbert.dentocrates.data.Role;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

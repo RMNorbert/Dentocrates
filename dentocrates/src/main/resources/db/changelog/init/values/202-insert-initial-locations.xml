@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="insert-initial-locations" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="location"/>
+            <tableIsEmpty tableName="location"/>
+        </preConditions>
+        <insert tableName="location">
+            <column name="id">101</column>
+            <column name="zip_code">1112</column>
+            <column name="city">Budapest, Kőérberek</column>
+            <column name="longitude">18.988484817303743</column>
+            <column name="latitude">47.43436780681293</column>
+        </insert>
+        <insert tableName="location">
+            <column name="id">102</column>
+            <column name="zip_code">2120</column>
+            <column name="city">Dunakeszi, Alagimajor</column>
+            <column name="longitude">19.149691360899396</column>
+            <column name="latitude">47.6015897075242</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

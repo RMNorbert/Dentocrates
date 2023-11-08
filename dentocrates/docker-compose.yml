@@ -4,7 +4,7 @@ services:
     container_name: postgres
     image: postgres:15
     networks:
-      - mynetwork
+      - myNetwork
     restart: unless-stopped
     ports:
       - '5432:5432'
@@ -14,44 +14,69 @@ services:
       - POSTGRES_DATABASE=dentocrates
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-h", "postgres", "-U", "postgres" ]
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
+  liquibase:
+    image: liquibase/liquibase:latest
+    container_name: liquibase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/db/:/liquibase/db/
+    networks:
+      - myNetwork
+    command: ["--defaults-file=/liquibase/db/changelog/liquibase.properties", "update"]
+
+  chatbot:
+    container_name: chat-bot
+    build:
+      context: ../../../PycharmProjects/Chat
+      dockerfile: ./Dockerfile-chatbot
+    networks:
+      - myNetwork
+    ports:
+      - '5000:5000'
+    depends_on:
+      - postgres
 
   dentocrates:
+    container_name: dentocrates
     image: rmnorbert/dentocrates
     networks:
-      - mynetwork
+      - myNetwork
     build:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      chatbot:
+        condition: service_started
     links:
       - postgres
     ports:
       - '8080:8080'
     environment:
       - SECRET=048492546432436A442848F3147319D665857603B6B272848F751725773475237A5E567A66564
-      - oauthId=yourOauthId
-      - oauthSecret=yourOauthSecret
-      - SENDER_USERNAME=yourEmail@gmail.com
+      - oauthId=YourOauthId
+      - oauthSecret=YourOauthSecret
+      - SENDER_USERNAME=YourEmailSenderEmailAddress
+      - REDIRECT_URI=http://localhost:8080/login/oauth2/code/
+      - CHAT_URL=http://chatbot:5000/predict
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/dentocrates
     volumes:
       - ./resources/static/dist:/app/src/main/resources/frontend
 
-  proxy:
-    container_name: proxy
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile-proxy
-    networks:
-      - mynetwork
-    ports:
-      - '3001:3001'
-    depends_on:
-      - postgres
-      - dentocrates
-
 networks:
-  mynetwork:
+  myNetwork:
     driver: bridge
 volumes:
   postgres-data:

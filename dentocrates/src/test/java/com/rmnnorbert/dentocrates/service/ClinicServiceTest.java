@@ -1,15 +1,15 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import com.rmnnorbert.dentocrates.dao.clinic.Location;
-import com.rmnnorbert.dentocrates.data.ClinicType;
-import com.rmnnorbert.dentocrates.repository.ClinicRepository;
-import com.rmnnorbert.dentocrates.repository.DentistRepository;
-import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.dao.location.Location;
+import com.rmnnorbert.dentocrates.data.clinic.ClinicType;
+import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
+import com.rmnnorbert.dentocrates.repository.client.DentistRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.location.LocationRepository;
 import com.rmnnorbert.dentocrates.service.clinic.ClinicService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

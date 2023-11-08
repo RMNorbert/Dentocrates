@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="insert-initial-clinics" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="clinic"/>
+            <tableIsEmpty tableName="clinic"/>
+        </preConditions>
+        <insert tableName="clinic">
+            <column name="id">101</column>
+            <column name="name">Community Clinic</column>
+            <column name="clinic_type">COMMUNITY_DENTAL_CLINIC</column>
+            <column name="contact_number">06-1-11</column>
+            <column name="website">Clinic.com</column>
+            <column name="location_id">101</column>
+            <column name="street">Street street</column>
+            <column name="opening_hours">6-12</column>
+            <column name="dentist_in_contract">12</column>
+            <column name="appointment_calendar_id">101</column>
+        </insert>
+        <insert tableName="clinic">
+            <column name="id">102</column>
+            <column name="name">Test Clinic</column>
+            <column name="clinic_type">COMMUNITY_DENTAL_CLINIC</column>
+            <column name="contact_number">06-21-31</column>
+            <column name="website">TestClinic.com</column>
+            <column name="location_id">102</column>
+            <column name="street">New street</column>
+            <column name="opening_hours">8-16</column>
+            <column name="dentist_in_contract">12</column>
+            <column name="appointment_calendar_id">102</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

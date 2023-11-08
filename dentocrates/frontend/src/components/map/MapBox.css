@@ -1,0 +1,89 @@
+.box {
+  padding-top: 1%;
+  width: 100%;
+}
+
+#coordinate{
+  position: absolute;
+  top: 80%;
+  bottom: 0;
+}
+
+.settings{
+  display: flex;
+  grid-row: 1;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.planner {
+  font-weight: bold;
+  margin-left: 35px;
+  margin-right: 10px;
+}
+
+#instructions {
+  text-align: left;
+  position: absolute;
+  margin: 10px;
+  width: fit-content;
+  height: fit-content;
+  top: 25%;
+  bottom: 30%;
+  font-size: small;
+  background-color: #fff;
+  overflow-y: scroll;
+  font-family: sans-serif;
+}
+
+#instruction-item {
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+#plan-route-button {
+  right: 3%;
+  margin-top: -9px;
+  position: absolute;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: #3887be;
+  color: white;
+  padding-bottom: 8px;
+  height: 45px;
+}
+#remove-route-button {
+  margin-top: -9px;
+  margin-left: 20px;
+  margin-right: -10px;
+  border-radius: 5px;
+  background-color: #3887be;
+  color: white;
+  width: 100px;
+  height: 45px;
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+
+.colour-picker {
+  height: 20px;
+  border: 1px;
+}
+
+#instruction-box {
+  border: 2px;
+  border-style:inset;
+}
+#colorbox {
+  width: 45px;
+  height: 26px;
+}
+#markerbox{
+  width: 20px;
+  height: 20px;
+  margin-right: 40px;
+}
+.mapboxgl-ctrl-geocoder--input{
+  z-index: 2;
+}

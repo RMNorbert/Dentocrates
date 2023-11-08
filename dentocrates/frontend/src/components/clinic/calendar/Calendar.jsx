@@ -2,22 +2,23 @@ import ReactCalendar from "react-calendar";
 import "./Calendar.css";
 import {useEffect, useState} from "react";
 import {add, format} from "date-fns";
-import { userId } from "../../token/TokenDecoder";
-import { useParams } from "react-router-dom";
-import {MultiFetch} from "../../../fetch/MultiFetch";
-import {Loading} from "../../elements/Loading";
+import { userId } from "../../../utils/token/TokenDecoder";
+import {useNavigate, useParams} from "react-router-dom";
+import {MultiFetch} from "../../../utils/fetch/MultiFetch";
+import {Loading} from "../../lodaingPage/Loading";
 const Calendar = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [isLoaded,setIsLoaded] = useState(false);
     const [leaveDates, setLeaveDates] = useState([]);
     const [clinic, setClinic] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
     const getCalendarData = async() =>{
-        const clinicDataUrl = `/java-backend/clinic/${id}`;
-        const clinicCalendarDataUrl = `/java-backend/calendar/clinic/${id}`;
-        const clinicLeaveDataUrl = `/java-backend/leave/${id}`;
+        const clinicDataUrl = `/clinic/${id}`;
+        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
+        const clinicLeaveDataUrl = `/leave/${id}`;
 
         const clinicData = await data(clinicDataUrl);
         const calendarData = await data(clinicCalendarDataUrl);
@@ -69,7 +70,7 @@ const Calendar = () => {
     }
     const bookAppointment = async(appointment) => {
         try {
-        const calendarRegisterUrl = '/java-backend/calendar/register';
+        const calendarRegisterUrl = '/calendar/register';
         const formattedAppointment  = appointment.replace(" ","T") + ":00";
         const bookingData = {
             clinicId: id,
@@ -77,8 +78,11 @@ const Calendar = () => {
             reservation: formattedAppointment
         };
 
-        await data(calendarRegisterUrl, 'POST', bookingData);
+        const response = await data(calendarRegisterUrl, 'POST', bookingData);
         setIsLoaded(false);
+        if(response.includes('successfully')){
+            navigate(`/clinic/${id}`);
+        }
         } catch (error) {
             console.error('Error:', error);
         }

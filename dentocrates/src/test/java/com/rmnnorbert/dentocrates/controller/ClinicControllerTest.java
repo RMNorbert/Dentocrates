@@ -1,7 +1,8 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
+import com.rmnnorbert.dentocrates.controller.clinic.ClinicController;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.service.clinic.ClinicService;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +58,7 @@ class ClinicControllerTest {
     @Test
     void getClinicByIdShouldReturnExpectedClinic() {
         long searchedId = 1;
-        ClinicResponseDTO expected = new ClinicResponseDTO(1L,"name", "COMMUNITY_DENTAL_CLINIC","contact","site",1000,"street","6-2","1",1);
+        ClinicResponseDTO expected = new ClinicResponseDTO(1L,"name", "COMMUNITY_DENTAL_CLINIC","contact","site",1000,"street","6-2","1",1,10.17,10.15);
 
         when(service.getClinicById(searchedId)).thenReturn(expected);
 
@@ -138,13 +139,13 @@ class ClinicControllerTest {
     }
     private static Stream<Arguments> provideExpectedList() {
         return Stream.of(
-                Arguments.of( List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1))),
+                Arguments.of( List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1,17.5,10.5))),
                 Arguments.of(List.of())
         );
     }
     private static Stream<Arguments> provideIdAndExpectedList() {
         return Stream.of(
-                Arguments.of(1L, List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1))),
+                Arguments.of(1L, List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1,17.6,10.4))),
                 Arguments.of(2L,List.of())
         );
     }

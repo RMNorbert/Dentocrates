@@ -1,19 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginPage from "./components/client/LoginPage";
-import RegisterPage from "./components/client/RegisterPage";
-import Home from "./components/elements/Home";
-import NavigationBar from "./components/elements/NavigationBar";
+import LoginPage from "./components/client/authentication/login/LoginPage";
+import RegisterPage from "./components/client/authentication/register/RegisterPage";
+import Home from "./components/home/Home";
+import NavigationBar from "./components/navigationBar/NavigationBar";
 import {ClientPage} from "./components/client/ClientPage";
-import {DentistPage} from "./components/client/DentistPage";
-import {ClinicSelectorPage} from "./components/clinic/ClinicSelectorPage";
-import { ClinicPage } from "./components/clinic/ClinicPage";
+import {DentistPage} from "./components/dentist/DentistPage";
+import {ClinicSelectorPage} from "./components/clinic/clinic/search/ClinicSelectorPage";
+import { ClinicPage } from "./components/clinic/clinic/ClinicPage";
 import LocationRegisterPage from "./components/clinic/location/LocationRegisterPage";
-import ClinicRegisterPage from "./components/clinic/ClinicRegisterPage.jsx";
+import ClinicRegisterPage from "./components/clinic/clinic/registration/ClinicRegisterPage.jsx";
 import Calendar from "./components/clinic/calendar/Calendar";
-import {Appointment} from "./components/client/Appointment";
-import VerifyPage from "./components/client/Verification";
-import OauthLoginPage from "./components/client/OauthRedirectPage";
+import {Appointment} from "./components/appointment/Appointment";
+import VerifyPage from "./components/client/authentication/verification/Verification";
+import OauthLoginPage from "./components/client/authentication/oauth/OauthRedirectPage";
+import Map from "./components/map/Map";
 function App() {
   return (
       <Router>
@@ -33,6 +34,7 @@ function App() {
           <Route path="/verify/:verificationCode" element={<VerifyPage reset={false} />} />
           <Route path="/verify/reset/:verificationCode" element={<VerifyPage reset={true} />} />
           <Route path="/login/oauth2/code" element={<OauthLoginPage />} />
+          <Route path="/map" element={<Map />} />
         </Routes>
       </Router>
   );

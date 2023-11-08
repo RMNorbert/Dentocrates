@@ -1,14 +1,14 @@
 package com.rmnnorbert.dentocrates.service.clinic;
 
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicRegisterDTO;
-import com.rmnnorbert.dentocrates.controller.dto.clinic.ClinicResponseDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import com.rmnnorbert.dentocrates.dao.clinic.Location;
-import com.rmnnorbert.dentocrates.repository.ClinicRepository;
-import com.rmnnorbert.dentocrates.repository.DentistRepository;
-import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.dao.location.Location;
+import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
+import com.rmnnorbert.dentocrates.repository.client.DentistRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.location.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,7 +57,8 @@ public class ClinicService {
 
     }
     public ClinicResponseDTO getClinicById(long id){
-        return ClinicResponseDTO.of(clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic")));
+        return ClinicResponseDTO.of(clinicRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Clinic")));
     }
 
     public List<ClinicResponseDTO> getAllClinicByDentist(long id) {

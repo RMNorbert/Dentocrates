@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MultiFetch } from "../../../fetch/MultiFetch";
+import { MultiFetch } from "../../../utils/fetch/MultiFetch";
 import { useNavigate } from "react-router-dom";
 function LocationRegisterPage (){
     const { data } = MultiFetch();
@@ -29,7 +29,7 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
-        const locationRegisterUrl = '/java-backend/location/register';
+        const locationRegisterUrl = '/location/register';
         let locationData = {
             zipCode: zipCode,
             city: city

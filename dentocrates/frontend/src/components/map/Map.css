@@ -1,0 +1,67 @@
+.Map {
+    justify-content: center;
+    text-align: center;
+    font-size: calc(10px + 2vmin);
+    display: flex;
+    grid-column: 1;
+    z-index: 9999;
+}
+
+.Map-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+#map{
+    margin-top: 10px;
+    position: absolute;
+    height: 85vh;
+}
+
+#label{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: transparent;
+}
+
+#p {
+    padding: 10px;
+}
+#ol {
+    margin-right: 10px;
+}
+#checkbox {
+    width: 20px;
+    height: 20px;
+}
+#instruction-box-item{
+    border-top-style: double;
+}
+
+.sidebar {
+    position: absolute;
+    width: 20%;
+    height: 90%;
+    top: 15%;
+    right: 0;
+    overflow: hidden;
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.map-side {
+    position: absolute;
+    left: 0;
+    width: 80%;
+    top: 16.5%;
+    bottom: 0;
+}
+
+.heading {
+    background: #e9e8e8;
+    border-bottom: 1px solid #eee;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 10px;
+}

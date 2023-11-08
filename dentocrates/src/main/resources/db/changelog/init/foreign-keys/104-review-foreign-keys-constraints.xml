@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+        <changeSet id="add-review-reviewer-foreign-key-constraint" author="RMNorbert">
+            <preConditions onFail="MARK_RAN">
+                <tableExists tableName="review"/>
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_review_reviewer"/>
+                </not>
+            </preConditions>
+            <addForeignKeyConstraint
+                    baseTableName="review"
+                    baseColumnNames="reviewer"
+                    constraintName="fk_review_reviewer"
+                    referencedTableName="client"
+                    referencedColumnNames="id"
+                    onDelete="CASCADE"
+                    onUpdate="CASCADE"
+            />
+        </changeSet>
+
+    <changeSet id="add-review-clinic-foreign-key-constraint" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="review"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_review_clinic"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint
+                baseTableName="review"
+                baseColumnNames="reviewed_clinic"
+                constraintName="fk_review_clinic"
+                referencedTableName="clinic"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+    <changeSet id="add-review-appointment-foreign-key-constraint" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="review"/>
+            <columnExists tableName="review" columnName="reviewed_appointment"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_review_appointment"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint
+                baseTableName="review"
+                baseColumnNames="reviewed_appointment"
+                constraintName="fk_review_appointment"
+                referencedTableName="appointment_calendar"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+</databaseChangeLog>
