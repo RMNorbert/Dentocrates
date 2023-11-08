@@ -26,8 +26,8 @@ import static com.rmnnorbert.dentocrates.data.authentication.Role.*;
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final String id = System.getenv("oauthId");
-    private final String secret = System.getenv("oauthSecret");
+    private final String id = System.getenv("OAUTH_ID");
+    private final String secret = System.getenv("OAUTH_SECRET");
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
