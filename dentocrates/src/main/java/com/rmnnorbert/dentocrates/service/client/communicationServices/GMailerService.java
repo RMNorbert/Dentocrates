@@ -84,7 +84,7 @@ public class GMailerService {
             Message msg = new Message();
             msg.setRaw(encodedEmail);
 
-            msg = service.users().messages().send(SENDER_USER_ID, msg).execute();
+            service.users().messages().send(SENDER_USER_ID, msg).execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
