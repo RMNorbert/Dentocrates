@@ -16,7 +16,12 @@ public record ClinicResponseDTO(@Min(1) long id,
                                 @NotBlank String city,
                                 @NotBlank String street,
                                 @NotBlank String openingHours,
-                                @Min(1) long dentistId) {
+                                @Min(1) long dentistId,
+
+                                double longitude,
+
+                                double latitude
+) {
     public static ClinicResponseDTO of(Clinic clinic) {
         return ClinicResponseDTO.builder()
                 .id(clinic.getId())
@@ -29,6 +34,8 @@ public record ClinicResponseDTO(@Min(1) long id,
                 .street(clinic.getStreet())
                 .openingHours(clinic.getOpeningHours())
                 .dentistId(clinic.getDentistInContract().getId())
+                .longitude(clinic.getLocation().getLongitude())
+                .latitude(clinic.getLocation().getLatitude())
                 .build();
     }
 }
