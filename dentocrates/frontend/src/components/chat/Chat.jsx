@@ -1,6 +1,6 @@
 import "./Chat.css"
-import React, { useState, useEffect } from 'react';
-import { MultiFetch } from "../../fetch/MultiFetch";
+import React, {useState, useEffect} from 'react';
+import { MultiFetch } from "../../utils/fetch/MultiFetch";
 function Chat() {
     const iconList = [process.env.PUBLIC_URL + '/help.png',
         process.env.PUBLIC_URL + '/cat.png',
@@ -9,6 +9,7 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [chatIcon, setChatIcon] = useState(iconList[0]);
     const [inputValue, setInputValue] = useState('');
+    const [chatWithCat, setChatWithCat] = useState(false);
     const chatUrl = "/chat";
     const { data } = MultiFetch();
 
@@ -29,7 +30,8 @@ function Chat() {
         const msg1 = { name: 'User', message: inputValue };
         setMessages((prevMessages) => [msg1, ...prevMessages]);
         try {
-            const answer = await data(chatUrl, "POST", inputValue);
+            const requestBody = {message: inputValue, cat: chatWithCat};
+            const answer = await data(chatUrl, "POST", requestBody);
             if(answer !== '') {
                 const responseMessage = {name: 'AI', message: answer};
                 setMessages((prevMessages) => [responseMessage, ...prevMessages]);
@@ -44,6 +46,10 @@ function Chat() {
         setInputValue(e.target.value);
     };
 
+    const changeChatBotPersonality = () => {
+        setChatWithCat(!chatWithCat);
+    }
+
     useEffect(() => {
 
     }, []);
@@ -57,6 +63,10 @@ function Chat() {
                             <img src={chatIcon} className="bot__icon" alt="Chat Support, image created by AI" />
                         </div>
                         <div className="chatbox__content--header">
+                            <button className="chatbox__send--footer send__button switch"
+                                    onClick={() => changeChatBotPersonality()}>
+                                Switch Personality to {chatWithCat? "Normal" : "Cat"}
+                            </button>
                             <h4 className="chatbox__heading--header">Chat Support</h4>
                             <p className="chatbox__description--header">Hi. My name is DentoBot. How can I help you?</p>
                         </div>
