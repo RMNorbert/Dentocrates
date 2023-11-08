@@ -2,13 +2,14 @@ import ReactCalendar from "react-calendar";
 import "./Calendar.css";
 import {useEffect, useState} from "react";
 import {add, format} from "date-fns";
-import { userId } from "../../token/TokenDecoder";
-import { useParams } from "react-router-dom";
-import {MultiFetch} from "../../../fetch/MultiFetch";
+import { userId } from "../../../utils/token/TokenDecoder";
+import {useNavigate, useParams} from "react-router-dom";
+import {MultiFetch} from "../../../utils/fetch/MultiFetch";
 import {Loading} from "../../lodaingPage/Loading";
 const Calendar = () => {
     const { id } = useParams();
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [isLoaded,setIsLoaded] = useState(false);
     const [leaveDates, setLeaveDates] = useState([]);
     const [clinic, setClinic] = useState([]);
@@ -77,8 +78,11 @@ const Calendar = () => {
             reservation: formattedAppointment
         };
 
-        await data(calendarRegisterUrl, 'POST', bookingData);
+        const response = await data(calendarRegisterUrl, 'POST', bookingData);
         setIsLoaded(false);
+        if(response.includes('successfully')){
+            navigate(`/clinic/${id}`);
+        }
         } catch (error) {
             console.error('Error:', error);
         }
