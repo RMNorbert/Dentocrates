@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {Reset} from "../reset-password/Reset";
-import {MultiFetch} from "../../../../fetch/MultiFetch";
+import {MultiFetch} from "../../../../utils/fetch/MultiFetch";
 import { handleGoogleLogin } from "../oauth/OauthLogin";
 
 function LoginPage() {

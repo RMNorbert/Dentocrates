@@ -1,7 +1,9 @@
-import {MultiFetch} from "../../fetch/MultiFetch";
+import "./ReviewRegister.css";
+import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {useState} from "react";
+import {userId} from "../../utils/token/TokenDecoder";
 
-export function ReviewRegister(clinicId,appointmentId) {
+export function ReviewRegister({clinicId, appointmentId}) {
     const { data } = MultiFetch();
     const [isHidden, setIsHidden] = useState(true);
     const [reviewText, setReviewText] = useState('');
@@ -15,9 +17,11 @@ export function ReviewRegister(clinicId,appointmentId) {
         setReviewRating(event.target.value);
     };
     const updateReviewStateOfAppointment = async () => {
-        const reviewAppointmentUrl = '/calendar/register';
-        const idOfAppointment = {id:appointmentId}
-        const response = await data(reviewAppointmentUrl,'POST',idOfAppointment)
+        const reviewAppointmentUrl = '/calendar/';
+        const response = await data(reviewAppointmentUrl,'POST',appointmentId)
+        if(response.includes('successfully')){
+            setIsHidden(true);
+        }
     };
     const registerReview = async () => {
         const registerReviewUrl = '/review/register';
@@ -28,13 +32,16 @@ export function ReviewRegister(clinicId,appointmentId) {
             rating:reviewRating,
             review:reviewText
         }
-        const response = await data(registerReviewUrl,'POST',requestBody)
-
+        const response = await data(registerReviewUrl,'POST',requestBody);
+        if(response.includes('successfully')) {
+            await updateReviewStateOfAppointment();
+        }
     };
 
     return (
-        <div>
-            <button
+        <div className="review-box">
+            <div className="review-element">
+            <button className="review"
                 onClick={() => setIsHidden(!isHidden)}
                 style={{ display: isHidden ? "block" : "none" }}
             >
@@ -42,71 +49,71 @@ export function ReviewRegister(clinicId,appointmentId) {
             </button>
             <div
                 style={{ display: isHidden ? "none" : "block" }}
+                className="review-element"
             >
-                <input
-                type={"text"}
+                <textarea
+                className="review-input"
                 id="name"
                 value={reviewText}
                 onChange={handleReviewChange}
                 />
-                <h1>Rate the clinic:</h1>
-                <form >
-                    <label>
+                <h4 className="h4">Rate the clinic:</h4>
+                <div className="radio">
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="0"
-                               checked={reviewRating === 0}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         0
                     </label>
-                    <br/>
-                    <label>
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="1"
-                               checked={reviewRating === 1}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         1
                     </label>
                     <br/>
-                    <label>
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="2"
-                               checked={reviewRating === 2}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         2
                     </label>
                     <br/>
-                    <label>
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="3"
-                               checked={reviewRating === 3}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         3
                     </label>
                     <br/>
-                    <label>
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="4"
-                               checked={reviewRating === 4}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         4
                     </label>
                     <br/>
-                    <label>
+                    <label className="rating">
                         <input type="radio"
                                name="rating"
+                               className="radio"
                                value="5"
-                               checked={reviewRating === 5}
-                               onChange={handleRatingChange}
+                               onChange={(e) => handleRatingChange(e)}
                         />
                         5
                     </label>
@@ -116,7 +123,8 @@ export function ReviewRegister(clinicId,appointmentId) {
                     >
                         Submit Review
                     </button>
-                </form>
+                </div>
+            </div>
             </div>
         </div>
     )

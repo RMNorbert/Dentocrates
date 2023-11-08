@@ -1,9 +1,9 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
+import com.rmnnorbert.dentocrates.dto.location.LocationDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
-import com.rmnnorbert.dentocrates.dao.clinic.Location;
-import com.rmnnorbert.dentocrates.repository.LocationRepository;
+import com.rmnnorbert.dentocrates.dao.location.Location;
+import com.rmnnorbert.dentocrates.repository.clinic.location.LocationRepository;
 import com.rmnnorbert.dentocrates.service.clinic.location.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.*;
 class LocationServiceTest {
     @Mock
     private LocationRepository locationRepository;
+    @Mock
+    private Random random;
     @InjectMocks
     private LocationService locationService;
     @BeforeEach
@@ -60,8 +63,7 @@ class LocationServiceTest {
 
     @Test
     void registerLocation() {
-        LocationDTO dto = new LocationDTO(1000,"City");
-
+        LocationDTO dto = new LocationDTO(1000,"City",0,0);
         ResponseEntity<String> actual = locationService.registerLocation(dto);
         ResponseEntity<String> expected = ResponseEntity.ok("Location registered successfully");
 

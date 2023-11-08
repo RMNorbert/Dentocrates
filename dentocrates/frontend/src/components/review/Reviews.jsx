@@ -1,25 +1,27 @@
-import {MultiFetch} from "../../fetch/MultiFetch";
+import "./Review.css";
+import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {useEffect, useState} from "react";
 import {Loading} from "../lodaingPage/Loading";
-import { userId} from "../token/TokenDecoder";
+import {userId} from "../../utils/token/TokenDecoder";
 
-export const ReviewPage = (id,byClinic ) => {
+export const ReviewPage = ({id, byClinic} ) => {
     const { data } = MultiFetch();
     const [isDataLoaded, setDataLoaded] = useState(false);
     const [reviewData, setReviewData] = useState([]);
     const [isDeleted, setIsDelete] = useState(false);
+    const reviewDataUrl = byClinic? `/review/clinic/${id}` : `/review/customer/${id}`;
+    const okStatusCode = 200;
     const getReviewData = async () => {
-        const reviewDataUrl = byClinic? `/review/${id}` : `/customer/${id}`;
         const responseData = await data(reviewDataUrl);
         setReviewData(await responseData);
         setDataLoaded(true)
     };
 
     const deleteReview = async (currentId) => {
-        const reviewDeleteUrl = "/review/";
+        const reviewDeleteUrl = '/review/';
         const requestBody = {userId: userId(), targetId: currentId};
         const response =  await data(reviewDeleteUrl, 'DELETE', requestBody);
-        if(response.status === 200) {
+        if(response.status === okStatusCode) {
             setIsDelete(true);
         }
     };
@@ -36,9 +38,9 @@ export const ReviewPage = (id,byClinic ) => {
           <div>
               {!isDeleted && reviewData && reviewData.map((review, index) => (
                   <div key={index}
-                       className="review"
+                       className="review-rating-box"
                   >
-                     <h1>{review.reviewer}</h1>
+                     <h3>{review.reviewer}</h3>
                       {!byClinic?
                           <div>
                               {review.reviewedClinic}
@@ -47,13 +49,22 @@ export const ReviewPage = (id,byClinic ) => {
                           <></>
                       }
                           <div>
-                              <div>{review.rating}</div>
-                              <div>
+                              <div
+                                  className="review-rating"
+                              >
+                              Rating:    {review.rating}
+                              </div>
+                              <div
+                                  className="review-rating-element"
+                              >
                                   {review.review}
                               </div>
                           </div>
                       {!byClinic??
-                          <button onClick={()=> deleteReview(review.id)}>
+                          <button
+                              className="review-element"
+                              onClick={()=> deleteReview(review.id)}
+                          >
                               Delete review
                           </button>}
                   </div>

@@ -1,5 +1,7 @@
 databaseChangeLog:
   - includeAll:
-      path: db/changelog/init/tables
+      path: ./db/changelog/init/tables
   - includeAll:
-      path: db/changelog/init/foreign-keys
+      path: ./db/changelog/init/foreign-keys
+  - includeAll:
+      path: ./db/changelog/init/values

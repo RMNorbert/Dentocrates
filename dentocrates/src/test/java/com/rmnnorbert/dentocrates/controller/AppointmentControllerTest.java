@@ -2,6 +2,7 @@ package com.rmnnorbert.dentocrates.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.rmnnorbert.dentocrates.controller.clinic.AppointmentController;
 import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
@@ -158,7 +159,9 @@ class AppointmentControllerTest {
 
     private static Stream<Arguments> provideIdAndExpectedList() {
         return Stream.of(
-            Arguments.of(1L,List.of(new AppointmentDTO(1,1,1, LocalDateTime.now(),false))),
+            Arguments.of(1L,List.of(
+                    new AppointmentDTO(1,1,1,
+                            LocalDateTime.now(),false,false))),
             Arguments.of(2L,List.of())
         );
     }

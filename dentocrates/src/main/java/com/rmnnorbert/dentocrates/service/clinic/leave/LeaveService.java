@@ -1,13 +1,13 @@
 package com.rmnnorbert.dentocrates.service.clinic.leave;
 
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDeleteDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDeleteDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import com.rmnnorbert.dentocrates.dao.clinic.Leave;
-import com.rmnnorbert.dentocrates.repository.ClinicRepository;
-import com.rmnnorbert.dentocrates.repository.LeaveRepository;
+import com.rmnnorbert.dentocrates.dao.leave.Leave;
+import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.leave.LeaveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -47,6 +47,7 @@ public class LeaveService {
         return ResponseEntity.badRequest().body("Invalid delete request.");
     }
     private Clinic getClinicById(long id){
-        return clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic"));
+        return clinicRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Clinic"));
     }
 }

@@ -5,9 +5,9 @@ import com.rmnnorbert.dentocrates.dto.client.customer.CustomerAppointmentRespons
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
-import com.rmnnorbert.dentocrates.data.Role;
-import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
-import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
+import com.rmnnorbert.dentocrates.repository.clinic.appointmentCalendar.AppointmentCalendarRepository;
+import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.service.client.customer.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

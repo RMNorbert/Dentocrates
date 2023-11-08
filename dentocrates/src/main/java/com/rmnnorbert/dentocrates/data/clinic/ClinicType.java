@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.data;
+package com.rmnnorbert.dentocrates.data.clinic;
 
 public enum ClinicType {
     COMMUNITY_DENTAL_CLINIC,

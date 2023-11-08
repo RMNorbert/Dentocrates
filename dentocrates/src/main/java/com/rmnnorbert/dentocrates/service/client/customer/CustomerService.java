@@ -5,8 +5,8 @@ import com.rmnnorbert.dentocrates.dto.client.customer.CustomerAppointmentRespons
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
-import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
-import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.appointmentCalendar.AppointmentCalendarRepository;
+import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

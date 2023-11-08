@@ -2,8 +2,8 @@ package com.rmnnorbert.dentocrates.service.client.communicationServices;
 
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
-import com.rmnnorbert.dentocrates.data.Role;
-import com.rmnnorbert.dentocrates.repository.VerificationRepository;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
+import com.rmnnorbert.dentocrates.repository.client.verification.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ public class VerificationService {
     private final GMailerService gMailerService;
     private final VerificationRepository verificationRepository;
     private final static String VERIFICATION_SUBJECT = "Verification";
+    private final static String SUCCESSFUL_MESSAGE = "Verification request successfully ";
     @Autowired
     public VerificationService(GMailerService gMailerService, VerificationRepository verificationRepository) {
         this.gMailerService = gMailerService;
@@ -51,11 +52,12 @@ public class VerificationService {
         String authenticationCode = UUID.randomUUID().toString();
         String verificationMessage = "Authentication code to login : " + authenticationCode;
         String subject = "Dentocrates: Authentication code";
+        String noLink = "";
         Role roleAsEnum = Role.valueOf(role);
 
         registerVerification(email, roleAsEnum, authenticationCode);
 
-        gMailerService.sendMail(email,subject,verificationMessage,"");
+        gMailerService.sendMail(email,subject,verificationMessage,noLink);
         return authenticationCode;
     }
     public ResponseEntity<String> deleteVerification(String verificationCode) {
@@ -64,7 +66,7 @@ public class VerificationService {
                     .orElseThrow(() -> new NotFoundException("Verification"));
 
             verificationRepository.delete(verification);
-            return ResponseEntity.ok("Verification request successfully deleted.");
+            return ResponseEntity.ok(SUCCESSFUL_MESSAGE + "deleted.");
 
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
@@ -84,7 +86,7 @@ public class VerificationService {
                     .build();
 
             verificationRepository.save(verification);
-            return ResponseEntity.ok("Verification request successfully registered.");
+            return ResponseEntity.ok(SUCCESSFUL_MESSAGE+ "registered.");
         }
         return ResponseEntity.badRequest().body("Verification code already registered.");
     }

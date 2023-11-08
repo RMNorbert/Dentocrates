@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
 import {Loading} from "../lodaingPage/Loading";
-import {MultiFetch} from "../../fetch/MultiFetch";
+import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {useNavigate} from "react-router-dom";
 
 export const DentistPage = () => {

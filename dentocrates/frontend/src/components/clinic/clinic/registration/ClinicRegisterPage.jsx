@@ -2,8 +2,8 @@ import "./ClinicRegisterPage.css";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../../lodaingPage/Loading";
-import { MultiFetch } from "../../../../fetch/MultiFetch";
-import { userId } from "../../../token/TokenDecoder";
+import { MultiFetch } from "../../../../utils/fetch/MultiFetch";
+import { userId } from "../../../../utils/token/TokenDecoder";
 
 function ClinicRegisterPage (){
     const { data } = MultiFetch();
@@ -43,38 +43,29 @@ function ClinicRegisterPage (){
             isMounted.current = false;
         };
     }, []);
-
     const handleNameChange = (event) => {
         setName(event.target.value);
     };
-
     const handleClinicTypeChange = (event) => {
         setClinicType(event.target.value);
     };
-
     const handleContactNumberChange = (event) => {
         setContactNumber(event.target.value);
     };
-
     const handleWebsiteChange = (event) => {
         setWebsite(event.target.value);
     };
-
     const handleZipCodeChange = (event) => {
         let chosen = event.target.value.split(" ");
         setZipCode(parseInt(chosen[0]));
         setCity(chosen[2] + " " + chosen[3]);
     };
-
     const handleStreetChange = (event) => {
         setStreet(event.target.value);
     };
-
-
     const handleOpeningHoursChange = (event) => {
         setOpeningHours(event.target.value);
     };
-
     const HandleSubmit = async (e) => {
         e.preventDefault();
         let registerData = {
@@ -127,8 +118,8 @@ function ClinicRegisterPage (){
                         <div className="inputBox">
                             <label htmlFor="zipCode">Zipcode:</label>
                             <select id="zipCode"  onChange={handleZipCodeChange}>
-                                {locations.map((location) =>
-                                    <option key={location.id} >{location.zipCode} - {location.city}</option>)
+                                {locations.map((location, index) =>
+                                    <option key={index} >{location.zipCode} - {location.city}</option>)
                                 }
                             </select>
                         </div>

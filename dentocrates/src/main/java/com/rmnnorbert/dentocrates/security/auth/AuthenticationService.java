@@ -2,20 +2,19 @@ package com.rmnnorbert.dentocrates.security.auth;
 
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
-import com.rmnnorbert.dentocrates.dto.client.authentication.VerificationRequestDTO;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
-import com.rmnnorbert.dentocrates.repository.ClientRepository;
-import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
+import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.service.JwtService;
-import com.rmnnorbert.dentocrates.service.client.DentistService;
-import com.rmnnorbert.dentocrates.service.client.VerificationService;
-import com.rmnnorbert.dentocrates.utils.DtoMapper;
-import com.rmnnorbert.dentocrates.service.client.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,7 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationService {
+    private final String REDIRECT_URI = System.getenv("REDIRECT_URI");
     private String state;
     private final ClientRepository clientRepository;
     private final DentistService dentistService;
@@ -63,7 +63,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(CustomerRegisterDTO request) {
         if(getClient(request.email()).isEmpty()){
             String password = passwordEncoder.encode(request.password());
-            Customer customer = DtoMapper.toEntity(request,password);
+            Customer customer = Customer.toEntity(request,password);
 
             customerRepository.save(customer);
             verificationService.sendVerification(request.email(), "CUSTOMER","registration", false);
@@ -79,7 +79,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(DentistRegisterDTO request) {
         if(getClient(request.email()).isEmpty()){
             String password = passwordEncoder.encode(request.password());
-            Dentist dentist = DtoMapper.toEntity(request,password);
+            Dentist dentist = Dentist.toEntity(request,password);
 
             dentistService.saveDentist(dentist);
             verificationService.sendVerification(request.email(), "DENTIST","registration", false);
@@ -159,12 +159,13 @@ public class AuthenticationService {
         if (clientRegistration != null) {
             String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
             String clientId = clientRegistration.getClientId();
-            String redirectUri ="http://localhost:3000/login/oauth2/code/";
+            String redirectUri = REDIRECT_URI;
             String scope = String.join(" ", clientRegistration.getScopes());
             String state = generateState();
 
             String authorizationUrl = String.format("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code&state=%s",
                     authorizationUri, clientId, redirectUri, scope, state);
+            System.out.println(authorizationUrl);
             return authorizationUrl;
         }
         return null;

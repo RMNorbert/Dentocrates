@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.dto.client.dentist;
 
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
-import com.rmnnorbert.dentocrates.data.Role;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

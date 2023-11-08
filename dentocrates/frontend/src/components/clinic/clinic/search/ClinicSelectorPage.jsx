@@ -2,7 +2,7 @@ import "./ClinicSelectorPage.css";
 import { useEffect, useState } from "react"
 import { ClinicList } from "./ClinicList"
 import { Loading } from "../../../lodaingPage/Loading";
-import { MultiFetch } from "../../../../fetch/MultiFetch";
+import { MultiFetch } from "../../../../utils/fetch/MultiFetch";
 export const ClinicSelectorPage = () => {
     const { data } = MultiFetch();
     const [isDataLoaded, setIsDataLoaded] = useState(false);

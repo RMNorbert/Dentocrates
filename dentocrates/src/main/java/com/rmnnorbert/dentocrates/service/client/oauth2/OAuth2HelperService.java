@@ -20,6 +20,7 @@ public class OAuth2HelperService {
     private final String redirectUri = System.getenv("REDIRECT_URI");
 
     public ResponseEntity<TokenResponse> getGoogleTokenResponse(String code) {
+        String oauthTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("code", code);
         requestBody.add("client_id", id);
@@ -37,7 +38,7 @@ public class OAuth2HelperService {
         // Make the POST request to the token endpoint
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
-                "https://www.googleapis.com/oauth2/v4/token",
+                oauthTokenUrl,
                 HttpMethod.POST,
                 requestEntity,
                 TokenResponse.class

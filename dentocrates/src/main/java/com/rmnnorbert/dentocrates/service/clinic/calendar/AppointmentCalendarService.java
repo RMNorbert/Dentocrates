@@ -6,11 +6,11 @@ import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
-import com.rmnnorbert.dentocrates.dao.clinic.AppointmentCalendar;
+import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import com.rmnnorbert.dentocrates.repository.AppointmentCalendarRepository;
-import com.rmnnorbert.dentocrates.repository.ClinicRepository;
-import com.rmnnorbert.dentocrates.repository.CustomerRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.appointmentCalendar.AppointmentCalendarRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
+import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -75,10 +75,12 @@ public class AppointmentCalendarService {
     }
 
     private Clinic getClinicById(long id) {
-        return clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic"));
+        return clinicRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Clinic"));
     }
     private Customer getCustomerById(long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer"));
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer"));
     }
     private AppointmentCalendar getAppointmentById(long id) {
         return appointmentCalendarRepository.findById(id)
@@ -87,7 +89,9 @@ public class AppointmentCalendarService {
 
     public ResponseEntity<String> updateReviewStateOfAppointment(Long id) {
         try {
-        AppointmentCalendar appointment = appointmentCalendarRepository.getReferenceById(id).withReviewed(true);
+        AppointmentCalendar appointment = appointmentCalendarRepository.getReferenceById(id)
+                .withReviewed(true);
+
         appointmentCalendarRepository.save(appointment);
         return ResponseEntity.ok("Appointment updated successfully");
         } catch (Exception e) {

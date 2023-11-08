@@ -1,6 +1,7 @@
 package com.rmnnorbert.dentocrates.dao.client;
 
-import com.rmnnorbert.dentocrates.data.Role;
+import com.rmnnorbert.dentocrates.data.authentication.Role;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -26,4 +27,14 @@ public class Dentist extends Client {
         this.id = id;
     }
 
+    public static Dentist toEntity(DentistRegisterDTO request, String password){
+        return Dentist.builder()
+                .email(request.email())
+                .password(password)
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .role(Role.DENTIST)
+                .operatingLicenceNo(request.operatingLicenceNo())
+                .build();
+    }
 }

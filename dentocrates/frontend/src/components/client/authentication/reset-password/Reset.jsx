@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {MultiFetch} from "../../../../fetch/MultiFetch";
+import {MultiFetch} from "../../../../utils/fetch/MultiFetch";
 
 export const Reset = () => {
     const [requesterEmail, setRequesterEmail] = useState("");

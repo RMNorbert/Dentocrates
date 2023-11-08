@@ -1,8 +1,9 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDeleteDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
+import com.rmnnorbert.dentocrates.controller.clinic.LeaveController;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDeleteDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.service.clinic.leave.LeaveService;
 import com.rmnnorbert.dentocrates.service.client.communicationServices.NotificationService;

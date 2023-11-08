@@ -1,8 +1,8 @@
 import "../../ClientPage.css"
 import {useEffect, useState} from "react";
-import { email } from "../../../token/TokenDecoder";
+import { email } from "../../../../utils/token/TokenDecoder";
 import { useParams } from "react-router-dom";
-import { MultiFetch } from "../../../../fetch/MultiFetch";
+import { MultiFetch } from "../../../../utils/fetch/MultiFetch";
 function VerifyPage (props) {
     const { verificationCode } = useParams();
     const { data } = MultiFetch();

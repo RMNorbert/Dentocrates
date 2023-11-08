@@ -2,7 +2,7 @@ import './NavigationBar.css'
 import '../Element.css'
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {email, role} from "../token/TokenDecoder";
+import {email, role} from "../../utils/token/TokenDecoder";
 
 function NavigationBar() {
     const navigate = useNavigate();
@@ -36,6 +36,7 @@ function NavigationBar() {
             <button id='tabs' onClick={() => navigate("/clinic")}>Search clinic</button>
             <button id='tabs' onClick={() => navigate("/dentist")}>Search dentist</button>
             <button id='tabs' onClick={() => navigate("/appointments")}>Appointments</button>
+            <button id='tabs' onClick={() => navigate("/map")}>Map</button>
                 </>
             }
             {loggedInUserEmail !== null && role() === "DENTIST" &&

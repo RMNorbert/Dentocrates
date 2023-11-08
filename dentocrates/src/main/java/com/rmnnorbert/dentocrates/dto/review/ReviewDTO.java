@@ -16,9 +16,11 @@ public record ReviewDTO(@Min(1) long id,
                         String review
 ) {
     public static ReviewDTO of(Review review) {
+        int indexOfFirstCharacter = 0;
         return ReviewDTO.builder()
                 .id(review.getId())
-                .reviewer(review.getReviewer().getFirstName() + " " + review.getReviewer().getLastName())
+                .reviewer(review.getReviewer().getFirstName().charAt(indexOfFirstCharacter) +
+                        ". " + review.getReviewer().getLastName())
                 .reviewedClinic(review.getReviewedClinic().getName() +
                         ":" + review.getReviewedClinic().getDentistInContract().getFirstName() +
                         " " + review.getReviewedClinic().getDentistInContract().getLastName())

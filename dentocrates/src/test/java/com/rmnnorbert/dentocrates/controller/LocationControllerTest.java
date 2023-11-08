@@ -1,6 +1,7 @@
 package com.rmnnorbert.dentocrates.controller;
 
-import com.rmnnorbert.dentocrates.dto.clinic.location.LocationDTO;
+import com.rmnnorbert.dentocrates.controller.clinic.LocationController;
+import com.rmnnorbert.dentocrates.dto.location.LocationDTO;
 import com.rmnnorbert.dentocrates.service.clinic.location.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ class LocationControllerTest {
 
     @Test
     void registerLocationShouldReturnExpectedValue() {
-        LocationDTO dto = new LocationDTO(1000,"city");
+        LocationDTO dto = new LocationDTO(1000,"city",17.5,10.5);
         ResponseEntity<String> expected = ResponseEntity.ok("Location registered successfully");
         when(service.registerLocation(dto)).thenReturn(expected);
 
@@ -62,7 +63,7 @@ class LocationControllerTest {
     }
     private static Stream<Arguments> provideExpectedList() {
         return Stream.of(
-                Arguments.of( List.of(new LocationDTO(1000,"city"))),
+                Arguments.of( List.of(new LocationDTO(1000,"city",16.4,15.4))),
                 Arguments.of( List.of())
         );
     }

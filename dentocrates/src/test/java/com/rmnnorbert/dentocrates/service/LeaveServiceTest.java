@@ -1,14 +1,14 @@
 package com.rmnnorbert.dentocrates.service;
 
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveDeleteDTO;
-import com.rmnnorbert.dentocrates.dto.clinic.leave.LeaveRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveDeleteDTO;
+import com.rmnnorbert.dentocrates.dto.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
-import com.rmnnorbert.dentocrates.dao.clinic.Leave;
-import com.rmnnorbert.dentocrates.repository.ClinicRepository;
-import com.rmnnorbert.dentocrates.repository.LeaveRepository;
+import com.rmnnorbert.dentocrates.dao.leave.Leave;
+import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.leave.LeaveRepository;
 import com.rmnnorbert.dentocrates.service.clinic.leave.LeaveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
