@@ -42,7 +42,7 @@
 
 Dentocrates is an online platform for dental appointments designed to streamline the process of finding and booking dental services. 
 
-The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, search for dentists in their area, and view available appointments.
+The application is built using Java, Spring, PostgreSQL, and React, providing a comprehensive and user-friendly web experience. The website allows users to register for an account, a registered customer can search for dentists in their area, view and book available appointments, leave review about clinics after appointments, search and plan routes for clinics on a map, get basic informations from chatbot with switchable response style. A registered dentsist can register clinics, locations for the clinics, manage appointments and leaves.
 
 ---
 ## Features
@@ -61,13 +61,11 @@ The application is built using Java, Spring, PostgreSQL, and React, providing a 
 
 - **Reviews & Ratings**
 
-- **Interactive map with route planning to clinics (in progress)**
+- **Interactive map with route planning to clinics**
 
 - **Logging (in progress)** 
   
-- **Proxy Server (replacing by Eureka in progress)**
-
-- **Upload & Manage Medical Documents(in progress)**
+- **Connect microservices with Eureka (in progress)**
   
 ---
 # Dockerized version can be pulled from DockerHub:
@@ -92,7 +90,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - TypeScript (on typescript branch)
   - JavaScript,
   - React,
-  - MapBox GL JS (in progress)
+  - MapBox GL JS
     
  #### Database
   - Liquibase
@@ -112,19 +110,8 @@ Follow these instructions to get a copy of the Dentocrates project up and runnin
 ## Prerequisites
 
 To set up the project, follow these steps:
-    
-Make sure you have the following dependencies installed before proceeding with the installation:
 
-### 1.   Java Development Kit (JDK):
-   Ensure that you have the Java Development Kit installed on your machine. You can [download](https://www.oracle.com/java/technologies/downloads/) the JDK from the Oracle website and install it according to the provided instructions.
-
-### 2.    JDBC Database (e.g., PostgreSQL):
-   In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can [download](https://www.postgresql.org/download/) and install PostgreSQL from the official PostgreSQL website and configure it as required.
-
-### 3.   In case of using Oauth:
-  To use Google’s OAuth 2.0 authentication system for login, you must set up a project in the Google API Console and obtain OAuth 2.0 credentials.
-
-### 4.   To deploy Dentocrates using Docker containers, follow these steps:
+###  To deploy Dentocrates using Docker containers, follow these steps:
 
 #### [Install Docker](https://www.docker.com/get-started/):
   
@@ -141,11 +128,28 @@ Make sure you have the following dependencies installed before proceeding with t
 Note: Docker is optional and recommended for deployment scenarios. If you're using Docker, it can help manage dependencies and ensure consistent environments.
 
 ---
+###  To run Dentocrates without using Docker:
+
+Make sure you have the following dependencies installed before proceeding with the installation:
+
+### 1.   Java Development Kit (JDK):
+   Ensure that you have the Java Development Kit installed on your machine. You can [download](https://www.oracle.com/java/technologies/downloads/) the JDK from the Oracle website and install it according to the provided instructions.
+
+### 2.    JDBC Database (e.g., PostgreSQL):
+   In order to use a JDBC database with the application, such as PostgreSQL, make sure you have the necessary database server installed on your system. You can [download](https://www.postgresql.org/download/) and install PostgreSQL from the official PostgreSQL website and configure it as required.
+
+### 3.   In case of using Oauth:
+  To use Google’s OAuth 2.0 authentication system for login, you must set up a project in the Google API Console and obtain OAuth 2.0 credentials.
+
+---
 ## Installation:
 
   Follow these instructions to get a copy of the Dentocrates project up and running on your local machine:
 
 #### 1. Clone the repository
+```
+git@github.com:RMNorbert/Dentocrates.git
+```
 
 ---
 #### 2. To use the ChatBot
@@ -154,29 +158,45 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 ---
 #### 3. Set up the necessary environment variables and configure the database connection details.
    Update the configuration files with the appropriate values.
-   
+
+   ---
+  - #### **Without using Docker:**
+  
   - **3.1, Configuration for database connection:**
      
-     - Located in ```dentocrates/src/main/resources/application.yml```, the following variables have to be updated according to your Postgresql user: **username , password**.
+     - Located in ```dentocrates/src/main/resources/application.yml```, the following environment variables have to be created or updated according to your Postgresql user: **url,username , password**.
+
+       To run Dentocrates without using Docker you can use:
+       ```
+       url:jdbc:postgresql://localhost:5432/dentocrates
+       ```
    
   - **3.2, Other environment variables to update** before running the application: 
    
-     - **3.2.1, In case of using the application-lifecycle.sh** to run the application, the variables in the application-lifecycle.sh file have to be updated. The sh file is located in:
+     - **3.2.1, Other environment variables:**
+        - CHAT_URL : This variable used in the post request to the chatbot : ```http://127.0.0.1:5000/predict```
+        
+        - REDIRECT_URI: This variable used during OAUTH: ``` http://localhost:3000/login/oauth2/code/ ```
+        
+        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials
+        
+        - SECRET : This variable have to be created for the JWT related key creation 
+      
+        - SENDER_USERNAME: have to be created to use the email related services, update it according to the email you whish to use
+     
+     - **3.2.2, In case of using the application-lifecycle.sh** to run the application, the variables in the application-lifecycle.sh file have to be updated. The sh file is located in:
        ```dentocrates/```
-   
-     - **3.2.2, In case of using the docker commpose file** to run the application, all the dentocrates service environment variables in the docker commpose file have to be updated, the file               located in: ```dentocrates/``` , and replace the datasource url in the application.yml located in :```dentocrates/src/main/resources```  with the following url :
-       ```
-       jdbc:postgresql://postgres:5432/dentocrates
-       ```
-   
-     - **3.2.3, In other case:**
-       - SECRET : This variable have to be created for the JWT related key creation, it is located in:
-         ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/JwtService```
-      
-        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials, it is located in : ```dentocrates/src/main/java/com.rmnnorber.dentocrates/security/config/SecurityConfiguration```
-      
-         - SENDER_USERNAME: have to be created to use the email related services, update it according to the email you whish to use, it is located in : ```dentocrates/src/main/java/com.rmnnorber.dentocrates/service/GMailerService``` 
+       
+---  
+  - #### **In case of using Docker:**
 
+  - **3.1, Using the docker commpose file** to run the application, the postgres and dentocrates service environment variables in the docker commpose file have to be updated, the file
+
+    located in:
+     ```
+      dentocrates/
+     ```
+     
 ---
 ### 4. Build and run the project: 
    Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
@@ -193,12 +213,7 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
        This command will build the project, resolve the dependencies, and start the backend server.
 
     - **4.1.2**, Navigate to the project's dentocrates/frontend directory, and run the following command:
-       ```
-       npm run proxy
-       ```
-       This command will start the proxy server.
-   
-       Run the following command:
+    
        ```
        npm start
        ```
@@ -207,14 +222,14 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 
  - #### 4.2, Run the dockerized version with:
   
-    - Navigate to the project directory containing the docker-deploy.yml file.
+    - Navigate to the project directory containing the docker-compose.yml file.
 
       Run the following command to build and start the project:
       ```
       docker-compose up --build
       ```
 
-      The docker-deploy.yml file defines the services and configurations needed for running your application in a Docker container.
+      The docker-compose.yml file defines the services and configurations needed for running your application in a Docker container.
       It simplifies deployment and ensures consistent setups across environments.
   ___
 
@@ -232,7 +247,7 @@ Note: Docker is optional and recommended for deployment scenarios. If you're usi
 ---
 #### 5. Access the application:
 
-Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of mvn spring-boot:run or in case of using the application-lifecycle.sh file http://localhost:3000 , in case of docker http://localhost:8080) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
+Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of **mvn spring-boot:run** and **npm start** or in case of using the **application-lifecycle.sh** file **http://localhost:3000** , in case of **docker** **http://localhost:8080**) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
 
 Note: The URL and port number may vary depending on your configuration.
 
