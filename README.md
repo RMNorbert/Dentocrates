@@ -33,9 +33,10 @@
 # Dentocrates
 
 [Table of content:](#description)
-- [Used technologies](#used-technologies)
 - [Features](#features)
+- [Used technologies](#used-technologies)
 - [Getting started](#getting-started)
+- [Default Login Credentials](#default-login-credentials)
 - [License](#license)
 ---
 ## Description:
@@ -250,6 +251,17 @@ git@github.com:RMNorbert/Dentocrates.git
 Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of **mvn spring-boot:run** and **npm start** or in case of using the **application-lifecycle.sh** file **http://localhost:3000** , in case of **docker** **http://localhost:8080**) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
 
 Note: The URL and port number may vary depending on your configuration.
+
+---
+## Default Login Credentials
+   
+   For quicker testing purposes, you can login to the application by using the following credentials:
+
+   | Role     | Email                  | Password      | Verification code 1 | Verification code 2 | Verification code 3 | 
+   | -------- | ---------------------- | ------------- | ------------------- | ------------------- | ------------------- |
+   | Customer | ```test@email.com```   | password      | vc123450            | vc123451            | vc123452            |
+   | Dentist  | ```dentist@email.com```| password      | vc123453            | vc123454            | vc123455            |
+
 
 ---
 ## License
