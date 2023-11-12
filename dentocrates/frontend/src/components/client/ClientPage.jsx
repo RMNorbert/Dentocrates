@@ -14,6 +14,9 @@ export const ClientPage = () => {
     const [leaveData, setLeaveData] = useState([]);
     const [clientData, setClientData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isResetRequestMessageHidden, setIsResetRequestMessageHidden] = useState(true);
+    const [leaveMessage, setLeaveMessage] = useState('');
+    const [isLeaveMessageHidden, setIsLeaveMessageHidden] = useState(true);
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
             const clientDetailsUrl = `/client/${userId()}`;
@@ -66,14 +69,17 @@ export const ClientPage = () => {
                 setIsLoaded(false);
             }
         } catch (error) {
+            setLeaveMessage("Select dates to register");
+            setIsLeaveMessageHidden(false);
             console.error('Error:', error);
         }
     }
     const handleResetRequest = async (email) => {
-        const passwordResetRequestUrl = '/verify/reset/register/';
+        const passwordResetRequestUrl = '/verify/reset/register';
         const requestBody = {email: email,  role:role()};
         try {
             await data(passwordResetRequestUrl, 'POST', requestBody);
+            setIsResetRequestMessageHidden(false);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -114,14 +120,18 @@ export const ClientPage = () => {
         return (
             <div className="client-box">
                     <div className="client-card">
-                        <div>Name: {clientData.firstName} {clientData.lastname}</div>
+                        <div>Name: {clientData.firstName} {clientData.lastName}</div>
                         <div>Email: {clientData.email}</div>
                     </div>
+                {isResetRequestMessageHidden ?
                     <button className="button"
                         onClick={() => handleResetRequest(clientData.email)}
                     >
                         Request reset password link
                     </button>
+                    :
+                    <></>
+                }
                     <button className="button"
                         onClick={() => handleDelete(clientData.id)}
                     >
@@ -129,6 +139,11 @@ export const ClientPage = () => {
                     </button>
                 {clientData && role() === "DENTIST" &&
                 <div>
+                    <p
+                        className="inputBox"
+                        hidden={isLeaveMessageHidden}>
+                        {leaveMessage}
+                    </p>
                     <div className="inputBox">
                         <label htmlFor="clinic">Clinic:</label>
                         <select id="clinic"  onClick={handleClinicChange}>
