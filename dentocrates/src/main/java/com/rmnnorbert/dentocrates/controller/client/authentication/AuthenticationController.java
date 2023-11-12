@@ -2,6 +2,7 @@ package com.rmnnorbert.dentocrates.controller.client.authentication;
 
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.update.ForgotPasswordDTO;
 import com.rmnnorbert.dentocrates.dto.client.verification.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
@@ -42,7 +43,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/request/authenticate")
-    public ResponseEntity authenticateRequest(
+    public ResponseEntity<Boolean> authenticateRequest(
             @RequestBody VerificationRequestDTO dto
     ) {
         return ResponseEntity.ok(service.sendAuthenticationCode(dto));
@@ -55,10 +56,11 @@ public class AuthenticationController {
 
     @GetMapping("/login/oauth2/code/")
     public ResponseEntity<AuthenticationResponse> handleOauth2Redirect(@RequestParam String state,@RequestParam String code) {
-        System.out.println(state);
         AuthenticationRequest request = service.registerWithOauth(state,code);
-        System.out.println(code);
         return ResponseEntity.ok(service.authenticate(request));
     }
-
+    @PostMapping("/reset/request")
+    public ResponseEntity<String> requestReset(@RequestBody ForgotPasswordDTO dto) {
+        return service.requestReset(dto);
+    }
 }
