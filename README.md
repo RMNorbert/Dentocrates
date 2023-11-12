@@ -64,7 +64,7 @@ The application is built using Java, Spring, PostgreSQL, and React, providing a 
 
 - **Interactive map with route planning to clinics**
 
-- **Logging (in progress)** 
+- **User logins stored, notification sent upon suspicious login or login attempts** 
   
 - **Connect microservices with Eureka (in progress)**
   
