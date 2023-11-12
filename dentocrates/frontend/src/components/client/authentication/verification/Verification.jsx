@@ -40,8 +40,7 @@ function VerifyPage (props) {
             };
             const response = await data(clientUrl, 'Post', request);
             if (await response.status === 200) {
-                const deleteResponse = await deleteVerification();
-                console.log(deleteResponse.status)
+                await deleteVerification();
             }
         }
         setMessage("Passwords do not match");
@@ -53,8 +52,7 @@ function VerifyPage (props) {
             };
             const response = await data(verificationUrl, 'Post', request);
             if (await response.status === 200) {
-                const deleteResponse = await deleteVerification();
-                console.log(deleteResponse.status)
+                await deleteVerification();
             }
         };
 

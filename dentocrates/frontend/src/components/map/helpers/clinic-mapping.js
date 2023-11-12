@@ -22,6 +22,7 @@ export const createClinicProperties = (clinicList) => {
                     "city": currentClinic.city,
                     "postalCode": currentClinic.zipCode,
                     "open": currentClinic.openingHours,
+                    "type": currentClinic.clinicType.replaceAll("_"," ").toLowerCase(),
                     "longitude":currentClinic.longitude,
                     "latitude":currentClinic.latitude,
                     "id" : i+1
@@ -46,12 +47,14 @@ function createPopUp(clinic, map, coordinates, addMarker) {
     removePopUp();
     new mapboxgl.Popup({ closeOnClick: false })
         .setLngLat([coordinates.lng,coordinates.lat])
-        .setHTML(`<h3>${clinic.properties.name}</h3>
+        .setHTML(`<div className="popups"><h3>${clinic.properties.name}</h3>
         <h4>${clinic.properties.address}</h4>
         <h4>Open:${clinic.properties.open}</h4>
+        <h4>${clinic.properties.type}</h4>
         <div id="button-list">
         <h2 id="markPopup">📌</h2>
         <h5 id="closePopup">X</h5>
+        </div>
         </div>`)
         .addTo(map);
 
@@ -82,7 +85,10 @@ export const buildLocationList = (map,clinics) => {
         link.innerHTML = `${clinic.properties.name}`;
 
         const details = document.createElement('div');
-        details.innerHTML = `</br>· Address: ${clinic.properties.address} ${clinic.properties.city}</br>`;
+        details.innerHTML = `</br>· ${clinic.properties.type}</br>`;
+        if(clinic.properties.address){
+            details.innerHTML += `</br>· Address: ${clinic.properties.address} ${clinic.properties.city}</br>`;
+        }
         if (clinic.properties.contact) {
             details.innerHTML += `</br>· Contact: ${clinic.properties.contact}</br>`;
         }
@@ -107,6 +113,9 @@ export const addEventListenersToClinicList = (clinics, map, addMarker) => {
                     lng: clinic.properties.longitude,
                     lat: clinic.properties.latitude
                 };
+                map.flyTo({
+                    center:[currentClinicCoordinates.lng,currentClinicCoordinates.lat]
+                })
                 createPopUp(clinic, map, currentClinicCoordinates, addMarker);
                 const activeItem = document.getElementsByClassName('active');
                 if (activeItem[0]) {

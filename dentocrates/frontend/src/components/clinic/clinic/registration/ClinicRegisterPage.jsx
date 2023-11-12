@@ -21,7 +21,7 @@ function ClinicRegisterPage (){
     const [locations, setLocations] = useState([]);
     const [hidden, setHidden] = useState(true);
     const isMounted = useRef(true);
-    const errorMessage = "Please fill out all the required fields.";
+    const [errorMessage, setErrorMessage] = useState([]);
     const getLocationData = async () => {
         const locationDataUrl = `/location/all`;
         const onLoadSelectedClinicType = 'COMMUNITY DENTAL CLINIC';
@@ -80,9 +80,14 @@ function ClinicRegisterPage (){
             dentistId: userId()
         };
         try {
-            await data('/clinic/register', 'Post', registerData);
-            navigate('/home');
+            const response = await data('/clinic/register', 'Post', registerData);
+            setErrorMessage(response.replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";"));
+            setHidden(false);
+            if(response.includes("successfully")) {
+                navigate('/home');
+            }
         } catch (error) {
+            setErrorMessage("Please fill out all the required fields.");
             setHidden(false);
             console.error('Error:', error);
         }
@@ -92,7 +97,7 @@ function ClinicRegisterPage (){
         return (
             <div className="clinic-register">
             <div className="pageContent">
-                <h1 className="clinic-register-title">Register Clinic</h1>
+                <h1 className="register-title">Register Clinic</h1>
                 <div className="inputs">
                     <form onSubmit={HandleSubmit}>
                         <div className="inputBox">
@@ -133,9 +138,12 @@ function ClinicRegisterPage (){
                                    onChange={handleOpeningHoursChange}/>
                         </div>
                         <label style={{ display: hidden ? "none" : "block" }}>
-                            {errorMessage}
+                            {errorMessage.map((message) =>
+                                <p key={message}>{message}</p>)}
                         </label>
-                        <button type="submit">Register</button>
+                        <button className="inputBox" type="submit">
+                            Register
+                        </button>
                     </form>
                 </div>
             </div>

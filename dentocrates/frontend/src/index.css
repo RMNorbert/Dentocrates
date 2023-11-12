@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.message-box {
+  width: 99.2% !important;
+  color: darkred;
+  height: fit-content;
+  background: #d1d1d1;
+  border-style: solid;
+  text-align: center;
+  margin-top: -20px;
+  margin-bottom: 1px;
+}
+.message {
+  margin-bottom: 3px;
+  margin-top: 3px;
+}
+.inputBox{
+  width: 100%;
+  display:grid;
+}
+.register-title {
+  background-color: #4068ca;
+  width: 100%;
+}
+
+label{
+  background-color: #6682c9;
+}
+

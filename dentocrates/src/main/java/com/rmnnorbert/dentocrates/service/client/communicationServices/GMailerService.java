@@ -28,6 +28,7 @@ import static javax.mail.Message.RecipientType.TO;
 
 @Service
 public class GMailerService {
+    public final static String BASE_URL = System.getenv("BASE_URL");
     private final static String APPLICATION_NAME = "Dentocrates";
     private final static String SENDER_USER_ID = "me";
     private final String emailAddress = System.getenv("SENDER_USERNAME");

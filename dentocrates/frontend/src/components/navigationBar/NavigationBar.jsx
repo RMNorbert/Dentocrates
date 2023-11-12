@@ -23,7 +23,12 @@ function NavigationBar() {
 
     return (
         <div className='navigationBar'>
-            <img className='logo' src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'} alt="logo" />
+            <img
+                className='logo'
+                src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'}
+                alt="logo"
+                onClick={() => navigate("/home")}
+            />
             {loggedInUserEmail === null &&
                 <>
             <button id='tabs' onClick={() => navigate("/")}>Login</button>

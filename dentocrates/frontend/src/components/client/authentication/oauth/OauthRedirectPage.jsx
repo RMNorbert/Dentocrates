@@ -26,7 +26,6 @@ function OauthLoginPage() {
     const getCredentials = async () => {
         try {
             const response = await fetch(`/api/login/oauth2/code/${params}`);
-            console.log(response)
             if (response.ok) {
                 const data = await response.json();
                 const token = data.token;

@@ -70,12 +70,12 @@ trap shutdown_chat_bot SIGINT
 
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64" # replace with your path to jdk
 export EMAIL="dentocrates@dentocrates.com"
-export oauthId=your_oauth_id
-export oauthSecret=your_oauth_secret
+export OAUTH_ID=your_oauth_id
+export OAUTH_SECRET=your_oauth_secret
 export SECRET=048492546432436A442848F3147319D665857603B6B272848F751725773475237A5E567A66564
 export SENDER_USERNAME=your_email_sender_email_address
 export REDIRECT_URI=http://localhost:3000/login/oauth2/code/
-
+export BASE_URL=http://localhost:3000/
 
 FRONTEND_DIR="$PROJECT_DIR/frontend/"
 CHAT_BOT_DIR="$PROJECT_DIR/../ConvoCat/"

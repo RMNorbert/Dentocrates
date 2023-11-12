@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+>
+    <changeSet id="create-of-login-history-table" author="RMNorbert">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="client" />
+            <not>
+                <tableExists tableName="login_history"/>
+            </not>
+        </preConditions>
+        <createTable tableName="login_history">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="time" type="TIMESTAMP" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email" type="VARCHAR(255)" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ip_address" type="VARCHAR(39)" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_agent" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            </createTable>
+    </changeSet>
+
+</databaseChangeLog>

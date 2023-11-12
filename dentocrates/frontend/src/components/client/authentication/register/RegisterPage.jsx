@@ -7,7 +7,7 @@ function RegisterPage (){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [operatingLicenceNo, setOperatingLicenceNo] = useState('');
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [dentist, setDentist] = useState(false);
@@ -71,44 +71,56 @@ function RegisterPage (){
                     navigate('/');
                 } else {
                     setHidden(false);
-                    response.text().then(errorMessage => setMessage(errorMessage));
+                    response.text().then(errorMessage => setMessage(errorMessage
+                        .replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";")));
                 }
             })
             .catch(error => console.error(error));
+            setMessage(["Wrong username or password"])
     };
      return (
             <div className="pageContent">
-                {!dentist ? <h1>Register</h1> : <h1>Register as Dentist</h1> }
+                {!dentist ?
+                    <h1 className="register-title">
+                        Register
+                    </h1>
+                    :
+                    <h1 className="register-title">
+                        Register as Dentist
+                    </h1> }
                 <div>
                 <Terms title="Dentocrates"/>
                 </div>
-                <div hidden={hidden}>{message}</div>
+                <div className="inputBox message-box" hidden={hidden}>{message.map((error) =>
+                    <h4 className="message">{error}</h4>)}
+                </div>
                 <div className="flex justify-center flex-col items-center text-2xl ">
                     <form onSubmit={HandleSubmit}>
-                        <div>
+                        <div className="inputBox">
                             <label htmlFor="email">Email:</label>
                             <input type="text" id="email" value={email} onChange={handleEmailChange}/>
                         </div>
-                        <div>
+                        <div className="inputBox">
                             <label htmlFor="firstName">First Name:</label>
                             <input type="text" id="firstName" value={firstName} onChange={handleFirstNameChange}/>
                         </div>
-                        <div>
+                        <div className="inputBox">
                             <label htmlFor="lastName">Last Name:</label>
                             <input type="text" id="lastName" value={lastName} onChange={handleLastNameChange}/>
                         </div>
-                        <div>
+                        <div className="inputBox">
                             <label htmlFor="password">Password:</label>
                             <input type="password" id="password" value={password} onChange={handlePasswordChange}/>
                         </div>
                         { dentist ?
-                            <div>
+                            <div className="inputBox">
                                 <label htmlFor="operatingLicenceNo">Operating Licence Number:</label>
                                 <input type="text" id="operatingLicenceNo" value={operatingLicenceNo} onChange={handleOperatingLicenceNoChange}/>
                             </div>
                             :
                             <></>
                         }
+                        <div className="inputBox">
                         <button type="submit">Register</button>
                         <></>
                         { !dentist ?
@@ -116,11 +128,12 @@ function RegisterPage (){
                             :
                             <button type="button"  onClick={() => setDentist(!dentist)}>Register as customer ➔</button>
                         }
-                        <h3 className="register"
+                        <button className="register"
                             onClick={() => navigate("/")}
                         >
                             Registered already?
-                        </h3>
+                        </button>
+                        </div>
                     </form>
                 </div>
             </div>

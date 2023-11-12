@@ -22,6 +22,7 @@ button:active {
 }
 .pageContent {
     position: relative;
+    background-color: rgba(153, 173, 224, 0.7);
     backdrop-filter: blur(4px);
     top: 120px;
     left: 30%;
@@ -40,6 +41,7 @@ button:active {
     text-align: center;
     width: fit-content;
     border-radius: 10px;
+    background-color: rgba(254, 252, 252, 0.42);
     backdrop-filter: blur(5px);
 }
 .homeDescription{

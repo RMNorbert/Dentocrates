@@ -15,6 +15,8 @@ const Calendar = () => {
     const [clinic, setClinic] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [date, setDate] = useState({justDate:null,dateTime:null});
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isHidden, setIsHidden] = useState(true);
     const getCalendarData = async() =>{
         const clinicDataUrl = `/clinic/${id}`;
         const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
@@ -87,7 +89,10 @@ const Calendar = () => {
             console.error('Error:', error);
         }
     }
-
+    const noDateChosen = () => {
+        setErrorMessage("No appointment chosen");
+        setIsHidden(false);
+    }
 
     useEffect(() => {
         if(!isLoaded){
@@ -115,11 +120,15 @@ const Calendar = () => {
                         <button
                             onClick={() =>
                                 date.dateTime != null ?
-                                bookAppointment(date.dateTime.toISOString().substring(0, 16).replace("T", " ")) :
-                                console.log("No date chosen")}
+                                bookAppointment(date.dateTime.toISOString()
+                                    .substring(0, 16).replace("T", " "))
+                                    :
+                                noDateChosen()
+                        }
                         >Book
                             Appointment
                         </button>
+                        <p className="message-box" hidden={isHidden}>{errorMessage}</p>
                     </div>
                 ) : (
                     <ReactCalendar minDate={new Date()}

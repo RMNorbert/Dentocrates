@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.controller.client.authentication;
 
-import com.rmnnorbert.dentocrates.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDto;
+import com.rmnnorbert.dentocrates.dto.client.update.ResetPasswordDTO;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.service.client.ClientUpdaterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,14 @@ public class UpdateController {
 
     @PostMapping("/password")
     public ResponseEntity<String> resetPassword(
-            @Valid @RequestBody ResetDto dto
+            @Valid @RequestBody ResetPasswordDTO dto
     ) {
         return clientUpdateService.resetPassword(dto);
     }
 
     @PostMapping("/verify")
     public ResponseEntity<String> verify(
-            @Valid @RequestBody VerifyDto dto
+            @Valid @RequestBody VerifyDTO dto
     ) {
         return clientUpdateService.verifyClient(dto);
     }
