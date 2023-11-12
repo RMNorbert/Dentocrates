@@ -4,7 +4,7 @@
     cursor: pointer;
     height: 36px;
     width: 36px;
-    z-index: 99999;
+    z-index: 0;
 }
 #button-list {
     justify-content: center;
@@ -21,6 +21,9 @@
     background-color: green;
     cursor: pointer;
 }
+.popups{
+    z-index: 999999 !important;
+}
 .mapboxgl-popup-content{
     background-color: #5a7691 !important;
     align-items: center;
@@ -30,5 +33,4 @@
 .mapboxgl-popup-tip{
     border-top-color: #5a7691 !important;
     border-bottom-color: #5a7691 !important;
-
 }
