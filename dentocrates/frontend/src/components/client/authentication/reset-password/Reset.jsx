@@ -2,20 +2,30 @@ import React, {useState} from "react";
 import {MultiFetch} from "../../../../utils/fetch/MultiFetch";
 
 export const Reset = () => {
-    const [requesterEmail, setRequesterEmail] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("")
     const { data } = MultiFetch();
-    const handleEmailChange = (event) => {setRequesterEmail(event.target.value);};
+    const handleEmailChange = (event) => {setEmail(event.target.value);};
 
     async function postResetRequest() {
-        const resetUrl = "/api/request/authenticate";
-        const requestBody = {email: requesterEmail}
-        await data(resetUrl,"POST",requestBody);
+        try {
+            const resetUrl = "/api/reset/request";
+            const requestBody = {requesterEmail: email}
+            const response = await data(resetUrl, "POST", requestBody);
+            if (response.status === 200) {
+                setMessage(response)
+            }
+        } catch (e) {
+            setMessage("Invalid email");
+            console.log(e)
+        }
     }
     return (
-        <div>
+        <div className="inputBox">
             <label htmlFor="email">Email to send reset link:</label>
-            <input type="text" id="email" value={requesterEmail} onChange={handleEmailChange} />
+            <input type="text" id="email" value={email} onChange={handleEmailChange} />
             <button onClick={() => postResetRequest()}>Send link</button>
+            <p display={message.length > 0 ? "block" : "none"}>{message}</p>
         </div>
     )
 }
