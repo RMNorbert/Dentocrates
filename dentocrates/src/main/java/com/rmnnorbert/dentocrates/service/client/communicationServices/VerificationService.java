@@ -28,18 +28,16 @@ public class VerificationService {
     public Optional<Verification> getVerification(String verificationCode) {
         return verificationRepository.findByVerificationCode(verificationCode);
     }
-    public boolean validate(String verificationCode) {
-        return verificationRepository.findByVerificationCode(verificationCode).isPresent();
+    public boolean validate(String verificationCode, String email) {
+        return verificationRepository.findByVerificationCodeAndEmail(verificationCode, email).isPresent();
     }
     public ResponseEntity<String> sendVerification(String email, String role, String action, boolean reset) {
         String verificationCode = UUID.randomUUID().toString();
         String verificationMessage = "Verify " + action + " by clicking on the following link.";
-        String verificationUrl = "http://localhost:3000/verify/";
+        String verificationUrl = GMailerService.BASE_URL + "verify/";
         Role roleAsEnum = Role.valueOf(role);
-
         ResponseEntity<String> response = registerVerification(email, roleAsEnum, verificationCode);
         String link;
-
         if(reset) {
             verificationUrl += "reset/";
         }
@@ -90,5 +88,4 @@ public class VerificationService {
         }
         return ResponseEntity.badRequest().body("Verification code already registered.");
     }
-
 }
