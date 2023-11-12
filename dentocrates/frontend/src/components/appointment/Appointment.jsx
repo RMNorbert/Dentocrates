@@ -49,7 +49,8 @@ export const Appointment = () => {
     if(isLoaded) {
         return (
             <div className="appointment">
-                <h2>Booked appointments:</h2>
+
+                <h2>{appointments.length > 0 ? "Booked appointments:" : "You have no appointments registered yet"}</h2>
                 {appointments.map((appointment, index) => (
                     <div key={index}
                          className="appointment-box"
