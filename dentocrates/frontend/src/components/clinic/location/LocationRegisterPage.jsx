@@ -5,10 +5,10 @@ function LocationRegisterPage (){
     const { data } = MultiFetch();
     const navigate = useNavigate();
     const [zipCode, setZipCode] = useState(1000);
-    const [city, setCity] = useState('');
-    const [isErrorMessageHidden, setIsErrorMessageHidden] = useState(true);
+    const [city, setCity] = useState("");
+    const [isMessageHidden, setIsMessageHidden] = useState(true);
     const isMounted = useRef(true);
-    const errorMessage = "Please fill out all required fields, zip code must be between 1000-10.000";
+    const [errorMessage, setErrorMessage] = useState("");
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -35,17 +35,22 @@ function LocationRegisterPage (){
             city: city
         }
         try{
-        await data(locationRegisterUrl,'POST', locationData);
-        navigate("/home");
+            const response = await data(locationRegisterUrl,'POST', locationData);
+            setErrorMessage(response);
+            setIsMessageHidden(false);
+            if(response.includes("successfully")) {
+                 navigate("/home");
+            }
         } catch (error) {
-            setIsErrorMessageHidden(false);
+            setErrorMessage("Please fill out all required fields, zip code must be between 1000-10.000");
+            setIsMessageHidden(false);
             console.error('Error:', error);
         }
     };
     return (
         <div className="clinic-register">
         <div className="pageContent">
-            <h1 className="clinic-register-title">Location Register</h1>
+            <h1 className="register-title">Location Register</h1>
             <div className="flex justify-center flex-col items-center text-2xl ">
                 <form onSubmit={HandleSubmit}>
                     <div className="inputBox">
@@ -59,11 +64,13 @@ function LocationRegisterPage (){
                     <div className="inputBox">
                         <label htmlFor="city">City:</label>
                         <input type="text" id="city" value={city} onChange={handleCityChange} />
-                        <label style={{ display: isErrorMessageHidden ? "none" : "block" }}>
+                        <label style={{ display: isMessageHidden ? "none" : "block" }}>
                             {errorMessage}
                         </label>
                     </div>
-                    <button type="submit">Register</button>
+                    <button className="inputBox" type="submit">
+                        Register
+                    </button>
                 </form>
             </div>
         </div>
