@@ -5,6 +5,7 @@ function Chat() {
     const iconList = [process.env.PUBLIC_URL + '/help.png',
         process.env.PUBLIC_URL + '/cat.png',
         process.env.PUBLIC_URL + 'cat2.png']
+    const indexOfSinglePersonalityChatBotIcon = 0;
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [chatIcon, setChatIcon] = useState(iconList[0]);
@@ -20,7 +21,8 @@ function Chat() {
     const toggleState = () => {
         setIsOpen((prevState) => !prevState);
         const randomNumber = getRandomInt(3);
-        setChatIcon(iconList[randomNumber])
+        setChatIcon(iconList[randomNumber]);
+        setChatWithCat(false);
     };
 
     const onSendButton = async () => {
@@ -63,10 +65,14 @@ function Chat() {
                             <img src={chatIcon} className="bot__icon" alt="Chat Support, image created by AI" />
                         </div>
                         <div className="chatbox__content--header">
-                            <button className="chatbox__send--footer send__button switch"
+                            {
+                                chatIcon != iconList[indexOfSinglePersonalityChatBotIcon] ?
+                                <button className="chatbox__send--footer send__button switch"
                                     onClick={() => changeChatBotPersonality()}>
                                 Switch Personality to {chatWithCat? "Normal" : "Cat"}
-                            </button>
+                                </button> :
+                                <></>
+                            }
                             <h4 className="chatbox__heading--header">Chat Support</h4>
                             <p className="chatbox__description--header">Hi. My name is DentoBot. How can I help you?</p>
                         </div>
