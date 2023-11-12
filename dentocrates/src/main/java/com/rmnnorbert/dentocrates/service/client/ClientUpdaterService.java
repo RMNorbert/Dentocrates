@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.service.client;
 
-import com.rmnnorbert.dentocrates.dto.client.update.ResetDto;
-import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDto;
+import com.rmnnorbert.dentocrates.dto.client.update.ResetPasswordDTO;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
@@ -28,11 +28,12 @@ public class ClientUpdaterService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<String> resetPassword(ResetDto dto) {
-        Verification verification = verificationService.getVerification(dto.verificationCode())
+    public ResponseEntity<String> resetPassword(ResetPasswordDTO dto) {
+        boolean isResetRequestValid = verificationService.validate(dto.verificationCode(), dto.email());
+        if(isResetRequestValid) {
+            Verification verification = verificationService.getVerification(dto.verificationCode())
                 .orElseThrow(() -> new NotFoundException("Verification"));
 
-        if(verification.getEmail().equals(dto.email())) {
             updateClientPassword(verification, dto.password());
             return ResponseEntity.ok().body("Password changed successfully.");
         } else {
@@ -40,7 +41,7 @@ public class ClientUpdaterService {
         }
     }
 
-    public ResponseEntity<String> verifyClient(VerifyDto dto) {
+    public ResponseEntity<String> verifyClient(VerifyDTO dto) {
         Verification verification = verificationService.getVerification(dto.verificationCode())
                 .orElseThrow(() -> new NotFoundException("Verification"));
 
