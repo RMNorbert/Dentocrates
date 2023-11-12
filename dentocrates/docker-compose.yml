@@ -72,6 +72,7 @@ services:
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
       - DATABASE_URL=jdbc:postgresql://postgres:5432/dentocrates
+      - BASE_URL=http://localhost:8080/
     volumes:
       - ./resources/static/dist:/app/src/main/resources/frontend
 
