@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.dto.leave.LeaveDTO;
 import com.rmnnorbert.dentocrates.dto.leave.LeaveDeleteDTO;
 import com.rmnnorbert.dentocrates.dto.leave.LeaveRegisterDTO;
 import com.rmnnorbert.dentocrates.service.clinic.leave.LeaveService;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.NotificationService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.AppointmentNotificationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequestMapping("/leave")
 public class LeaveController {
     private final LeaveService leaveService;
-    private final NotificationService notificationService;
+    private final AppointmentNotificationService notificationService;
     @Autowired
-    public LeaveController(LeaveService leaveService, NotificationService notificationService) {
+    public LeaveController(LeaveService leaveService, AppointmentNotificationService notificationService) {
         this.leaveService = leaveService;
         this.notificationService = notificationService;
     }
