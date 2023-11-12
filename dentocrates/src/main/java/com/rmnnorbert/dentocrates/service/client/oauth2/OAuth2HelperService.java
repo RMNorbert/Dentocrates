@@ -15,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.text.ParseException;
 @Service
 public class OAuth2HelperService {
-    private final String id = System.getenv("oauthId");
-    private final String secret = System.getenv("oauthSecret");
+    private final String id = System.getenv("OAUTH_ID");
+    private final String secret = System.getenv("OAUTH_SECRET");
     private final String redirectUri = System.getenv("REDIRECT_URI");
 
     public ResponseEntity<TokenResponse> getGoogleTokenResponse(String code) {
