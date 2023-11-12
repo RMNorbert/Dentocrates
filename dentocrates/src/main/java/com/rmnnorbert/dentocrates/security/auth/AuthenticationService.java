@@ -2,6 +2,7 @@ package com.rmnnorbert.dentocrates.security.auth;
 
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
 import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.update.ForgotPasswordDTO;
 import com.rmnnorbert.dentocrates.dto.client.verification.VerificationRequestDTO;
 import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
@@ -11,13 +12,13 @@ import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
+import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
 import com.rmnnorbert.dentocrates.service.JwtService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
 import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,13 +41,12 @@ public class AuthenticationService {
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final Counter loginSuccessCounter;
-    private final Counter loginFailureCounter;
+    private final LoginHistoryService loginHistoryService;
     private final OAuth2HelperService oAuth2Helper;
     private final JwtService jwtService;
     private final VerificationService verificationService;
     @Autowired
-    public AuthenticationService(ClientRepository clientRepository, DentistService dentistService, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService, ClientRegistrationRepository clientRegistrationRepository, OAuth2HelperService oAuth2Helper) {
+    public AuthenticationService(ClientRepository clientRepository, DentistService dentistService, CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, VerificationService verificationService, ClientRegistrationRepository clientRegistrationRepository, OAuth2HelperService oAuth2Helper, LoginHistoryService loginHistoryService) {
         this.clientRepository = clientRepository;
         this.dentistService = dentistService;
         this.customerRepository = customerRepository;
@@ -56,12 +56,11 @@ public class AuthenticationService {
         this.verificationService = verificationService;
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.oAuth2Helper = oAuth2Helper;
-        loginSuccessCounter = Metrics.counter("counter.login.success");
-        loginFailureCounter = Metrics.counter("counter.login.failure");
+        this.loginHistoryService = loginHistoryService;
     }
 
     public AuthenticationResponse register(CustomerRegisterDTO request) {
-        if(getClient(request.email()).isEmpty()){
+        if(getClientByEmail(request.email()).isEmpty()){
             String password = passwordEncoder.encode(request.password());
             Customer customer = Customer.toEntity(request,password);
 
@@ -77,7 +76,7 @@ public class AuthenticationService {
         }
     }
     public AuthenticationResponse register(DentistRegisterDTO request) {
-        if(getClient(request.email()).isEmpty()){
+        if(getClientByEmail(request.email()).isEmpty()){
             String password = passwordEncoder.encode(request.password());
             Dentist dentist = Dentist.toEntity(request,password);
 
@@ -101,12 +100,11 @@ public class AuthenticationService {
 
         String authenticationCode;
         try {
-            Optional<Client> optionalClient = getClient(email);
+            Optional<Client> optionalClient = getClientByEmail(email);
             if (optionalClient.isEmpty()) {
                 CustomerRegisterDTO customerRegisterDTO = new CustomerRegisterDTO(email, password, firstName, lastName);
                 register(customerRegisterDTO);
             }
-
             authenticationCode = verificationService.sendAuthenticationCode(email,"CUSTOMER");
             return new AuthenticationRequest(email, password,"CUSTOMER", authenticationCode);
         }catch (Exception e) {
@@ -116,42 +114,48 @@ public class AuthenticationService {
     }
 
     public boolean sendAuthenticationCode(VerificationRequestDTO dto) {
-        boolean isEmailExist = clientRepository.existsByEmail(dto.email());
-        if (isEmailExist) {
-            String role = clientRepository.findRoleByEmail(dto.email()).get().toString();
-            verificationService.sendAuthenticationCode(dto.email(), role);
-            return true;
+        Optional<Client> optionalClient = clientRepository.getClientByEmail(dto.email());
+        if(optionalClient.isPresent()) {
+            String storedPassword = optionalClient.get().getPassword();
+            boolean isRequestValid = passwordEncoder.matches(dto.password(), storedPassword);
+            if (isRequestValid) {
+                String role = clientRepository.findRoleByEmail(dto.email()).get().toString();
+                verificationService.sendAuthenticationCode(dto.email(), role);
+                return true;
+            }
         }
-        return false;
+        throw new InvalidCredentialException();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        Optional<Client> optionalClient = getClient(request.email());
-
-        if (optionalClient.isPresent()) {
-            boolean isAuthenticationCodeValid = verificationService.validate(request.authenticationCode());
-
-            if(isAuthenticationCodeValid) {
-                Client client = optionalClient.get();
-
+        Optional<Client> optionalClient = getClientByEmail(request.email());
+        if(optionalClient.isPresent()) {
+            Client client = optionalClient.get();
+            String storedPassword = client.getPassword();
+            boolean isPasswordValid = passwordEncoder.matches(request.password(), storedPassword);
+            if (isPasswordValid) {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 request.email(),
                                 request.password()
                         )
                 );
-                loginSuccessCounter.increment();
-                HashMap<String, Object> additionalClaims = new HashMap<>();
-                additionalClaims.put("role", client.getRole());
-                String jwtToken = jwtService.generateToken(additionalClaims, client);
-                verificationService.deleteVerification(request.authenticationCode());
+                boolean isAuthenticationCodeValid = verificationService.validate(request.authenticationCode(),request.email());
+                if (isAuthenticationCodeValid) {
+                    loginHistoryService.successfulLogin(client.getEmail());
+                    HashMap<String, Object> additionalClaims = new HashMap<>();
+                    additionalClaims.put("role", client.getRole());
+                    String jwtToken = jwtService.generateToken(additionalClaims, client);
+                    verificationService.deleteVerification(request.authenticationCode());
 
-                return AuthenticationResponse.builder()
-                        .token(jwtToken)
-                        .id(client.getId())
-                        .build();
+                    return AuthenticationResponse.builder()
+                            .token(jwtToken)
+                            .id(client.getId())
+                            .build();
+                }
+            } else {
+                loginHistoryService.unSuccessfulLogin(optionalClient.get().getEmail());
             }
         }
-        loginFailureCounter.increment();
         throw new InvalidCredentialException();
     }
     public String getAuthorizationUrl() {
@@ -165,17 +169,22 @@ public class AuthenticationService {
 
             String authorizationUrl = String.format("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code&state=%s",
                     authorizationUri, clientId, redirectUri, scope, state);
-            System.out.println(authorizationUrl);
             return authorizationUrl;
         }
-        return null;
+        throw new InvalidCredentialException();
     }
-    private Optional<Client> getClient(String email) {
+    private Optional<Client> getClientByEmail(String email) {
         return clientRepository.getClientByEmail(email);
     }
     private String generateState() {
         String state = new BigInteger(130, new SecureRandom()).toString(32);
         this.state = state;
         return state;
+    }
+
+    public ResponseEntity<String> requestReset(ForgotPasswordDTO dto) {
+        Client client = getClientByEmail(dto.requesterEmail()).orElseThrow(InvalidCredentialException::new);
+        verificationService.sendAuthenticationCode(dto.requesterEmail(),client.getRole().toString());
+        return ResponseEntity.ok("Link has been sent");
     }
 }

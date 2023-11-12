@@ -1,20 +1,21 @@
 package com.rmnnorbert.dentocrates.security.auth;
 
-import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
-import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
-import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
-import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.data.authentication.Role;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationRequest;
+import com.rmnnorbert.dentocrates.dto.client.authentication.AuthenticationResponse;
+import com.rmnnorbert.dentocrates.dto.client.customer.CustomerRegisterDTO;
+import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
+import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
 import com.rmnnorbert.dentocrates.service.JwtService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -50,6 +51,8 @@ class AuthenticationServiceTest {
     private OAuth2HelperService oAuth2Helper;
     @Mock
     private ClientRegistrationRepository clientRegistrationRepository;
+    @Mock
+    private LoginHistoryService loginHistoryService;
     private AuthenticationService authenticationService;
     @BeforeEach
     void init() {
@@ -63,7 +66,8 @@ class AuthenticationServiceTest {
                 authenticationManager,
                 verificationService,
                 clientRegistrationRepository,
-                oAuth2Helper);
+                oAuth2Helper,
+                loginHistoryService);
     }
 
     @Test
@@ -126,7 +130,7 @@ class AuthenticationServiceTest {
 
         when(clientRepository.getClientByEmail(request.email())).thenReturn(optionalClient);
         when(jwtService.generateToken(additionalClaims, optionalClient.get())).thenReturn(jwtToken);
-        when(verificationService.validate(request.authenticationCode())).thenReturn(true);
+        when(verificationService.validate(request.authenticationCode(),request.email())).thenReturn(true);
 
         AuthenticationResponse expected = new AuthenticationResponse(jwtToken,expectedId);
         AuthenticationResponse actual = authenticationService.authenticate(request);
@@ -138,7 +142,7 @@ class AuthenticationServiceTest {
     @Test
     void authenticateWithWrongShouldReturnInvalidCredentialException() {
         AuthenticationRequest request = new AuthenticationRequest("email", "password","CUSTOMER","0");
-
+        String password = passwordEncoder.encode(request.password());
         when(clientRepository.getClientByEmail(request.email())).thenReturn(Optional.empty());
 
         assertThrows(InvalidCredentialException.class, () -> authenticationService.authenticate(request));
