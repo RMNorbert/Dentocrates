@@ -1,0 +1,5 @@
+<configuration>
+    <logger name="liquibase" level="info" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+</configuration>
