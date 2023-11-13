@@ -12,11 +12,9 @@ public class LoginNotificationService {
         this.emailService = emailService;
     }
 
-    public boolean sendLoginNotification(String[] loginDetails) {
+    public boolean sendLoginNotification(String ipAddress, String userAgent, String email) {
         String loginSubject = "Login Notification: Access from new computer";
-        String email = loginDetails[0];
-        String ipAddress = loginDetails[1];
-        String message = getString(loginDetails, ipAddress);
+        String message = getString(userAgent, ipAddress);
 
         try {
             emailService.sendMail(email, loginSubject, message, GMailerService.BASE_URL);
@@ -28,10 +26,10 @@ public class LoginNotificationService {
     }
 
     @NotNull
-    private static String getString(String[] loginDetails, String ipAddress) {
-        String[] userAgent = loginDetails[2].split(" ");
-        String os = userAgent[2];
-        String browser = userAgent[8];
+    private static String getString(String userAgent, String ipAddress) {
+        String[] userAgentArray = userAgent.split(" ");
+        String os = userAgentArray[2];
+        String browser = userAgentArray[7];
         String message = "Dear dentocrates user,\n\n It looks like you are trying to log in from a new device: " +
                 "Ip address: " + ipAddress + " Operating system: " + os + " browser: " + browser + " ." +
                 "If it wasn't you change your password and try to contact us as soon as possible." +

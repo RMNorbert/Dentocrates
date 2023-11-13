@@ -51,7 +51,7 @@ class CustomerControllerTest {
     @Test
     void getCustomerShouldReturnExpectedValue() {
         long searchedId = 1;
-        CustomerResponseDTO expected = new CustomerResponseDTO(1,"email","fisrt","last",Role.CUSTOMER);
+        CustomerResponseDTO expected = new CustomerResponseDTO(1,"email","fisrt","last",Role.CUSTOMER,false);
 
         when(customerService.getCustomerResponse(searchedId)).thenReturn(expected);
 

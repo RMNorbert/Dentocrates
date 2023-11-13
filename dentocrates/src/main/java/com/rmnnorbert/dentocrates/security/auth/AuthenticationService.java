@@ -10,6 +10,7 @@ import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
 import com.rmnnorbert.dentocrates.dao.client.Client;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
@@ -123,6 +124,7 @@ public class AuthenticationService {
                 verificationService.sendAuthenticationCode(dto.email(), role);
                 return true;
             }
+            loginHistoryService.unSuccessfulLogin(optionalClient.get().getEmail());
         }
         throw new InvalidCredentialException();
     }
@@ -145,16 +147,16 @@ public class AuthenticationService {
                     HashMap<String, Object> additionalClaims = new HashMap<>();
                     additionalClaims.put("role", client.getRole());
                     String jwtToken = jwtService.generateToken(additionalClaims, client);
-                    verificationService.deleteVerification(request.authenticationCode());
+                    VerifyDTO dto = new VerifyDTO(request.authenticationCode());
+                    verificationService.deleteVerification(dto);
 
                     return AuthenticationResponse.builder()
                             .token(jwtToken)
                             .id(client.getId())
                             .build();
                 }
-            } else {
-                loginHistoryService.unSuccessfulLogin(optionalClient.get().getEmail());
             }
+            loginHistoryService.unSuccessfulLogin(optionalClient.get().getEmail());
         }
         throw new InvalidCredentialException();
     }
@@ -163,12 +165,11 @@ public class AuthenticationService {
         if (clientRegistration != null) {
             String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
             String clientId = clientRegistration.getClientId();
-            String redirectUri = REDIRECT_URI;
             String scope = String.join(" ", clientRegistration.getScopes());
             String state = generateState();
 
             String authorizationUrl = String.format("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code&state=%s",
-                    authorizationUri, clientId, redirectUri, scope, state);
+                    authorizationUri, clientId, REDIRECT_URI, scope, state);
             return authorizationUrl;
         }
         throw new InvalidCredentialException();
