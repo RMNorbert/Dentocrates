@@ -1,9 +1,10 @@
 import "../../ClientPage.css"
 import {useEffect, useState} from "react";
 import { email } from "../../../../utils/token/TokenDecoder";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { MultiFetch } from "../../../../utils/fetch/MultiFetch";
 function VerifyPage (props) {
+    const navigate = useNavigate();
     const { verificationCode } = useParams();
     const { data } = MultiFetch();
     const [verificationCodeValidated, setVerificationCodeValidated] = useState(false);
@@ -13,7 +14,8 @@ function VerifyPage (props) {
     const [message, setMessage] = useState('');
 
     const validateVerificationCode = async () => {
-        const response = await data(`/verify/${verificationCode}`);
+        const requestBody = {verificationCode: verificationCode, email: email()}
+        const response = await data(`/verify/${verificationCode}`,"POST", requestBody);
         setVerificationCodeValidated(response);
         if(!props.reset){
                 deleteVerification();
@@ -38,9 +40,10 @@ function VerifyPage (props) {
                 email: email(),
                 password: password
             };
-            const response = await data(clientUrl, 'Post', request);
-            if (await response.status === 200) {
+            const response = await data(clientUrl, 'POST', request);
+            if (response.includes("successfully")) {
                 await deleteVerification();
+                navigate("/home");
             }
         }
         setMessage("Passwords do not match");
@@ -51,7 +54,7 @@ function VerifyPage (props) {
                 verificationCode: verificationCode,
             };
             const response = await data(verificationUrl, 'Post', request);
-            if (await response.status === 200) {
+            if (response.includes("successful")) {
                 await deleteVerification();
             }
         };
