@@ -11,7 +11,9 @@ public record CustomerResponseDTO(@Min(1) long id,
                                   @NotBlank String email,
                                   @NotBlank String firstName,
                                   @NotBlank String lastname,
-                                  Role role) {
+                                  Role role,
+                                  Boolean verified
+) {
     public static CustomerResponseDTO of(Customer customer) {
         return CustomerResponseDTO.builder()
                 .id(customer.getId())
@@ -19,6 +21,7 @@ public record CustomerResponseDTO(@Min(1) long id,
                 .firstName(customer.getFirstName())
                 .lastname(customer.getLastName())
                 .role(customer.getRole())
+                .verified(customer.isVerified())
                 .build();
     }
 
