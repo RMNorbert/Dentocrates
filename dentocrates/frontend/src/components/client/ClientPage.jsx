@@ -4,9 +4,11 @@ import {role, userId} from "../../utils/token/TokenDecoder";
 import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {Loading} from "../lodaingPage/Loading";
 import {ReviewPage} from "../review/Reviews";
+import {useNavigate} from "react-router-dom";
 
 export const ClientPage = () => {
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [clinicData, setClinicData] = useState([]);
     const [clinicId, setClinicId] = useState(0);
     const [startDate, setStartDate] = useState(null);
@@ -17,6 +19,8 @@ export const ClientPage = () => {
     const [isResetRequestMessageHidden, setIsResetRequestMessageHidden] = useState(true);
     const [leaveMessage, setLeaveMessage] = useState('');
     const [isLeaveMessageHidden, setIsLeaveMessageHidden] = useState(true);
+    const [validationCode, setValidationCode] = useState('');
+    const [resetCode, setResetCode] = useState('');
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
             const clientDetailsUrl = `/client/${userId()}`;
@@ -56,6 +60,9 @@ export const ClientPage = () => {
     const handleEndChange = (event) => {
         let chosen = event.target.value;
         setEndDate(chosen + 'T00:00:00');
+    }
+    const handleValidationCodeChange = (event, setState) => {
+        setState(event.target.value);
     }
     const handleLeaveSubmit = async () => {
         let registerData = {
@@ -130,13 +137,31 @@ export const ClientPage = () => {
                         Request reset password link
                     </button>
                     :
-                    <></>
+                    <div className="inputBox">
+                        <input
+                            type="text"
+                            placeholder="provide code to validate account"
+                            onChange={(e) => handleValidationCodeChange(e, setResetCode)}
+                        />
+                        <button onClick={() => navigate(`/verify/reset/${resetCode}`)}>Send code</button>
+                    </div>
                 }
                     <button className="button"
                         onClick={() => handleDelete(clientData.id)}
                     >
                         Delete account
                     </button>
+                {role() && clientData.verified === false ?
+                <div className="inputBox">
+                    <input
+                        type="text"
+                        placeholder="provide code to validate account"
+                        onChange={(e) => handleValidationCodeChange(e, setValidationCode)}
+                    />
+                    <button onClick={() => navigate(`/verify/${validationCode}`)}>Send code</button>
+                </div> :
+                    <></>
+                }
                 {clientData && role() === "DENTIST" &&
                 <div>
                     <p
