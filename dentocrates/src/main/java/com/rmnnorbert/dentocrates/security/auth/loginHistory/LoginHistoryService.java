@@ -40,12 +40,7 @@ public class LoginHistoryService {
     }
     public void successfulLogin(String userId) {
         try {
-        String[] userLoginDetails = storeLoginAttempt(userId);
-        boolean registeredLoginDetails = isLoginDetailsRegistered(userLoginDetails);
-
-        if (!registeredLoginDetails) {
-            loginNotificationService.sendLoginNotification(userLoginDetails);
-        }
+        storeLoginAttempt(userId);
         loginSuccessCounter.increment();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -75,6 +70,12 @@ public class LoginHistoryService {
                     .ip_address(ipAddress)
                     .user_agent(userAgent)
                     .build();
+
+            boolean registeredLoginDetails = isLoginDetailsRegistered(ipAddress, userAgent, email);
+            if (!registeredLoginDetails) {
+                loginNotificationService.sendLoginNotification(ipAddress,userAgent, email);
+            }
+
             loginHistoryRepository.save(loginHistory);
             return new String[]{email, ipAddress, userAgent};
         }
@@ -99,10 +100,7 @@ public class LoginHistoryService {
                 return new String[]{"Unknown", "Unknown"};
             }
     }
-    private boolean isLoginDetailsRegistered(String[] loginDetails){
-        String email = loginDetails[0];
-        String ipAddress = loginDetails[1];
-        String userAgent = loginDetails[2];
+    private boolean isLoginDetailsRegistered(String ipAddress, String userAgent, String email){
         return loginHistoryRepository.existsByLoginDetails(email, ipAddress, userAgent);
     }
 }
