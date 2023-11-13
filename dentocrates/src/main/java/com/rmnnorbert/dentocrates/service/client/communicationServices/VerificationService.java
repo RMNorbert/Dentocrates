@@ -3,6 +3,7 @@ package com.rmnnorbert.dentocrates.service.client.communicationServices;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.verification.Verification;
 import com.rmnnorbert.dentocrates.data.authentication.Role;
+import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.repository.client.verification.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +34,17 @@ public class VerificationService {
     }
     public ResponseEntity<String> sendVerification(String email, String role, String action, boolean reset) {
         String verificationCode = UUID.randomUUID().toString();
-        String verificationMessage = "Verify " + action + " by clicking on the following link.";
-        String verificationUrl = GMailerService.BASE_URL + "verify/";
+        String verificationMessage = "Verify " + action + " by login and to your profile page and send the verification code : ";
+        String verificationUrl = GMailerService.BASE_URL;
         Role roleAsEnum = Role.valueOf(role);
         ResponseEntity<String> response = registerVerification(email, roleAsEnum, verificationCode);
         String link;
         if(reset) {
-            verificationUrl += "reset/";
+            verificationMessage += "reset password with: ";
         }
+        verificationMessage += verificationCode;
 
-        link = verificationUrl + verificationCode;
+        link = verificationUrl;
         gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,link);
         return response;
     }
@@ -58,9 +60,9 @@ public class VerificationService {
         gMailerService.sendMail(email,subject,verificationMessage,noLink);
         return authenticationCode;
     }
-    public ResponseEntity<String> deleteVerification(String verificationCode) {
+    public ResponseEntity<String> deleteVerification(VerifyDTO dto) {
         try {
-            Verification verification = getVerification(verificationCode)
+            Verification verification = getVerification(dto.verificationCode())
                     .orElseThrow(() -> new NotFoundException("Verification"));
 
             verificationRepository.delete(verification);
