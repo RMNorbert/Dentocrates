@@ -6,6 +6,7 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
@@ -42,27 +43,39 @@ public class GMailerService {
                 .build();
     }
 
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory)
-            throws IOException {
-        // Load client secrets. Replace the resourcePath with your client_secret json file
-        String resourcePath = "/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json";
-        String pathToTokenDirectory = "tokens";
-        String flowAccessType = "offline";
-        int receiverServerPort = 8080;
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory) {
+        try {
+            // Load client secrets. Replace the resourcePath with your client_secret json file
+            String resourcePath = "/yourClientSecretJsonFileName";
+            String pathToTokenDirectory = "tokens";
+            String flowAccessType = "offline";
+            int receiverServerPort = 8080;
 
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory,
-                new InputStreamReader(GMailerService.class.getResourceAsStream(resourcePath)));
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory,
+                    new InputStreamReader(GMailerService.class.getResourceAsStream(resourcePath)));
 
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, jsonFactory, clientSecrets, Set.of(GMAIL_SEND))
-                .setDataStoreFactory(new FileDataStoreFactory(Paths.get(pathToTokenDirectory).toFile()))
-                .setAccessType(flowAccessType)
-                .build();
+            // Build flow and trigger user authorization request.
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                    HTTP_TRANSPORT, jsonFactory, clientSecrets, Set.of(GMAIL_SEND))
+                    .setDataStoreFactory(new FileDataStoreFactory(Paths.get(pathToTokenDirectory).toFile()))
+                    .setAccessType(flowAccessType)
+                    .build();
 
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(receiverServerPort).build();
-        //returns an authorized Credential object.
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize(APPLICATION_NAME);
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(receiverServerPort).build();
+            //returns an authorized Credential object.
+            return new AuthorizationCodeInstalledApp(flow, receiver).authorize(APPLICATION_NAME);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new Credential(new Credential.AccessMethod() {
+                @Override
+                public void intercept(HttpRequest httpRequest, String s){}
+
+                @Override
+                public String getAccessTokenFromRequest(HttpRequest httpRequest) {
+                    return null;
+                }
+            });
+        }
     }
 
 
