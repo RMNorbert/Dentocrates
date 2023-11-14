@@ -14,7 +14,6 @@ import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
-import com.rmnnorbert.dentocrates.service.JwtService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
 import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
