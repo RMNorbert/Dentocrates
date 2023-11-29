@@ -16,7 +16,6 @@
 [![Flask](https://img.shields.io/badge/Flask-00264D.svg?logo=flask&logoColor=white&labelColor=black&style=for-the-badge)](https://flask.palletsprojects.com/en/2.3.x/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-00264D.svg?logo=pytorch&logoColor=DE3412&labelColor=black&style=for-the-badge)](https://pytorch.org/)
 [![NumPy](https://img.shields.io/badge/NumPy-00264D.svg?logo=NumPy&logoColor=steelblue&labelColor=black&style=for-the-badge)](https://pytorch.org/)
-[![Express](https://img.shields.io/badge/Express-black.svg?logo=Express&logoColor=gold&labelColor=black&style=for-the-badge)](https://expressjs.com/)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-black.svg?logo=TypeScript&logoColor=gold&labelColor=black&style=for-the-badge)](https://www.typescriptlang.org/)
 [![Java Script](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=black)](https://www.javascript.com/)
@@ -86,7 +85,6 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - 2FA logic
   - Python
   - Flask
-  - Express
         
  #### Frontend
   - TypeScript (on typescript branch)
