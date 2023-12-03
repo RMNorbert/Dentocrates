@@ -66,7 +66,6 @@ The website enables users to create an account, search for dentists in their are
 
 - **User logins stored, notification sent upon suspicious login or login attempts** 
   
-- **Connect microservices with Eureka (in progress)**
   
 ---
 # Dockerized version can be pulled from DockerHub:
