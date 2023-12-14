@@ -9,7 +9,7 @@ export const ReviewPage = ({id, byClinic} ) => {
     const [isDataLoaded, setDataLoaded] = useState(false);
     const [reviewData, setReviewData] = useState([]);
     const [isDeleted, setIsDelete] = useState(false);
-    const reviewDataUrl = byClinic? `/review/clinic/${id}` : `/review/customer/${id}`;
+    const reviewDataUrl = byClinic? `/dentocrates/review/clinic/${id}` : `/dentocrates/review/customer/${id}`;
     const okStatusCode = 200;
     const getReviewData = async () => {
         const responseData = await data(reviewDataUrl);
@@ -18,7 +18,7 @@ export const ReviewPage = ({id, byClinic} ) => {
     };
 
     const deleteReview = async (currentId) => {
-        const reviewDeleteUrl = '/review/';
+        const reviewDeleteUrl = '/dentocrates/review/';
         const requestBody = {userId: userId(), targetId: currentId};
         const response =  await data(reviewDeleteUrl, 'DELETE', requestBody);
         if(response.status === okStatusCode) {

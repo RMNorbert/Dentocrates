@@ -12,8 +12,8 @@ export const Appointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [clinics, setClinics] = useState([]);
     const getData = async () => {
-            const appointmentsDataUrl = `/calendar/customer/${userId()}`;
-            const clinicDataUrl = '/clinic/all';
+            const appointmentsDataUrl = `/dentocrates/calendar/customer/${userId()}`;
+            const clinicDataUrl = '/dentocrates/clinic/all';
             const appointmentsData = await data(appointmentsDataUrl);
             const clinicsData = await data(clinicDataUrl);
 
@@ -32,7 +32,7 @@ export const Appointment = () => {
     }
 
     const handleDelete = async (currentId) => {
-        const calendarDeleteUrl = '/calendar/';
+        const calendarDeleteUrl = '/dentocrates/calendar/';
         const response = await data(calendarDeleteUrl,'DELETE',{userId: userId(), targetId: currentId})
         if(response) {
             setIsLoaded(false);

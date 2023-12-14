@@ -34,8 +34,24 @@
 }
 .customer-box{
     width: 400px;
+    margin-top: 5px;
 }
 .button {
     border-style: solid ;
     border-color: black;
+}
+#appeared {
+    background-color: #6e8ee6;
+}
+#not-appeared {
+    background-color: gray;
+}
+.fulfilled{
+    margin-left: 10px;
+    padding-top: 0;
+    background-color: transparent;
+    width: 150px;
+    height: 20px;
+    font-size: 14px;
+    text-align: center;
 }

@@ -9,7 +9,7 @@ export const Reset = () => {
 
     async function postResetRequest() {
         try {
-            const resetUrl = "/api/reset/request";
+            const resetUrl = "/dentocrates/api/reset/request";
             const requestBody = {requesterEmail: email}
             const response = await data(resetUrl, "POST", requestBody);
             if (response.status === 200) {

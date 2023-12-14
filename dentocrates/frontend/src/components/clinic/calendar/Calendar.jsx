@@ -18,9 +18,9 @@ const Calendar = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isHidden, setIsHidden] = useState(true);
     const getCalendarData = async() =>{
-        const clinicDataUrl = `/clinic/${id}`;
-        const clinicCalendarDataUrl = `/calendar/clinic/${id}`;
-        const clinicLeaveDataUrl = `/leave/${id}`;
+        const clinicDataUrl = `/dentocrates/clinic/${id}`;
+        const clinicCalendarDataUrl = `/dentocrates/calendar/clinic/${id}`;
+        const clinicLeaveDataUrl = `/dentocrates/leave/${id}`;
 
         const clinicData = await data(clinicDataUrl);
         const calendarData = await data(clinicCalendarDataUrl);
@@ -72,7 +72,7 @@ const Calendar = () => {
     }
     const bookAppointment = async(appointment) => {
         try {
-        const calendarRegisterUrl = '/calendar/register';
+        const calendarRegisterUrl = '/dentocrates/calendar/register';
         const formattedAppointment  = appointment.replace(" ","T") + ":00";
         const bookingData = {
             clinicId: id,

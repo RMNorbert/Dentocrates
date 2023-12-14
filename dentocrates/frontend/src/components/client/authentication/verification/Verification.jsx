@@ -15,7 +15,7 @@ function VerifyPage (props) {
 
     const validateVerificationCode = async () => {
         const requestBody = {verificationCode: verificationCode, email: email()}
-        const response = await data(`/verify/${verificationCode}`,"POST", requestBody);
+        const response = await data(`/dentocrates/verify/${verificationCode}`,"POST", requestBody);
         setVerificationCodeValidated(response);
         if(!props.reset){
                 deleteVerification();
@@ -28,13 +28,13 @@ function VerifyPage (props) {
         setPasswordVerifier(event.target.value);
     };
     const deleteVerification = async () => {
-        const deleteVerifyUrl = '/verify/';
+        const deleteVerifyUrl = '/dentocrates/verify/';
         const deleteRequest = {verificationCode: verificationCode};
         await data(deleteVerifyUrl, 'DELETE', deleteRequest);
     }
     const postPasswordReset = async(password)=>{
         if(password === passwordVerifier) {
-            const clientUrl = '/update/password';
+            const clientUrl = '/dentocrates/update/password';
             const request = {
                 verificationCode: verificationCode,
                 email: email(),
@@ -49,7 +49,7 @@ function VerifyPage (props) {
         setMessage("Passwords do not match");
     };
     const postClientVerification = async ()=>{
-            const verificationUrl = '/update/verify';
+            const verificationUrl = '/dentocrates/update/verify';
             const request = {
                 verificationCode: verificationCode,
             };

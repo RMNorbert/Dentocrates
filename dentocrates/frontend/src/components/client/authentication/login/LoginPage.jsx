@@ -32,7 +32,7 @@ function LoginPage() {
     }
     const handleAuthenticationRequest = async () => {
         try{
-            const authenticationRequestUrl = '/api/request/authenticate';
+            const authenticationRequestUrl = '/dentocrates/api/request/authenticate';
             const requestBody = {email: email, password: password};
             const response = await data(authenticationRequestUrl, "POST", requestBody );
             if (response === true) {
@@ -47,7 +47,7 @@ function LoginPage() {
     const handleSubmit = async (event) => {
         try {
             event.preventDefault();
-            const authenticationUrl = '/api/authenticate';
+            const authenticationUrl = '/dentocrates/api/authenticate';
             const requestBody = {
                 email: email,
                 password: password,

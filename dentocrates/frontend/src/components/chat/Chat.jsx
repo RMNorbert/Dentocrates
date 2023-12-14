@@ -11,7 +11,7 @@ function Chat() {
     const [chatIcon, setChatIcon] = useState(iconList[0]);
     const [inputValue, setInputValue] = useState('');
     const [chatWithCat, setChatWithCat] = useState(false);
-    const chatUrl = "/chat";
+    const chatUrl = "/predict";
     const { data } = MultiFetch();
 
     function getRandomInt(max) {
@@ -33,9 +33,10 @@ function Chat() {
         setMessages((prevMessages) => [msg1, ...prevMessages]);
         try {
             const requestBody = {message: inputValue, cat: chatWithCat};
-            const answer = await data(chatUrl, "POST", requestBody);
-            if(answer !== '') {
-                const responseMessage = {name: 'AI', message: answer};
+            const response = await data(chatUrl, "POST", requestBody);
+
+            if(response.answer !== '') {
+                const responseMessage = {name: 'AI', message: response.answer};
                 setMessages((prevMessages) => [responseMessage, ...prevMessages]);
             }
             setInputValue('');

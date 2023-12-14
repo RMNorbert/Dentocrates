@@ -70,7 +70,7 @@ function Map () {
  async function loadMap () {
    try {
      mapboxgl.accessToken = routeSettings.TOKEN
-    const clinicDataUrl = `/clinic/all`;
+    const clinicDataUrl = `/dentocrates/clinic/all`;
     const clinicData = await data(clinicDataUrl)
     const clinicProperties = createClinicProperties(await clinicData);
     map.current = initializeMap(handleMarkerPlacement, clinicProperties);

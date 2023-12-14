@@ -50,7 +50,7 @@ function NavigationBar() {
                     <button id='tabs' onClick={() => navigate("/location")}>Register location</button>
                 </>
             }
-      {loggedInUserEmail != null ? <div className='logout'  style={role() === "DENTIST" ? { left: "14%" } : { left: "34%" }}
+      {loggedInUserEmail != null ? <div className='logout'
       >
                 <p
                   onMouseEnter={() => setIsHidden(!isHidden)}

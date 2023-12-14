@@ -2,10 +2,13 @@ import "./ReviewRegister.css";
 import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {useState} from "react";
 import {userId} from "../../utils/token/TokenDecoder";
+import {useNavigate} from "react-router-dom";
 
 export function ReviewRegister({clinicId, appointmentId}) {
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [isHidden, setIsHidden] = useState(true);
+    const [isReviewed, setIsReviewed] = useState(false);
     const [reviewText, setReviewText] = useState('');
     const [reviewRating, setReviewRating] = useState(0);
 
@@ -17,14 +20,15 @@ export function ReviewRegister({clinicId, appointmentId}) {
         setReviewRating(event.target.value);
     };
     const updateReviewStateOfAppointment = async () => {
-        const reviewAppointmentUrl = '/calendar/';
+        const reviewAppointmentUrl = '/dentocrates/calendar/';
         const response = await data(reviewAppointmentUrl,'POST',appointmentId)
         if(response.includes('successfully')){
             setIsHidden(true);
+            navigate("/appointments")
         }
     };
     const registerReview = async () => {
-        const registerReviewUrl = '/review/register';
+        const registerReviewUrl = '/dentocrates/review/register';
         let requestBody = {
             reviewerId: userId(),
             reviewedClinicId: clinicId,
@@ -35,15 +39,18 @@ export function ReviewRegister({clinicId, appointmentId}) {
         const response = await data(registerReviewUrl,'POST',requestBody);
         if(response.includes('successfully')) {
             await updateReviewStateOfAppointment();
+            setIsReviewed(true)
         }
     };
 
     return (
-        <div className="review-box">
+        <div className="review-box"
+             style={{display: isReviewed ? "none" : "block" }}
+        >
             <div className="review-element">
             <button className="review"
                 onClick={() => setIsHidden(!isHidden)}
-                style={{ display: isHidden ? "block" : "none" }}
+                style={{display: isHidden ? "block" : "none" }}
             >
                 Review
             </button>

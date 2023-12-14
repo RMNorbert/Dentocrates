@@ -1,2 +1,2 @@
 FROM postgres:15
-COPY src/main/resources/db/create-db.sql /docker-entrypoint-initdb.d/
+COPY backend-server/src/main/resources/db/create-db.sql /docker-entrypoint-initdb.d/

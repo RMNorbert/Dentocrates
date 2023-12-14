@@ -23,13 +23,14 @@
 }
 
 .leave-box {
-    background-color: #6682c9;
     left: 50%;
 }
 .leave-start {
     border-bottom-style: solid;
     padding-right: 100px;
 }
-.leave-end {
-    border-bottom-style: solid;
+.leave-card {
+    border-style: solid;
+    background-color: #6682c9;
+    margin-top: 3px;
 }

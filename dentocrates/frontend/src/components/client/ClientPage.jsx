@@ -23,13 +23,13 @@ export const ClientPage = () => {
     const [resetCode, setResetCode] = useState('');
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
-            const clientDetailsUrl = `/client/${userId()}`;
+            const clientDetailsUrl = `/dentocrates/client/${userId()}`;
             const response = await data(clientDetailsUrl);
             setClientData(await response);
         }
         else if(role() === "DENTIST"){
-            const clinicDetailsUrl = `/clinic/dentist/${userId()}`;
-            const dentistDetailsUrl = `/dentist/${userId()}`;
+            const clinicDetailsUrl = `/dentocrates/clinic/dentist/${userId()}`;
+            const dentistDetailsUrl = `/dentocrates/dentist/${userId()}`;
             const clinicResponse = await data(clinicDetailsUrl);
 
             setClinicData(await clinicResponse);
@@ -44,7 +44,7 @@ export const ClientPage = () => {
     const fetchLeaveData = async (clinic) => {
         let leaves = [];
         for (let i = 0; i < clinic.length; i++) {
-            const clinicLeaves = await data(`/leave/${clinic[i].id}`);
+            const clinicLeaves = await data(`/dentocrates/leave/${clinic[i].id}`);
             leaves.push(clinicLeaves);
         }
         setLeaveData(leaves);
@@ -71,7 +71,7 @@ export const ClientPage = () => {
             endOfTheLeave : endDate
         }
         try {
-            const response = await data('/leave/', "POST", registerData);
+            const response = await data('/dentocrates/leave/', "POST", registerData);
             if (response) {
                 setIsLoaded(false);
             }
@@ -82,7 +82,7 @@ export const ClientPage = () => {
         }
     }
     const handleResetRequest = async (email) => {
-        const passwordResetRequestUrl = '/verify/reset/register';
+        const passwordResetRequestUrl = '/dentocrates/verify/reset/register';
         const requestBody = {email: email,  role:role()};
         try {
             await data(passwordResetRequestUrl, 'POST', requestBody);
@@ -92,8 +92,8 @@ export const ClientPage = () => {
         }
     };
     const handleDelete = async (currentId) => {
-        const clientDeleteUrl = role() === "CUSTOMER" ? '/client/' :
-            role() === "DENTIST" ? '/dentist/': false;
+        const clientDeleteUrl = role() === "CUSTOMER" ? '/dentocrates/client/' :
+            role() === "DENTIST" ? '/dentocrates/dentist/': false;
         const requestBody = {userId: userId(), targetId: currentId};
         const response =  await data(clientDeleteUrl, 'DELETE', requestBody);
         if(response) {
@@ -104,7 +104,7 @@ export const ClientPage = () => {
     };
 
     const handleLeaveDelete = async (currentId, clinic) => {
-        const leaveDeleteUrl = '/leave/';
+        const leaveDeleteUrl = '/dentocrates/leave/';
         const requestBody = {dentistId: userId(), leaveId: currentId , clinicId:clinic};
         const response = await data(leaveDeleteUrl,'DELETE',requestBody)
         if(response) {
@@ -140,7 +140,7 @@ export const ClientPage = () => {
                     <div className="inputBox">
                         <input
                             type="text"
-                            placeholder="provide code to validate account"
+                            placeholder="provide the verification code to reset your password"
                             onChange={(e) => handleValidationCodeChange(e, setResetCode)}
                         />
                         <button onClick={() => navigate(`/verify/reset/${resetCode}`)}>Send code</button>
@@ -209,13 +209,15 @@ export const ClientPage = () => {
                         ))
                     )}
                     </div>
+                </div>
+                }
+                {clientData && role() === "Customer" &&
                     <div>
                         <ReviewPage
                             id={clientData.id}
                             byClinic={false}
                         />
                     </div>
-                </div>
                 }
             </div>
         )

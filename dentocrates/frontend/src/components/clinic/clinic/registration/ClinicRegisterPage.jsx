@@ -23,7 +23,7 @@ function ClinicRegisterPage (){
     const isMounted = useRef(true);
     const [errorMessage, setErrorMessage] = useState([]);
     const getLocationData = async () => {
-        const locationDataUrl = `/location/all`;
+        const locationDataUrl = `/dentocrates/location/all`;
         const onLoadSelectedClinicType = 'COMMUNITY DENTAL CLINIC';
         const responseData = await data(locationDataUrl);
         setLocations(await responseData);
@@ -80,12 +80,12 @@ function ClinicRegisterPage (){
             dentistId: userId()
         };
         try {
-            const response = await data('/clinic/register', 'Post', registerData);
+            const response = await data('/dentocrates/clinic/register', 'Post', registerData);
             setErrorMessage(response.replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";"));
-            setHidden(false);
             if(response.includes("successfully")) {
                 navigate('/home');
             }
+            setHidden(false);
         } catch (error) {
             setErrorMessage("Please fill out all the required fields.");
             setHidden(false);

@@ -12,13 +12,13 @@ export const DentistPage = () => {
     const [clinicData, setClinicData] = useState([]);
     const getDentistDetails = async() =>{
         await getClinicData();
-        const responseData = await data(`/dentist/all`);
+        const responseData = await data(`/dentocrates/dentist/all`);
         setDentistData(await responseData);
         setFilteredData(await responseData);
         setIsDataLoaded(true);
     }
     const getClinicData = async () => {
-        const responseData = await data(`/clinic/all`);
+        const responseData = await data(`/dentocrates/clinic/all`);
         setClinicData(await responseData);
     }
 

@@ -45,8 +45,8 @@ function RegisterPage (){
         await postRegistration(email,password);
     }
     const postRegistration = async(email, password)=>{
-        const dentistUrl = '/api/register/dentist';
-        const customerUrl = "/api/register/customer";
+        const dentistUrl = '/dentocrates/api/register/dentist';
+        const customerUrl = "/dentocrates/api/register/customer";
         fetch(dentist ? dentistUrl : customerUrl, {
             method: 'POST',
             headers: {
@@ -67,7 +67,7 @@ function RegisterPage (){
             }),
         })
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     navigate('/');
                 } else {
                     setHidden(false);

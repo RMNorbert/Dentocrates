@@ -25,6 +25,12 @@ code {
   margin-bottom: 3px;
   margin-top: 3px;
 }
+.elements {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
 .inputBox{
   width: 100%;
   display:grid;
