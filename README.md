@@ -68,9 +68,6 @@ The website enables users to create an account, search for dentists in their are
   
   
 ---
-# Dockerized version can be pulled from DockerHub:
-https://hub.docker.com/repository/docker/7nrm/dentocrates/general
-
 ---
 ## Used technologies:
 
@@ -81,10 +78,10 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - Lombok,
   - OAuth 2.0
   - JavaMail & Gmail API
-  - 2FA logic
   - Python
   - Flask
-        
+  - Spring Cloud Netflix, Spring Cloud Gateway (in progress on eureka branch)
+ 
  #### Frontend
   - TypeScript (on typescript branch)
   - JavaScript,
@@ -96,7 +93,7 @@ https://hub.docker.com/repository/docker/7nrm/dentocrates/general
   - PostgreSQL
   
   #### Others
-  - Docker,
+  - Docker (refactoring in progress on eureka branch),
   - CI/CD GitHub workflows
   - OpenApi (version 3.0)
 
@@ -119,6 +116,7 @@ To set up the project, follow these steps:
   **For Windows or macOS**: Install Docker Desktop for an easy-to-use Docker environment.
 
 #### After installing Docker:
+ 
  Ensure it's running by opening a terminal or command prompt and running the command 
  ```
  docker --version
@@ -172,100 +170,8 @@ Then copy the full file name, including the ".json" extension and paste it as a 
    Update the configuration files with the appropriate values.
 
    ---
-  - #### **Without using Docker:**
+
   
-  - **4.1, Configuration for database connection:**
-     
-     - Located in ```dentocrates/src/main/resources/application.yml```, the following environment variables have to be created or updated according to your Postgresql user: **url,username , password**.
-
-       To run Dentocrates without using Docker you can use:
-       ```
-       url:jdbc:postgresql://localhost:5432/dentocrates
-       ```
-   
-  - **4.2, Environment variables to add** before running the application:
-
-        - BASE_URL : This variable used in email sending services to provide link to the application: ```http://localhost:3000/```
-    
-        - SENDER_USERNAME: This variable have to be created to use the email related services, use the email you whish to use to as the notifications sender
-
-        - CHAT_URL : This variable used in the post request to the chatbot : ```http://127.0.0.1:5000/predict```
-
-        - REDIRECT_URI: This variable used during OAUTH: ``` http://localhost:3000/login/oauth2/code/ ```
-        
-        - OAUTH_SECRET and the OAUTH_ID: created for the oauth login, update it according to the related credentials
-        
-        - SECRET : This variable have to be created for the JWT related key creation. An example secret is provided by default. 
-      
-     
-  - **4.3, In case of using the application-lifecycle.sh** to run the application, the variables in the application-lifecycle.sh file have to be updated. The related lines starts at the 71th line. The sh file is located in:
-
-       ```dentocrates/```
-       
----  
-  - #### **In case of using Docker:**
-
-  - **4.1, Using the docker commpose file** to run the application, the postgres and dentocrates service environment variables in the docker commpose file have to be updated, and the chatbot service context also have to be updated according to the path of the cloned chatbot project. The file located in:
-
-      ```
-      dentocrates/
-     ```
-     
----
-### 5. Build and run the project: 
-   Dentocrates can be built and run using your preferred development environment or command-line tools. Here are a few options:
-
-  ___
-  - #### 5.1,  Using Maven:
-
-
-     - **5.1.1**, Open a terminal or command prompt, navigate to the project's dentocrates directory, and run the following command:
-        ```
-        mvn spring-boot:run
-        ```
-   
-       This command will build the project, resolve the dependencies, and start the backend server.
-
-    - **5.1.2**, Navigate to the project's dentocrates/frontend directory, and run the following command:
-    
-       ```
-       npm start
-       ```
-       This command will start the frontend server.
-   ___
-
- - #### 5.2, Run the dockerized version with:
-  
-    - Navigate to the project directory containing the docker-compose.yml file.
-
-      Run the following command to build and start the project:
-      ```
-      docker-compose up --build
-      ```
-
-      The docker-compose.yml file defines the services and configurations needed for running your application in a Docker container.
-      It simplifies deployment and ensures consistent setups across environments.
-  ___
-
-  - #### 5.3, Run with the application-lifecycle.sh:
-  
-    **Unix-like Systems:(Linux, macOs)**
-    - First make the file executable by running the following command:
-      ```
-      chmod +x application-lifecycle.sh
-      ```
-    - Run the sh file with the following command or run it as a program
-      ```
-      ./application-lifecycle.sh
-      ```
----
-#### 6. Access the application:
-
-Once the server is up and running, you can access the Dentocrates application through the provided URL. Open a web browser and enter the appropriate URL (e.g. in case of **mvn spring-boot:run** and **npm start** or in case of using the **application-lifecycle.sh** file **http://localhost:3000** , in case of **docker** **http://localhost:8080**) to access the application. You can create an account, explore dentists, schedule appointments, chat with the ChatBot.
-
-Note: The URL and port number may vary depending on your configuration.
-
----
 ## Default Login Credentials
    
    For quicker testing purposes, you can login to the application by using the following credentials:
