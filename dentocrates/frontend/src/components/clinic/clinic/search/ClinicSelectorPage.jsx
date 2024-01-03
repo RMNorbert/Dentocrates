@@ -37,7 +37,7 @@ export const ClinicSelectorPage = () => {
             <div className="selector">
                 <div>
                     <input
-                        className={"searchBar"}
+                        className="searchBar shadowBorder"
                         type={"text"}
                         placeholder={"Search for clinics"}
                         onChange={(event) => search(event)}
@@ -47,7 +47,11 @@ export const ClinicSelectorPage = () => {
                     {filteredData.length > 0 ? (
                 <ClinicList clinicDatas={filteredData} />
                         ) :
-                        ( <p>No results found.</p>)
+                        ( <p
+                            className="card shadowBorder"
+                        >
+                            No result found.
+                        </p>)
                     }
                 </div>
             </div>
