@@ -15,6 +15,13 @@
     justify-content: center;
     gap: 1rem;
 }
+.appointment-select-box{
+    background-color: rgba(169, 212, 255, 0.44);
+    width: 95%;
+}
+.selected {
+    background-color: #2d3efa;
+}
 .times{
     height: 50px;
     width: 80px;
