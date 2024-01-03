@@ -29,13 +29,13 @@ function LocationRegisterPage (){
 
 
     const postRegistration = async(zipCode, city)=>{
-        const locationRegisterUrl = '/location/register';
+        const locationRegisterUrl = "/location/register";
         let locationData = {
             zipCode: zipCode,
             city: city
         }
         try{
-            const response = await data(locationRegisterUrl,'POST', locationData);
+            const response = await data(locationRegisterUrl,"POST", locationData);
             setErrorMessage(response);
             setIsMessageHidden(false);
             if(response.includes("successfully")) {
@@ -44,14 +44,14 @@ function LocationRegisterPage (){
         } catch (error) {
             setErrorMessage("Please fill out all required fields, zip code must be between 1000-10.000");
             setIsMessageHidden(false);
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     };
     return (
         <div className="clinic-register">
-        <div className="pageContent">
-            <h1 className="register-title">Location Register</h1>
-            <div className="flex justify-center flex-col items-center text-2xl ">
+        <div className="pageContent shadowBorder roundBox">
+            <h1 className="register-title shadowLightBorder">Location Register</h1>
+            <div className="flex justify-center flex-col items-center text-2xl">
                 <form onSubmit={HandleSubmit}>
                     <div className="inputBox">
                         <label htmlFor="zipCode">ZipCode:</label>
@@ -68,7 +68,7 @@ function LocationRegisterPage (){
                             {errorMessage}
                         </label>
                     </div>
-                    <button className="inputBox" type="submit">
+                    <button className="inputBox shadowBorder" type="submit">
                         Register
                     </button>
                 </form>

@@ -18,9 +18,9 @@ export const ReviewPage = ({id, byClinic} ) => {
     };
 
     const deleteReview = async (currentId) => {
-        const reviewDeleteUrl = '/review/';
+        const reviewDeleteUrl = "/review/";
         const requestBody = {userId: userId(), targetId: currentId};
-        const response =  await data(reviewDeleteUrl, 'DELETE', requestBody);
+        const response =  await data(reviewDeleteUrl, "DELETE", requestBody);
         if(response.status === okStatusCode) {
             setIsDelete(true);
         }
@@ -36,14 +36,15 @@ export const ReviewPage = ({id, byClinic} ) => {
     if (isDataLoaded) {
         return (
           <div>
+              {reviewData.length > 0 && <h3 className="reviews-list">Reviews</h3>}
               {!isDeleted && reviewData && reviewData.map((review, index) => (
                   <div key={index}
-                       className="review-rating-box"
+                       className="review-rating-box shadowBorder"
                   >
-                     <h3>{review.reviewer}</h3>
+                     <h3 className="reviewBorder">{review.reviewer}</h3>
                       {!byClinic?
                           <div>
-                              {review.reviewedClinic}
+                             <strong> {review.reviewedClinic} </strong>
                           </div>
                           :
                           <></>
@@ -52,7 +53,7 @@ export const ReviewPage = ({id, byClinic} ) => {
                               <div
                                   className="review-rating"
                               >
-                              Rating:    {review.rating}
+                              <strong> Rating:    {review.rating} </strong>
                               </div>
                               <div
                                   className="review-rating-element"

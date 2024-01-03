@@ -1,5 +1,5 @@
 import "./Chat.css"
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import { MultiFetch } from "../../utils/fetch/MultiFetch";
 function Chat() {
     const iconList = [process.env.PUBLIC_URL + '/help.png',
@@ -9,9 +9,9 @@ function Chat() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [chatIcon, setChatIcon] = useState(iconList[0]);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState("");
     const [chatWithCat, setChatWithCat] = useState(false);
-    const chatUrl = "/chat";
+    const chatUrl = "/predict";
     const { data } = MultiFetch();
 
     function getRandomInt(max) {
@@ -26,19 +26,20 @@ function Chat() {
     };
 
     const onSendButton = async () => {
-        if (inputValue === '') {
+        if (inputValue === "") {
             return;
         }
-        const msg1 = { name: 'User', message: inputValue };
+        const msg1 = { name: "User", message: inputValue };
         setMessages((prevMessages) => [msg1, ...prevMessages]);
         try {
             const requestBody = {message: inputValue, cat: chatWithCat};
-            const answer = await data(chatUrl, "POST", requestBody);
-            if(answer !== '') {
-                const responseMessage = {name: 'AI', message: answer};
+            const response = await data(chatUrl, "POST", requestBody);
+
+            if(response.answer !== "") {
+                const responseMessage = {name: "AI", message: response.answer};
                 setMessages((prevMessages) => [responseMessage, ...prevMessages]);
             }
-            setInputValue('');
+            setInputValue("");
         } catch (error) {
             console.error("Error:", error);
         }
@@ -59,7 +60,7 @@ function Chat() {
         return (
             <div className="chat">
             <div className={`${isOpen ? 'chatbox--active' : 'chatbox'}`}>
-                <div className="chatbox__support">
+                <div className="chatbox__support shadowBorder">
                     <div className="chatbox__header">
                         <div className="chatbox__image--header">
                             <img src={chatIcon} className="bot__icon" alt="Chat Support, image created by AI" />

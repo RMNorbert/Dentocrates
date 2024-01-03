@@ -32,7 +32,7 @@ function LoginPage() {
     }
     const handleAuthenticationRequest = async () => {
         try{
-            const authenticationRequestUrl = '/api/request/authenticate';
+            const authenticationRequestUrl = "/api/request/authenticate";
             const requestBody = {email: email, password: password};
             const response = await data(authenticationRequestUrl, "POST", requestBody );
             if (response === true) {
@@ -47,7 +47,7 @@ function LoginPage() {
     const handleSubmit = async (event) => {
         try {
             event.preventDefault();
-            const authenticationUrl = '/api/authenticate';
+            const authenticationUrl = "/api/authenticate";
             const requestBody = {
                 email: email,
                 password: password,
@@ -55,7 +55,7 @@ function LoginPage() {
                 authenticationCode: authenticationCode
             };
 
-            const response = await data(authenticationUrl,'POST',  requestBody);
+            const response = await data(authenticationUrl,"POST",  requestBody);
 
             if (response.id) {
                 const token = response.token;
@@ -72,18 +72,29 @@ function LoginPage() {
     }
 
     return (
-        <div className='pageContent'>
-            <div>
+        <div className="pageContent shadowBorder roundBox">
+            <div className="shadowBorder">
             <h1 className="register-title">Login</h1>
                 <p display={messageIsHidden ? "none": "none"}>{message}</p>
             <form onSubmit={handleSubmit}>
                 <div className="inputBox">
                     <label htmlFor="email">Email:</label>
-                    <input type="text" id="email" value={email} onChange={handleEmailChange} />
+                    <input
+                        type="text"
+                        id="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
                 </div>
                 <div className="inputBox">
                     <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" value={password} onChange={handlePasswordChange} />
+                    <input
+                        className="shadowBorder"
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
                 </div>
                 {clientIsValid ?
                     <div className="inputBox">
@@ -100,7 +111,7 @@ function LoginPage() {
                         Login</button>
                     </div> :
                     <button
-                        className="inputBox"
+                        className="inputBox shadowBorder"
                         type="button"
                         onClick={() => handleAuthenticationRequest()}
                     >
@@ -110,19 +121,19 @@ function LoginPage() {
             </form>
             </div>
             <div className="inputBox">
-            <button onClick={() => handleGoogleLogin()}>Sign in With Google</button>
-            <button className="register"
+            <button className="shadowBorder" onClick={() => handleGoogleLogin()}>Sign in With Google</button>
+            <button className="register shadowBorder"
                 onClick={() =>  navigate("/register")}
             >
                 Not registered yet?
             </button>
-            <button className="register"
+            <button className="register shadowBorder"
                 onClick={() =>  setIsResetPasswordRequested(true)}
             >
                 Forgot your password ?
             </button>
             {isResetPasswordRequested ?
-                <div>
+                <div >
                     <Reset/>
                 </div>
             :
