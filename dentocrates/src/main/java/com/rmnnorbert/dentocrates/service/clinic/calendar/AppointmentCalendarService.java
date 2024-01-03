@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class AppointmentCalendarService {
     private final AppointmentCalendarRepository appointmentCalendarRepository;
@@ -47,21 +49,28 @@ public class AppointmentCalendarService {
                 .build();
 
         appointmentCalendarRepository.save(reservation);
-        return ResponseEntity.ok("Appointment registered successfully");
+        return ResponseEntity.ok("Appointment" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
     public ResponseEntity<String> deleteAppointmentById(DeleteDTO dto){
         AppointmentCalendar appointmentCalendar = getAppointmentById(dto.targetId());
         if(dto.userId() == appointmentCalendar.getCustomer().getId()) {
             appointmentCalendarRepository.deleteById(dto.targetId());
-            return ResponseEntity.ok("Appointment deleted successfully");
+            return ResponseEntity.ok("Appointment" + DELETE_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid delete request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + " delete appointment");
     }
     public List<AppointmentDTO> getAllAppointmentByClinic(long id) {
-            return appointmentCalendarRepository.getAllByClinic_Id(id)
-                    .stream()
-                    .map(AppointmentDTO::of)
-                    .toList();
+        return appointmentCalendarRepository.getAllByClinic_Id(id)
+                .stream()
+                .map(AppointmentDTO::of)
+                .toList();
+    }
+
+    public List<AppointmentDTO> getAllAppointmentsForTheWeekByClinic(long id) {
+        return appointmentCalendarRepository.getTheWeekAllAppointmentsByClinicId(id)
+                .stream()
+                .map(AppointmentDTO::of)
+                .toList();
     }
 
     public ResponseEntity<String> updateAppointment(AppointmentUpdateDTO dto) {
@@ -69,9 +78,9 @@ public class AppointmentCalendarService {
         if(dto.dentistId() == clinic.getDentistInContract().getId()) {
             AppointmentCalendar appointment = getAppointmentById(dto.id()).withAppeared(dto.appeared());
             appointmentCalendarRepository.save(appointment);
-            return ResponseEntity.ok("Appointment updated successfully");
+            return ResponseEntity.ok("Appointment updated" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid update request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + " update appointment");
     }
 
     private Clinic getClinicById(long id) {
@@ -89,11 +98,11 @@ public class AppointmentCalendarService {
 
     public ResponseEntity<String> updateReviewStateOfAppointment(Long id) {
         try {
-        AppointmentCalendar appointment = appointmentCalendarRepository.getReferenceById(id)
-                .withReviewed(true);
+            AppointmentCalendar appointment = appointmentCalendarRepository.getReferenceById(id)
+                    .withReviewed(true);
 
-        appointmentCalendarRepository.save(appointment);
-        return ResponseEntity.ok("Appointment updated successfully");
+            appointmentCalendarRepository.save(appointment);
+            return ResponseEntity.ok("Appointment review state change" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
         } catch (Exception e) {
             throw new NotFoundException("Appointment");
         }
