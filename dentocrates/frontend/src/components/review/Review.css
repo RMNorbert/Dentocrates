@@ -4,14 +4,22 @@
     width: 300px;
     border-style: double;
     margin-bottom: 2px;
+    margin-top: 10px;
+    border-radius: 20px;
+}
+.reviewBorder {
+    margin-top: 8px;
+    border-radius: 10px;
+    border-bottom-style: none;
+    box-shadow: 0 1px 0 1px #010c80;
 }
 .review-rating {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: -12px;
+    margin-bottom: 5px;
     height: 25px;
-    border-top-style: groove;
     border-bottom-style: groove;
     text-align: center;
 }
