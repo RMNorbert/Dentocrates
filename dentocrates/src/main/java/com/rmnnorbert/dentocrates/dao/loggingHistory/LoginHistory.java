@@ -22,4 +22,13 @@ public class LoginHistory {
     String ip_address;
     @NonNull
     String user_agent;
+
+    public static LoginHistory of(String email, String ipAddress, String userAgent) {
+        return LoginHistory.builder()
+                .email(email)
+                .time(LocalDateTime.now())
+                .ip_address(ipAddress)
+                .user_agent(userAgent)
+                .build();
+    }
 }
