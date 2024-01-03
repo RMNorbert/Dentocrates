@@ -3,6 +3,7 @@ package com.rmnnorbert.dentocrates.dao.review;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
+import com.rmnnorbert.dentocrates.dto.review.ReviewRegisterDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,14 @@ public class Review {
     private int rating;
 
     private String review;
+
+    public static Review of(Customer customer, Clinic clinic, AppointmentCalendar reservation, ReviewRegisterDTO dto) {
+        return Review.builder()
+                .reviewer(customer)
+                .reviewedClinic(clinic)
+                .reviewedAppointment(reservation)
+                .rating(dto.rating())
+                .review(dto.review())
+                .build();
+    }
 }
