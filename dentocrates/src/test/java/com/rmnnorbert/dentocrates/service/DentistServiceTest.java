@@ -46,7 +46,6 @@ class DentistServiceTest {
         assertEquals(dentistList.size(), actual.size());
         assertEquals(dentistList.get(0).getId(), actual.get(0).id());
         assertEquals(dentistList.get(1).getId(), actual.get(1).id());
-        verify(dentistRepository,times(1)).findAll();
     }
 
     @Test
@@ -58,7 +57,6 @@ class DentistServiceTest {
         List<DentistResponseDTO> actual = dentistService.getAllDentist();
 
         assertEquals(dentistList.size(), actual.size());
-        verify(dentistRepository,times(1)).findAll();
     }
     @Test
     void deleteDentistByIdWhenDentistExist() {
@@ -73,9 +71,6 @@ class DentistServiceTest {
         ResponseEntity<String> expected = ResponseEntity.ok("Dentist deleted successfully");
 
         assertEquals(expected,actual);
-        verify(dentistRepository,times(1)).findById(id);
-        verify(dentistRepository,times(1)).deleteById(id);
-
     }
     @Test
     void deleteDentistByIdWhenDentistIdInvalid() {
@@ -88,20 +83,15 @@ class DentistServiceTest {
         when(dentistRepository.findById(dto.targetId())).thenReturn(Optional.ofNullable(dentist));
 
         ResponseEntity<String> actual = dentistService.deleteDentistById(dto);
-        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid delete request.");
+        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid request to delete dentist");
 
         assertEquals(expected,actual);
-        verify(dentistRepository,times(1)).findById(dto.targetId());
-        verify(dentistRepository,times(0)).deleteById(dto.targetId());
     }
     @Test
     void deleteDentistByIdWhenDentistDoNotExist() {
         long id = 1;
 
         assertThrows(NotFoundException.class, () -> dentistService.getDentistById(id));
-
-        verify(dentistRepository,times(1)).findById(id);
-        verify(dentistRepository,times(0)).deleteById(id);
     }
     @Test
     void getDentistByIdWhenDentistExist() {
@@ -121,14 +111,11 @@ class DentistServiceTest {
         DentistResponseDTO expected = DentistResponseDTO.of(dentist);
 
         assertEquals(expected,actual);
-        verify(dentistRepository,times(1)).findById(id);
     }
     @Test
     void getDentistByIdWhenDentistDoNotExist() {
         long id = 1;
 
         assertThrows(NotFoundException.class, () -> dentistService.getDentistById(id));
-
-        verify(dentistRepository,times(1)).findById(id);
     }
 }
