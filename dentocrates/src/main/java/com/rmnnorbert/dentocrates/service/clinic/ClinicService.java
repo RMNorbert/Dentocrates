@@ -6,6 +6,7 @@ import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
 import com.rmnnorbert.dentocrates.dao.location.Location;
+import com.rmnnorbert.dentocrates.dto.clinic.ClinicUpdateDTO;
 import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
 import com.rmnnorbert.dentocrates.repository.client.DentistRepository;
 import com.rmnnorbert.dentocrates.repository.clinic.location.LocationRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
 
 @Service
 public class ClinicService {
@@ -46,19 +49,17 @@ public class ClinicService {
         if (location.isPresent()) {
             Clinic clinic = Clinic.of(clinicRegisterDTO, dentist, location.get());
             clinicRepository.save(clinic);
-            return ResponseEntity.ok("Clinic registered successfully");
+            return ResponseEntity.ok("Clinic" +  SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid location.");
+        return ResponseEntity.badRequest().body("Location" + NOT_FOUND_RESPONSE_CONTENT);
     }
     public ResponseEntity<String> deleteClinicById(Long id){
         getClinicById(id);
         clinicRepository.deleteById(id);
-        return  ResponseEntity.ok("Clinic deleted successfully");
-
+        return  ResponseEntity.ok("Clinic" + DELETE_RESPONSE_CONTENT);
     }
-    public ClinicResponseDTO getClinicById(long id){
-        return ClinicResponseDTO.of(clinicRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Clinic")));
+    public ClinicResponseDTO getClinicResponseDTOById(long id){
+        return ClinicResponseDTO.of(getClinicById(id));
     }
 
     public List<ClinicResponseDTO> getAllClinicByDentist(long id) {
@@ -66,5 +67,28 @@ public class ClinicService {
                 .stream()
                 .map(ClinicResponseDTO::of)
                 .toList();
+    }
+
+    public ResponseEntity<String> updateClinicById(Long id, ClinicUpdateDTO dto) {
+        Optional<Location> location = locationRepository.getByZipCode(dto.zipCode());
+
+        if(location.isPresent()) {
+            Clinic clinic = getClinicById(id)
+                    .withName(dto.name())
+                    .withWebsite(dto.website())
+                    .withContactNumber(dto.contactNumber())
+                    .withLocation(location.get())
+                    .withStreet(dto.street())
+                    .withOpeningHours(dto.openingHours());
+
+            clinicRepository.save(clinic);
+            return ResponseEntity.ok("Clinic" + SUCCESSFUL_UPDATE_RESPONSE_CONTENT);
+        }
+        return ResponseEntity.badRequest().body("Location" + NOT_FOUND_RESPONSE_CONTENT);
+    }
+
+    private Clinic getClinicById(Long id) {
+        return clinicRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Clinic"));
     }
 }
