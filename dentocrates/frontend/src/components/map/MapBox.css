@@ -72,8 +72,18 @@
 }
 
 #instruction-box {
+  position: fixed;
   border: 2px;
   border-style:inset;
+  background-color: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(2px);
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+#instruction-shadow{
+  width: 500px;
+  margin-left: 10px;
+
 }
 #colorbox {
   width: 45px;
