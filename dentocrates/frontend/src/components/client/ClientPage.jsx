@@ -5,6 +5,7 @@ import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {Loading} from "../lodaingPage/Loading";
 import {ReviewPage} from "../review/Reviews";
 import {useNavigate} from "react-router-dom";
+import ClinicCard from "../clinic/clinic/card/ClinicCard";
 
 export const ClientPage = () => {
     const { data } = MultiFetch();
@@ -17,10 +18,10 @@ export const ClientPage = () => {
     const [clientData, setClientData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isResetRequestMessageHidden, setIsResetRequestMessageHidden] = useState(true);
-    const [leaveMessage, setLeaveMessage] = useState('');
+    const [leaveMessage, setLeaveMessage] = useState("");
     const [isLeaveMessageHidden, setIsLeaveMessageHidden] = useState(true);
-    const [validationCode, setValidationCode] = useState('');
-    const [resetCode, setResetCode] = useState('');
+    const [validationCode, setValidationCode] = useState("");
+    const [resetCode, setResetCode] = useState("");
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
             const clientDetailsUrl = `/client/${userId()}`;
@@ -33,12 +34,15 @@ export const ClientPage = () => {
             const clinicResponse = await data(clinicDetailsUrl);
 
             setClinicData(await clinicResponse);
-            setClinicId(clinicResponse[0].id)
+            if(clinicResponse[0]) {
+                setClinicId(clinicResponse[0].id)
+            }
 
             const response = await data(dentistDetailsUrl);
             setClientData(await response);
             await fetchLeaveData(await clinicResponse);
         }
+        setIsLoaded(true);
     }
 
     const fetchLeaveData = async (clinic) => {
@@ -71,31 +75,33 @@ export const ClientPage = () => {
             endOfTheLeave : endDate
         }
         try {
-            const response = await data('/leave/', "POST", registerData);
+            const response = await data("/leave/", "POST", registerData);
             if (response) {
                 setIsLoaded(false);
+                setStartDate(null);
+                setEndDate(null);
             }
         } catch (error) {
             setLeaveMessage("Select dates to register");
             setIsLeaveMessageHidden(false);
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     }
     const handleResetRequest = async (email) => {
-        const passwordResetRequestUrl = '/verify/reset/register';
+        const passwordResetRequestUrl = "/verify/reset/register";
         const requestBody = {email: email,  role:role()};
         try {
-            await data(passwordResetRequestUrl, 'POST', requestBody);
+            await data(passwordResetRequestUrl, "POST", requestBody);
             setIsResetRequestMessageHidden(false);
         } catch (error) {
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     };
     const handleDelete = async (currentId) => {
-        const clientDeleteUrl = role() === "CUSTOMER" ? '/client/' :
-            role() === "DENTIST" ? '/dentist/': false;
+        const clientDeleteUrl = role() === "CUSTOMER" ? "/client/" :
+            role() === "DENTIST" ? "/dentist/": false;
         const requestBody = {userId: userId(), targetId: currentId};
-        const response =  await data(clientDeleteUrl, 'DELETE', requestBody);
+        const response =  await data(clientDeleteUrl, "DELETE", requestBody);
         if(response) {
             localStorage.clear();
             const redirectUrl = window.location.toString();
@@ -104,9 +110,9 @@ export const ClientPage = () => {
     };
 
     const handleLeaveDelete = async (currentId, clinic) => {
-        const leaveDeleteUrl = '/leave/';
+        const leaveDeleteUrl = "/leave/";
         const requestBody = {dentistId: userId(), leaveId: currentId , clinicId:clinic};
-        const response = await data(leaveDeleteUrl,'DELETE',requestBody)
+        const response = await data(leaveDeleteUrl,"DELETE",requestBody)
         if(response) {
             setIsLoaded(false);
         }
@@ -119,19 +125,19 @@ export const ClientPage = () => {
     useEffect(() => {
             if(!isLoaded){
                 getClientDetails();
-                setIsLoaded(true);
             }
         },[isLoaded]);
 
     if(isLoaded) {
         return (
-            <div className="client-box">
-                    <div className="client-card">
-                        <div>Name: {clientData.firstName} {clientData.lastName}</div>
-                        <div>Email: {clientData.email}</div>
+            <div className="lightBackground">
+                <div className="client-box">
+                    <div className="client-card shadowBorder">
+                        <div><strong>Name: {clientData.firstName} {clientData.lastname}</strong></div>
+                        <div><strong>Email: {clientData.email}</strong></div>
                     </div>
                 {isResetRequestMessageHidden ?
-                    <button className="button"
+                    <button className="button shadowBorder"
                         onClick={() => handleResetRequest(clientData.email)}
                     >
                         Request reset password link
@@ -139,14 +145,20 @@ export const ClientPage = () => {
                     :
                     <div className="inputBox">
                         <input
+                            className="shadowLightBorder upperDistanceHolder"
                             type="text"
-                            placeholder="provide code to validate account"
+                            placeholder="provide the verification code to reset your password"
                             onChange={(e) => handleValidationCodeChange(e, setResetCode)}
                         />
-                        <button onClick={() => navigate(`/verify/reset/${resetCode}`)}>Send code</button>
+                        <button
+                            className="shadowBorder"
+                            onClick={() => navigate(`/verify/reset/${resetCode}`)}
+                        >
+                            Send code
+                        </button>
                     </div>
                 }
-                    <button className="button"
+                    <button className="button shadowBorder"
                         onClick={() => handleDelete(clientData.id)}
                     >
                         Delete account
@@ -154,22 +166,31 @@ export const ClientPage = () => {
                 {role() && clientData.verified === false ?
                 <div className="inputBox">
                     <input
+                        className="shadowLightBorder"
                         type="text"
                         placeholder="provide code to validate account"
                         onChange={(e) => handleValidationCodeChange(e, setValidationCode)}
                     />
-                    <button onClick={() => navigate(`/verify/${validationCode}`)}>Send code</button>
+                    <button
+                        className="shadowBorder"
+                        onClick={() => navigate(`/verify/${validationCode}`)}
+                    >
+                        Send code
+                    </button>
                 </div> :
                     <></>
                 }
                 {clientData && role() === "DENTIST" &&
-                <div>
-                    <p
+                <div className="centered">
+                    <div>
+                        <ClinicCard clinicList={clinicData}/>
+                    </div>
+                    <strong><p
                         className="inputBox"
                         hidden={isLeaveMessageHidden}>
                         {leaveMessage}
-                    </p>
-                    <div className="inputBox">
+                    </p></strong>
+                    <div className="inputBox shadowBorder roundBox">
                         <label htmlFor="clinic">Clinic:</label>
                         <select id="clinic"  onClick={handleClinicChange}>
                             {clinicData.map((clinic) =>
@@ -180,7 +201,7 @@ export const ClientPage = () => {
                         <label htmlFor="clinic">End of the leave:</label>
                         <input type="date" id="end" onChange={(e) => handleEndChange(e)}/>
                     </div>
-                    <button className="button"
+                    <button className="button shadowBorder"
                             onClick={() => handleLeaveSubmit()}
                     >
                         Register leave
@@ -190,13 +211,13 @@ export const ClientPage = () => {
                         innerArray.map((leave) => (
                                 leave.id ?
                                     <div key={leave.id}
-                                        className="leave-card"
+                                        className="leave-card shadowBorder roundBox distanceHolder"
                                     >
                                         <div className="leave-start">
-                                           Start of the leave: {dateFormatter(leave.startOfTheLeave)}
+                                           <strong>Start of the leave: {dateFormatter(leave.startOfTheLeave)}</strong>
                                         </div>
                                         <div className="leave-end">
-                                           End of the leave: {dateFormatter(leave.endOfTheLeave)}
+                                        <strong>End of the leave: {dateFormatter(leave.endOfTheLeave)}</strong>
                                             <button className="appointment-delete"
                                                     onClick={() => handleLeaveDelete(leave.id,leave.clinicId)}
                                             >
@@ -209,14 +230,17 @@ export const ClientPage = () => {
                         ))
                     )}
                     </div>
-                    <div>
+                </div>
+                }
+                {clientData && role() === "CUSTOMER" &&
+                    <div className="centered">
                         <ReviewPage
                             id={clientData.id}
                             byClinic={false}
                         />
                     </div>
-                </div>
                 }
+                </div>
             </div>
         )
     } else {
