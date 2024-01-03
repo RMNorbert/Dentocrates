@@ -20,6 +20,7 @@ public class Clinic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @With
     @Column(unique = true)
     @NotBlank
     private final String name;
@@ -27,19 +28,24 @@ public class Clinic {
     @Enumerated(EnumType.STRING)
     private final ClinicType clinicType;
 
+    @With
     @NotBlank
     private final String contactNumber;
 
+    @With
     @Column(columnDefinition = "VARCHAR(255) DEFAULT ''")
     private String website;
 
+    @With
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private final Location location;
 
+    @With
     @NotBlank
     private final String street;
 
+    @With
     @NotBlank
     private final String openingHours;
 
@@ -51,7 +57,7 @@ public class Clinic {
     @PrimaryKeyJoinColumn
     private AppointmentCalendar appointmentCalendar;
 
-    public static Clinic of(ClinicRegisterDTO clinicRegisterDTO,Dentist dentist,Location clinicLocation) {
+    public static Clinic of(ClinicRegisterDTO clinicRegisterDTO, Dentist dentist, Location clinicLocation) {
         ClinicType type = ClinicType.valueOf(clinicRegisterDTO.clinicType());
 
         return Clinic.builder()
