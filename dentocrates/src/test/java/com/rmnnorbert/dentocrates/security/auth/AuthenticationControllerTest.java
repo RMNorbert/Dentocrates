@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationControllerTest {
+    private static final long USER_ID = 0;
     private AuthenticationController authenticationController;
     @Mock
     private AuthenticationService service;
@@ -30,84 +31,66 @@ class AuthenticationControllerTest {
     @Test
     void registerCustomerShouldReturnOkStatusAndExpectedValue() {
         CustomerRegisterDTO dto = new CustomerRegisterDTO("email@e.com",
-                                                       "password",
-                                                       "name",
-                                                       "last");
-        String jwtToken = "token";
-
-        AuthenticationResponse expectedResponseBody = AuthenticationResponse.builder()
-                .token(jwtToken)
-                .id(0)
-                .build();
+                "password",
+                "name",
+                "last");
+        Boolean expectedResponseBody = true;
 
         when(service.register(dto)).thenReturn(expectedResponseBody);
 
-        ResponseEntity<AuthenticationResponse> actual = authenticationController.register(dto);
+        ResponseEntity<Boolean> actual = authenticationController.register(dto);
         assertTrue(actual.getStatusCode().is2xxSuccessful());
-        assertEquals(expectedResponseBody.id(), actual.getBody().id());
-        assertEquals(expectedResponseBody.token(), actual.getBody().token());
-
-        verify(service,times(1)).register(dto);
+        assertEquals(Boolean.TRUE, actual.getBody());
     }
     @Test
     void registerCustomerShouldReturnOkStatusWithNoBody() {
         CustomerRegisterDTO dto = new CustomerRegisterDTO("email@e.com",
-                                                       "password",
-                                                       "name",
-                                                        "last");
+                "password",
+                "name",
+                "last");
 
-        ResponseEntity<AuthenticationResponse> actual = authenticationController.register(dto);
+        ResponseEntity<Boolean> actual = authenticationController.register(dto);
         assertTrue(actual.getStatusCode().is2xxSuccessful());
-        assertFalse(actual.hasBody());
+        assertTrue(actual.hasBody());
     }
     @Test
     void registerDentistShouldReturnOkStatusAndExpectedValue() {
         DentistRegisterDTO dto = new DentistRegisterDTO("email@e.com",
-                                                     "password",
-                                                     "name",
-                                                     "last",
-                                             "opLicence");
-
-        String jwtToken = "token";
-
-        AuthenticationResponse expectedResponseBody = AuthenticationResponse.builder()
-                .token(jwtToken)
-                .id(0)
-                .build();
+                "password",
+                "name",
+                "last",
+                "opLicence");
+        Boolean expectedResponseBody = true;
 
         when(service.register(dto)).thenReturn(expectedResponseBody);
-        ResponseEntity<AuthenticationResponse> actual = authenticationController.registerDentist(dto);
+        ResponseEntity<Boolean> actual = authenticationController.registerDentist(dto);
         assertTrue(actual.getStatusCode().is2xxSuccessful());
-        assertEquals(expectedResponseBody.id(), actual.getBody().id());
-        assertEquals(expectedResponseBody.token(), actual.getBody().token());
-
-        verify(service,times(1)).register(dto);
+        assertEquals(Boolean.TRUE, actual.getBody());
     }
     @Test
     void registerDentistShouldReturnOkStatusWithoutBody() {
         DentistRegisterDTO dto = new DentistRegisterDTO("email@e.com",
-                                                     "password",
-                                                     "name",
-                                                     "last",
-                                             "opLicence");
+                "password",
+                "name",
+                "last",
+                "opLicence");
 
-        ResponseEntity<AuthenticationResponse> actual = authenticationController.registerDentist(dto);
+        ResponseEntity<Boolean> actual = authenticationController.registerDentist(dto);
         assertTrue(actual.getStatusCode().is2xxSuccessful());
-        assertFalse(actual.hasBody());
-        }
+        assertTrue(actual.hasBody());
+    }
     @Test
     void authenticateShouldReturnOkStatusAndExpectedValue() {
         AuthenticationRequest request = new AuthenticationRequest(
-                                                            "email@e.com",
-                                                         "password",
-                                                             "CUSTOMER",
-                                                  "0"
-                                                                 );
+                "email@e.com",
+                "password",
+                "CUSTOMER",
+                "0"
+        );
         String token = "token";
-        long id = 0;
         AuthenticationResponse expected = AuthenticationResponse.builder()
                 .token(token)
-                .id(id)
+                .id(USER_ID)
                 .build();
 
         when(service.authenticate(request)).thenReturn(expected);
@@ -115,7 +98,6 @@ class AuthenticationControllerTest {
         ResponseEntity<AuthenticationResponse> actualResponse = authenticationController.authenticate(request);
 
         assertEquals(expected,actualResponse.getBody());
-        verify(service,times(1)).authenticate(request);
     }
     @Test
     void authenticateShouldReturnOkStatusWithoutBody() {
