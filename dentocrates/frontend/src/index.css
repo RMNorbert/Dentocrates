@@ -5,11 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e1e6f0;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.lightBackground {
+  padding-top: 10px;
+  background-color: #d1d1d1;
 }
 .message-box {
   width: 99.2% !important;
@@ -25,6 +30,12 @@ code {
   margin-bottom: 3px;
   margin-top: 3px;
 }
+.elements {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
 .inputBox{
   width: 100%;
   display:grid;
@@ -38,3 +49,10 @@ label{
   background-color: #6682c9;
 }
 
+.card {
+  width: 20vh;
+  height: 20px;
+  text-align: center;
+  background-color: white;
+  font-weight: bold;
+}
