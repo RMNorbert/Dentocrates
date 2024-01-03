@@ -1,19 +1,37 @@
 .appointment {
     margin-top: 90px;
-    height: 100vh;
     text-align: center;
+
+}
+.appintment-content {
+    background-image: url("../../../public/clinic/calendaraigeneratedwithrework.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -500px;
+    backdrop-filter: blur(5px);
+    background-attachment: fixed;
+}
+.appointment-text {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 .appointment-box {
     background-color: #b5bfd9;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
     text-align: center;
     width: 50%;
     margin-left: 25%;
-    margin-bottom: 2px;
+    border-style: groove;
+    box-shadow: 1px 1px 1px 1px #010c80;
+}
+.fit {
+    width: fit-content;
+    margin-left: 35%;
+    margin-top: 10px;
 }
 .appointment-element {
-    border-bottom-style: groove;
     justify-items: center;
-    height: 25px;
+    height: fit-content !important;
 }
 .appended {
     content: '';
@@ -71,6 +89,14 @@
 }
 
 .appointment-clinic-name {
+    margin-top: 5px;
     font-weight: bold;
-    background-color: #535699;
+    color: gold;
+    background-color: #6366a4;
+    border-bottom-style: groove;
+    border-top-style: groove;
+}
+
+.cursor {
+    cursor: pointer;
 }

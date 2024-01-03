@@ -9,3 +9,4 @@ public record AppointmentRegisterDTO(@Min(1) long clinicId,
                                      LocalDateTime reservation
                                     ) {
 }
+

@@ -1,3 +1,28 @@
+.clinicCard {
+    max-width: 500px;
+    max-height: 300px;
+    min-width: 400px;
+    min-height: 150px;
+}
+.roundTop{
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+.halfBorder {
+    border-bottom-style: groove;
+}
+.decreaseTopMargin {
+    margin-top: -1px;
+}
+.decreaseBottomMargin {
+    margin-bottom: 5px;
+}
+.darkBackground {
+    background-color: #4955c6;
+}
+.whiteBackground {
+    background-color: white;
+}
 .client-box {
     margin-top: 90px;
     height: 100vh;
@@ -6,6 +31,7 @@
     width: 50%;
 }
 .client-card {
+    border-radius: 15px;
     background-color: #b5bfd9;
     border-style: solid;
     border-width: 2px;
@@ -23,13 +49,32 @@
 }
 
 .leave-box {
-    background-color: #6682c9;
     left: 50%;
 }
 .leave-start {
     border-bottom-style: solid;
     padding-right: 100px;
 }
-.leave-end {
-    border-bottom-style: solid;
+.leave-card {
+    border-style: solid;
+    background-color: #6682c9;
+    margin-top: 3px;
+}
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.updateButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 50px;
+    max-width: 80px;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.updateElements {
+        display: flex;
+        justify-content: space-between;
 }

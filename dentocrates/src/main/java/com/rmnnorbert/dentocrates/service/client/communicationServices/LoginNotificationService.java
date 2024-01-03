@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginNotificationService {
     private final GMailerService emailService;
+    private final static int USER_AGENT_OS_INDEX = 2;
+    private final static int USER_AGENT_BROWSER_INDEX = 7;
     @Autowired
     public LoginNotificationService(GMailerService emailService) {
         this.emailService = emailService;
@@ -28,8 +30,8 @@ public class LoginNotificationService {
     @NotNull
     private static String getString(String userAgent, String ipAddress) {
         String[] userAgentArray = userAgent.split(" ");
-        String os = userAgentArray[2];
-        String browser = userAgentArray[7];
+        String os = userAgentArray[USER_AGENT_OS_INDEX];
+        String browser = userAgentArray[USER_AGENT_BROWSER_INDEX];
         String message = "Dear dentocrates user,\n\n It looks like you are trying to log in from a new device: " +
                 "Ip address: " + ipAddress + " Operating system: " + os + " browser: " + browser + " ." +
                 "If it wasn't you change your password and try to contact us as soon as possible." +

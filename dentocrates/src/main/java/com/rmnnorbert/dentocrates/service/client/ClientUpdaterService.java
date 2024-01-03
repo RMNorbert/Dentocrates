@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.SUCCESSFUL_REGISTER_RESPONSE_CONTENT;
+
 @Service
 public class ClientUpdaterService {
     private final VerificationService verificationService;
@@ -32,10 +34,10 @@ public class ClientUpdaterService {
         boolean isResetRequestValid = verificationService.validate(dto.verificationCode(), dto.email());
         if(isResetRequestValid) {
             Verification verification = verificationService.getVerification(dto.verificationCode())
-                .orElseThrow(() -> new NotFoundException("Verification"));
+                    .orElseThrow(() -> new NotFoundException("Verification"));
 
             updateClientPassword(verification, dto.password());
-            return ResponseEntity.ok().body("Password changed successfully.");
+            return ResponseEntity.ok().body("Password change" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
         } else {
             throw new InvalidCredentialException();
         }
@@ -43,7 +45,7 @@ public class ClientUpdaterService {
 
     public ResponseEntity<String> verifyClient(VerifyDTO dto) {
         Verification verification = verificationService.getVerification(dto.verificationCode())
-                .orElseThrow(() -> new NotFoundException("Verification"));
+                .orElseThrow(() -> new NotFoundException("Verification code"));
 
         if(verification.getRole().equals(Role.CUSTOMER)) {
             customerService.verifyCustomer(verification.getEmail());
@@ -51,7 +53,7 @@ public class ClientUpdaterService {
         else if (verification.getRole().equals(Role.DENTIST)) {
             dentistService.verifyDentist(verification.getEmail());
         }
-        return ResponseEntity.ok().body("Verification successful.");
+        return ResponseEntity.ok().body("Verification" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
     private void updateClientPassword(Verification verification, String password ) {
         String newPassword = passwordEncoder.encode(password);

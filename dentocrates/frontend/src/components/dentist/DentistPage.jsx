@@ -27,11 +27,11 @@ export const DentistPage = () => {
             .filter((clinic) => clinic.dentistId === currentId)
             .map((relatedClinic) => (
                 <div key={relatedClinic.street} onClick={() => navigate(`/clinic/${relatedClinic.id}`)}>
-                <h1 className="listName listMargin">{currentName}</h1>
-                    <div className="listDetail1 listMargin">
+                <h1 className="listName listMargin shadowBorder distanceHolder">{currentName}</h1>
+                    <div className="listDetail1 listMargin shadowBorder distanceHolder">
                         {relatedClinic.clinicType.replaceAll("_"," ")}
                     </div>
-                    <div className="listDetail2 listMargin">
+                    <div className="listDetail2 listMargin shadowBorder distanceHolder">
                         Location: {relatedClinic.city} {relatedClinic.street}
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export const DentistPage = () => {
             <div className="selector">
                 <div>
                     <input
-                        className={"searchBar"}
+                        className="searchBar shadowBorder"
                         type={"text"}
                         placeholder={"Search for dentist"}
                         onChange={(event) => search(event)}
@@ -73,7 +73,11 @@ export const DentistPage = () => {
                         {filterClinics(name,dentist.id)}
                     </div>
                 )})) :
-                        ( <p>No results found.</p>)
+                        ( <p
+                            className="card shadowBorder"
+                        >
+                            No result found.
+                        </p>)
                     }
                 </div>
             </div>

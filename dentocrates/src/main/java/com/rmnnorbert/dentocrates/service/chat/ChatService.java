@@ -16,9 +16,7 @@ public class ChatService {
     public ResponseEntity<String> getChatResponse(ChatDTO input){
      HttpHeaders headers = new HttpHeaders();
      headers.setContentType(MediaType.APPLICATION_JSON);
-
      HttpEntity<ChatDTO> requestEntity = new HttpEntity<>(input, headers);
-
      RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -31,7 +29,6 @@ public class ChatService {
         if (response.getStatusCode() == HttpStatus.OK) {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
-
             String answer = responseMap.get(ANSWER_RESPONSE_KEY);
 
             return new ResponseEntity<>(answer, HttpStatus.OK);

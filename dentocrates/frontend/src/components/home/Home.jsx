@@ -14,14 +14,8 @@ function Home() {
                     {description}
                 </h3>
             </div>
-            <img
-                className="home-logo"
-                src={process.env.PUBLIC_URL + '/dentocrates-dark-logo.png'}
-                width={"280px"}
-                alt="logo"
-            />
             <footer className="footer">
-            <Chat/>
+                <Chat/>
             </footer>
         </div>
     )

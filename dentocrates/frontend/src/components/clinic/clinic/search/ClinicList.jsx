@@ -9,15 +9,15 @@ export const ClinicList = ({ clinicDatas }) => {
                     return (
                         <div
                             key={clinic.name}
-                            className="listBox"
+                            className="listBox shadowBorder"
                             onClick={() => navigate(clinicUrl)}
                         >
                             <div>
-                            <h1 className="listMargin">{clinic.name}</h1>
+                            <h1 className="listMargin shadowLightBorder">{clinic.name}</h1>
                             </div>
-                            <h2 className="listDetail1 listMargin">{clinic.city} {clinic.street} str.</h2>
-                            <h3 className="listDetail2 listMargin">{clinic.clinicType.replaceAll("_"," ")}</h3>
-                            <h3 className="listDetail3 listMargin">Open: {clinic.openingHours}</h3>
+                            <h2 className="listDetail1 listMargin shadowLightBorder">{clinic.city} {clinic.street} str.</h2>
+                            <h3 className="listDetail2 listMargin shadowLightBorder">{clinic.clinicType.replaceAll("_"," ")}</h3>
+                            <h3 className="listDetail3 listMargin shadowLightBorder">Open: {clinic.openingHours}</h3>
                         </div>
                     );
                 })}

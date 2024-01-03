@@ -2,11 +2,14 @@ import "./ReviewRegister.css";
 import {MultiFetch} from "../../utils/fetch/MultiFetch";
 import {useState} from "react";
 import {userId} from "../../utils/token/TokenDecoder";
+import {useNavigate} from "react-router-dom";
 
 export function ReviewRegister({clinicId, appointmentId}) {
     const { data } = MultiFetch();
+    const navigate = useNavigate();
     const [isHidden, setIsHidden] = useState(true);
-    const [reviewText, setReviewText] = useState('');
+    const [isReviewed, setIsReviewed] = useState(false);
+    const [reviewText, setReviewText] = useState("");
     const [reviewRating, setReviewRating] = useState(0);
 
 
@@ -17,14 +20,15 @@ export function ReviewRegister({clinicId, appointmentId}) {
         setReviewRating(event.target.value);
     };
     const updateReviewStateOfAppointment = async () => {
-        const reviewAppointmentUrl = '/calendar/';
-        const response = await data(reviewAppointmentUrl,'POST',appointmentId)
-        if(response.includes('successfully')){
+        const reviewAppointmentUrl = "/calendar/";
+        const response = await data(reviewAppointmentUrl,"POST",appointmentId)
+        if(response.includes("successfully")){
             setIsHidden(true);
+            navigate("/appointments")
         }
     };
     const registerReview = async () => {
-        const registerReviewUrl = '/review/register';
+        const registerReviewUrl = "/review/register";
         let requestBody = {
             reviewerId: userId(),
             reviewedClinicId: clinicId,
@@ -32,18 +36,21 @@ export function ReviewRegister({clinicId, appointmentId}) {
             rating:reviewRating,
             review:reviewText
         }
-        const response = await data(registerReviewUrl,'POST',requestBody);
-        if(response.includes('successfully')) {
+        const response = await data(registerReviewUrl,"POST",requestBody);
+        if(response.includes("successfully")) {
             await updateReviewStateOfAppointment();
+            setIsReviewed(true)
         }
     };
 
     return (
-        <div className="review-box">
+        <div className="review-box"
+             style={{display: isReviewed ? "none" : "block" }}
+        >
             <div className="review-element">
             <button className="review"
                 onClick={() => setIsHidden(!isHidden)}
-                style={{ display: isHidden ? "block" : "none" }}
+                style={{display: isHidden ? "block" : "none" }}
             >
                 Review
             </button>
@@ -52,7 +59,7 @@ export function ReviewRegister({clinicId, appointmentId}) {
                 className="review-element"
             >
                 <textarea
-                className="review-input"
+                className="review-input shadowLightBorder distanceHolder"
                 id="name"
                 value={reviewText}
                 onChange={handleReviewChange}

@@ -1,6 +1,6 @@
 .clinic {
     margin-top: 85px;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,15 +8,29 @@
 }
 .clinic-rating {
     text-align: end;
+    margin-bottom: 0;
+}
+.clinic-updater {
+    height: 30px;
+    margin-top: -20px;
+}
+#content {
+    backdrop-filter: blur(1px);
+    text-shadow: 1px 1px 1px #f5f5f5;
 }
 .selected-clinic {
+    background-color: rgba(153, 173, 224, 0.98);
+    background-image: url("../../../../public/tooth.png");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: contain;
     width: 700px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 10px;
     border-color: black;
     border-style: solid;
     border-width: 1px;
-    background-color: #99ade0;
 }
 .selected-name {
     margin-top: 0;
@@ -24,7 +38,7 @@
     background-color: #6682c9;
 }
 .customer {
-    background-color: #b5bfd9;
+    background-color: transparent;
     text-align: center;
 }
 .customer-appointment {
@@ -34,8 +48,30 @@
 }
 .customer-box{
     width: 400px;
+    margin-top: 5px;
 }
 .button {
     border-style: solid ;
     border-color: black;
+}
+#appeared {
+    background-color: #6e8ee6;
+}
+#not-appeared {
+    background-color: gray;
+}
+.fulfilled{
+    margin-left: 10px;
+    padding-top: 0;
+    background-color: transparent;
+    width: 150px;
+    height: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+.reviews-list {
+    text-align: center;
+}
+.customer-appointment-card {
+ background-color: transparent;
 }

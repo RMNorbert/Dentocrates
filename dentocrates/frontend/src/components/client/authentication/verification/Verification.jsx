@@ -8,10 +8,10 @@ function VerifyPage (props) {
     const { verificationCode } = useParams();
     const { data } = MultiFetch();
     const [verificationCodeValidated, setVerificationCodeValidated] = useState(false);
-    const [password, setPassword] = useState('');
-    const [passwordVerifier, setPasswordVerifier] = useState('');
+    const [password, setPassword] = useState("");
+    const [passwordVerifier, setPasswordVerifier] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState("");
 
     const validateVerificationCode = async () => {
         const requestBody = {verificationCode: verificationCode, email: email()}
@@ -28,19 +28,19 @@ function VerifyPage (props) {
         setPasswordVerifier(event.target.value);
     };
     const deleteVerification = async () => {
-        const deleteVerifyUrl = '/verify/';
+        const deleteVerifyUrl = "/verify/";
         const deleteRequest = {verificationCode: verificationCode};
-        await data(deleteVerifyUrl, 'DELETE', deleteRequest);
+        await data(deleteVerifyUrl, "DELETE", deleteRequest);
     }
     const postPasswordReset = async(password)=>{
         if(password === passwordVerifier) {
-            const clientUrl = '/update/password';
+            const clientUrl = "/update/password";
             const request = {
                 verificationCode: verificationCode,
                 email: email(),
                 password: password
             };
-            const response = await data(clientUrl, 'POST', request);
+            const response = await data(clientUrl, "POST", request);
             if (response.includes("successfully")) {
                 await deleteVerification();
                 navigate("/home");
@@ -49,11 +49,11 @@ function VerifyPage (props) {
         setMessage("Passwords do not match");
     };
     const postClientVerification = async ()=>{
-            const verificationUrl = '/update/verify';
+            const verificationUrl = "/update/verify";
             const request = {
                 verificationCode: verificationCode,
             };
-            const response = await data(verificationUrl, 'Post', request);
+            const response = await data(verificationUrl, "Post", request);
             if (response.includes("successful")) {
                 await deleteVerification();
             }

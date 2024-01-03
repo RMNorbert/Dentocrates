@@ -30,9 +30,10 @@ function setInsturctions (data) {
   const tripDuration = Math.floor(data.duration / routeSettings.DURATION_CONVERSION_FACTOR_TO_MINUTE)
   const tripInstructions = createInstructionsForSteps(data.legs)
 
-  instructions.innerHTML = `<div id='instruction-box'>
-                              <strong>Route details:</strong>
+  instructions.innerHTML = `<div id='instruction-box' >
+                              <strong id="instruction-shadow">Route details:</strong>
                               <br/>
+                              <div id="instruction-box-item"></div>
                               <p id="p">
                                 <strong>Distance: ${tripDistance} meter
                               </p>

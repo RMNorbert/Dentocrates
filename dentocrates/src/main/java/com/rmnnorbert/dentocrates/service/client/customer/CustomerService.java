@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
@@ -23,7 +25,7 @@ public class CustomerService {
         this.appointmentCalendarRepository = appointmentCalendarRepository;
     }
 
-    public List<CustomerAppointmentResponseDTO> getAllCustomerWithAppointment(){
+    public List<CustomerAppointmentResponseDTO> getAllCustomer(){
         return customerRepository.findAll()
                 .stream()
                 .map(CustomerAppointmentResponseDTO::toDTO)
@@ -35,9 +37,9 @@ public class CustomerService {
         if(dto.userId() == customer.getId()) {
             appointmentCalendarRepository.deleteById(dto.targetId());
             customerRepository.deleteById(dto.targetId());
-            return ResponseEntity.ok("Customer deleted successfully");
+            return ResponseEntity.ok("Customer" + DELETE_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid delete request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + " delete customer");
     }
     public CustomerResponseDTO getCustomerResponse(long id){
         return CustomerResponseDTO.of(customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer")));

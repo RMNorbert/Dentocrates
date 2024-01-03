@@ -15,6 +15,7 @@ import {Appointment} from "./components/appointment/Appointment";
 import VerifyPage from "./components/client/authentication/verification/Verification";
 import OauthLoginPage from "./components/client/authentication/oauth/OauthRedirectPage";
 import Map from "./components/map/Map";
+import Contact from "./components/contact/Contact";
 function App() {
   return (
       <Router>
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/client" element={<ClientPage/>} />
           <Route path="/appointments" element={<Appointment/>} />
@@ -30,7 +32,8 @@ function App() {
           <Route path="/clinic/:id" element={<ClinicPage />} />
           <Route path="/calendar/:id" element={<Calendar />} />
           <Route path="/location" element={<LocationRegisterPage />} />
-          <Route path="/clinic/register" element={<ClinicRegisterPage />} />
+          <Route path="/clinic/register" element={<ClinicRegisterPage update={false}/>} />
+          <Route path="/clinic/update/:id" element={<ClinicRegisterPage update={true}/>} />
           <Route path="/verify/:verificationCode" element={<VerifyPage reset={false} />} />
           <Route path="/verify/reset/:verificationCode" element={<VerifyPage reset={true} />} />
           <Route path="/login/oauth2/code" element={<OauthLoginPage />} />

@@ -1,17 +1,17 @@
-import './MapBox.css'
-import './Map.css'
-import './ClinicList.css'
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl from 'mapbox-gl';
-import {useEffect, useRef, useState} from 'react'
-import { initializeMap} from './helpers/mapInitializer'
-import { drawRoute, getFastestRouteDetails } from './helpers/routeProvider'
+import "./MapBox.css";
+import "./Map.css";
+import "./ClinicList.css";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import "mapbox-gl/dist/mapbox-gl.css";
+import mapboxgl from "mapbox-gl";
+import {useEffect, useRef, useState} from "react";
+import { initializeMap} from "./helpers/mapInitializer";
+import { drawRoute, getFastestRouteDetails } from "./helpers/routeProvider";
 import {
   addEventListenersToClinicList, addMarkers,
   buildLocationList,
   createClinicProperties
-} from './helpers/clinic-mapping'
+} from "./helpers/clinic-mapping";
 import {routeSettings} from "./MapConfig";
 import { MultiFetch } from "../../utils/fetch/MultiFetch";
 function Map () {
@@ -22,6 +22,7 @@ function Map () {
   let color  = routeSettings.DEFAULT_COLOR;
   const placeMarker = useRef(routeSettings.DEFAULT_STATE);
   const [markers, setMarkers] = useState([]);
+  const [provideExample, setProvideExample] = useState(false);
   let markerDetails = [];
   let fastestRouteDetails;
   function changeRouteType (type) {
@@ -34,12 +35,18 @@ function Map () {
     color = e.target.value;
   }
   function removeMarker() {
-    setMarkers((prevMarkers) => {
-      const updatedMarkers = [...prevMarkers];
-      const removedMarker = updatedMarkers.pop();
-      removedMarker.remove();
-      return updatedMarkers;
-    });
+    try{
+      if(markers.length > 0) {
+        setMarkers((prevMarkers) => {
+          const updatedMarkers = [...prevMarkers];
+          const removedMarker = updatedMarkers.pop();
+          removedMarker.remove();
+          return updatedMarkers;
+        });
+      }
+    } catch (e) {
+      console.error("No more marker left to remove." + e);
+    }
   }
   function handleMarkerPlacement (coordinates) {
     if (placeMarker.current == true) {
@@ -81,6 +88,7 @@ function Map () {
    addMarkers(map.current, clinicProperties, handleMarkerPlacement)
    addEventListenersToClinicList(clinicProperties,map.current,handleMarkerPlacement)
    }catch (e) {
+     setProvideExample(true);
      console.error(e);
    }
    }
@@ -88,47 +96,68 @@ function Map () {
   useEffect(() => {
     loadMap()
   }, [])
-
-  return (
-    <div>
-    <div className="Map">
-      <div className='box'>
-        <header>
-          <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
-          <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-        </header>
+  if(!provideExample) {
+    return (
         <div>
-          <div className='settings'>
-            <label id="label" >Place marker</label>
-            <input id="markerbox" type='checkbox' onClick={() => changeMarkerPlacerState()}/>
-            <strong>Route by:</strong>
-            <div className='routes'>
-              <label id="label">Traffic</label>
-              <input id="checkbox" type='checkbox' onClick={ () => changeRouteType('driving-traffic')}/>
-              <label id="label">Driving</label>
-              <input id="checkbox" type='checkbox' onClick={() => changeRouteType('driving')}/>
-              <label id="label">Walking</label>
-              <input id="checkbox" type='checkbox' onClick={() => changeRouteType('walking')}/>
-              <label id="label">Route color</label>
-              <input id="colorbox" className='colour-picker' type='color' defaultValue={color}
-                onChange={(e) => changeRouteColour(e)}/>
+          <div className="Map">
+            <div className='box'>
+              <header>
+                <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+                <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet'/>
+              </header>
+              <div>
+                <div className='settings'>
+                  <label id="label">Place marker</label>
+                  <input id="markerbox" type='checkbox' onClick={() => changeMarkerPlacerState()}/>
+                  <strong>Route by:</strong>
+                  <div className='routes'>
+                    <label id="label">Traffic</label>
+                    <input id="checkbox" type='checkbox' onClick={() => changeRouteType('driving-traffic')}/>
+                    <label id="label">Driving</label>
+                    <input id="checkbox" type='checkbox' onClick={() => changeRouteType('driving')}/>
+                    <label id="label">Walking</label>
+                    <input id="checkbox" type='checkbox' onClick={() => changeRouteType('walking')}/>
+                    <label id="label">Route color</label>
+                    <input id="colorbox" className='colour-picker' type='color' defaultValue={color}
+                           onChange={(e) => changeRouteColour(e)}/>
+                  </div>
+                  <button
+                      className="shadowLightBorder"
+                      id='plan-route-button'
+                      onClick={() => drawFastestRoute()}
+                  >
+                    Plan route
+                  </button>
+                  <button
+                      className="shadowLightBorder"
+                      id='remove-route-button'
+                      onClick={() => removeMarker()}
+                  >
+                    Remove marker
+                  </button>
+                </div>
+              </div>
             </div>
-            <button id='plan-route-button' onClick={() => drawFastestRoute()}>Plan route </button>
-            <button id='remove-route-button' onClick={() => removeMarker()}>Remove marker</button>
           </div>
+          <div className='sidebar'>
+            <div className='heading'>
+              <h1>Clinic locations</h1>
+            </div>
+            <div id='listings' className='listings'></div>
+          </div>
+          <div id="map" className="map-side"></div>
+          <div id="instructions"/>
         </div>
-      </div>
-    </div>
-    <div className='sidebar'>
-      <div className='heading'>
-        <h1>Clinic locations</h1>
-      </div>
-      <div id='listings' className='listings'></div>
-    </div>
-    <div id="map" className="map-side"></div>
-    <div id="instructions" />
-  </div>
-  )
+    )
+  } else {
+    return (
+          <img
+              id="example"
+              src={process.env.PUBLIC_URL + '/example-map.png'}
+              alt="example image of map"
+          />
+    )
+  }
 }
 
 export default Map

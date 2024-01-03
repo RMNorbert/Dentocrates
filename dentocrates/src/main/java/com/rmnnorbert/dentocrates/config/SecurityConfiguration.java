@@ -22,12 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static com.rmnnorbert.dentocrates.data.authentication.Role.*;
 
 @Configuration
-@EnableWebSecurity()
+@EnableWebSecurity
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final String id = System.getenv("OAUTH_ID");
-    private final String secret = System.getenv("OAUTH_SECRET");
+    private final static String ID = System.getenv("OAUTH_ID");
+    private final static String SECRET = System.getenv("OAUTH_SECRET");
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
@@ -39,51 +39,52 @@ public class SecurityConfiguration {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry.requestMatchers(
-                        "/api/register/**",
-                        "/api/authenticate",
-                        "/",
-                        "/frontend/index",
-                        "/index.html",
-                        "/static/**",
-                        "/*.ico",
-                        "/*.json",
-                        "/*.png",
-                        "/frontend/**",
-                        "/clinic/all",
-                        "/home",
-                        "/actuator/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs",
-                        "/api-docs/**",
-                        "/api-docs.yaml",
-                        "/oauth2/**",
-                        "/login/**",
-                        "/api/**",
-                        "/login/oauth2/**",
-                        "/update",
-                        "/chat"
-                    ).permitAll()
-                    .requestMatchers("/client/{id}",
-                        "/verify/**",
-                        "/api/reset",
-                        "/api/verify",
-                        "/calendar/**",
-                        "/client/",
-                        "/clinic/{id}",
-                        "/dentist/all",
-                        "/dentist/{id}",
-                        "/location/all",
-                        "/leave/{id}",
-                        "/review/**"
-                     ).hasAnyRole(ADMIN.name(), CUSTOMER.name(), DENTIST.name())
-                    .requestMatchers("/client/**",
-                        "/clinic/**",
-                        "/dentist/**",
-                        "/location/**",
-                        "/leave/**"
-                    ).hasAnyRole(ADMIN.name(), DENTIST.name())
-                    .anyRequest()
-                    .authenticated())
+                                        "/api/register/**",
+                                        "/api/authenticate",
+                                        "/",
+                                        "/frontend/index",
+                                        "/index.html",
+                                        "/static/**",
+                                        "/*.ico",
+                                        "/*.json",
+                                        "/*.png",
+                                        "/frontend/**",
+                                        "/clinic/all",
+                                        "/home",
+                                        "/actuator/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs",
+                                        "/api-docs/**",
+                                        "/api-docs.yaml",
+                                        "/oauth2/**",
+                                        "/login/**",
+                                        "/api/**",
+                                        "/login/oauth2/**",
+                                        "/update",
+                                        "/chat/**",
+                                        "/contact/**"
+                                ).permitAll()
+                                .requestMatchers("/client/{id}",
+                                        "/verify/**",
+                                        "/api/reset",
+                                        "/api/verify",
+                                        "/calendar/**",
+                                        "/client/",
+                                        "/clinic/{id}",
+                                        "/dentist/all",
+                                        "/dentist/{id}",
+                                        "/location/all",
+                                        "/leave/{id}",
+                                        "/review/**"
+                                ).hasAnyRole(ADMIN.name(), CUSTOMER.name(), DENTIST.name())
+                                .requestMatchers("/client/**",
+                                        "/clinic/**",
+                                        "/dentist/**",
+                                        "/location/**",
+                                        "/leave/**"
+                                ).hasAnyRole(ADMIN.name(), DENTIST.name())
+                                .anyRequest()
+                                .authenticated())
                 .sessionManagement(sessionManagementConfigurer ->
                         sessionManagementConfigurer
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -98,8 +99,8 @@ public class SecurityConfiguration {
     }
     private ClientRegistration googleClientRegistration() {
         return ClientRegistration.withRegistrationId("google")
-                .clientId(id)
-                .clientSecret(secret)
+                .clientId(ID)
+                .clientSecret(SECRET)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")

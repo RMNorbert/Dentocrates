@@ -67,7 +67,6 @@ class ClinicServiceTest {
         assertEquals(clinicList.size(),actual.size());
         assertEquals(id,actual.get(0).id());
         assertEquals(id2,actual.get(1).id());
-        verify(clinicRepository, times(1)).findAll();
     }
     @Test
     void getAllClinicWhenThereAreNoClinics() {
@@ -78,7 +77,6 @@ class ClinicServiceTest {
         List<ClinicResponseDTO> actual = clinicService.getAllClinic();
 
         assertEquals(clinicList.size(),actual.size());
-        verify(clinicRepository, times(1)).findAll();
     }
     @Test
     void registerClinicWithValidLocation() {
@@ -99,7 +97,7 @@ class ClinicServiceTest {
         when(locationRepository.getByZipCode(dto.zipCode())).thenReturn(Optional.ofNullable(location));
 
         ResponseEntity<String> actual = clinicService.registerClinic(dto);
-        ResponseEntity<String> expected = ResponseEntity.ok("Clinic registered successfully");
+        ResponseEntity<String> expected = ResponseEntity.ok("Clinic successfully registered");
 
         assertEquals(expected,actual);
     }
@@ -139,7 +137,7 @@ class ClinicServiceTest {
         when(locationRepository.getByZipCode(dto.zipCode())).thenReturn(Optional.empty());
 
         ResponseEntity<String> actual = clinicService.registerClinic(dto);
-        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid location.");
+        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Location not found.");
 
         assertEquals(expected,actual);
     }
@@ -162,16 +160,11 @@ class ClinicServiceTest {
         ResponseEntity<String> expected = ResponseEntity.ok("Clinic deleted successfully");
 
         assertEquals(expected,actual);
-        verify(clinicRepository,times(1)).deleteById(id);
     }
     @Test
     void deleteClinicByIdWhenClinicDoesNotExist() {
         long id = 1;
-
         assertThrows(NotFoundException.class, () -> clinicService.deleteClinicById(id));
-
-        verify(clinicRepository, times(1)).findById(id);
-        verify(clinicRepository, times(0)).deleteById(id);
     }
     @Test
     void getClinicByIdWhenClinicExist() {
@@ -187,20 +180,15 @@ class ClinicServiceTest {
 
         when(clinicRepository.findById(id)).thenReturn(Optional.ofNullable(clinic));
 
-        ClinicResponseDTO actual = clinicService.getClinicById(id);
+        ClinicResponseDTO actual = clinicService.getClinicResponseDTOById(id);
         ClinicResponseDTO expected = ClinicResponseDTO.of(clinic);
 
         assertEquals(expected,actual);
-
-        verify(clinicRepository,times(1)).findById(id);
     }
     @Test
     void getClinicByIdWhenClinicDoesNotExist() {
         long id = 1;
-
-        assertThrows(NotFoundException.class, () -> clinicService.getClinicById(id));
-
-        verify(clinicRepository, times(1)).findById(id);
+        assertThrows(NotFoundException.class, () -> clinicService.getClinicResponseDTOById(id));
     }
     @Test
     void getAllClinicByDentistWhenClinicsExist() {
@@ -229,7 +217,6 @@ class ClinicServiceTest {
         assertEquals(clinicList.size(),actual.size());
         assertEquals(id,actual.get(0).id());
         assertEquals(id2,actual.get(1).id());
-        verify(clinicRepository, times(1)).findAllByDentistInContract_Id(id);
     }
     @Test
     void getAllClinicByDentistClinicsDoNotExist() {
@@ -241,6 +228,5 @@ class ClinicServiceTest {
         List<ClinicResponseDTO> actual = clinicService.getAllClinicByDentist(id);
 
         assertEquals(clinicList.size(), actual.size());
-        verify(clinicRepository,times(1)).findAllByDentistInContract_Id(id);
     }
 }

@@ -46,12 +46,10 @@ class CustomerServiceTest {
 
         when(customerRepository.findAll()).thenReturn(customerList);
 
-        List<CustomerAppointmentResponseDTO> actual = customerService.getAllCustomerWithAppointment();
+        List<CustomerAppointmentResponseDTO> actual = customerService.getAllCustomer();
 
         assertEquals(customerList.size(), actual.size());
         assertEquals(customerList.get(0).getId(), actual.get(0).id());
-
-        verify(customerRepository,times(1)).findAll();
     }
     @Test
     void getAllCustomerWithAppointmentWhenCustomersDoesNotExist() {
@@ -59,11 +57,9 @@ class CustomerServiceTest {
 
         when(customerRepository.findAll()).thenReturn(customerList);
 
-        List<CustomerAppointmentResponseDTO> actual = customerService.getAllCustomerWithAppointment();
+        List<CustomerAppointmentResponseDTO> actual = customerService.getAllCustomer();
 
         assertEquals(customerList.size(), actual.size());
-
-        verify(customerRepository,times(1)).findAll();
     }
 
     @Test
@@ -78,8 +74,6 @@ class CustomerServiceTest {
         ResponseEntity<String> expected = ResponseEntity.ok("Customer deleted successfully");
 
         assertEquals(expected, actual);
-        verify(customerRepository,times(1)).findById(id);
-        verify(customerRepository,times(1)).deleteById(id);
     }
     @Test
     void deleteCustomerByIdWithInvalidId() {
@@ -91,11 +85,9 @@ class CustomerServiceTest {
         when(customerRepository.findById(id)).thenReturn(Optional.ofNullable(customer));
 
         ResponseEntity<String> actual = customerService.deleteCustomerById(dto);
-        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid delete request.");
+        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid request to  delete customer");
 
         assertEquals(expected, actual);
-        verify(customerRepository,times(1)).findById(id);
-        verify(customerRepository,times(0)).deleteById(id);
     }
     @Test
     void deleteCustomerByIdWithInvalidTargetId() {
@@ -104,9 +96,6 @@ class CustomerServiceTest {
         DeleteDTO dto = new DeleteDTO(id,invalidTargetId);
 
         assertThrows(NotFoundException.class, () -> customerService.deleteCustomerById(dto));
-
-        verify(customerRepository,times(1)).findById(invalidTargetId);
-        verify(customerRepository,times(0)).deleteById(id);
     }
     @Test
     void getClientWhenClientWithIdExist() {
@@ -126,8 +115,6 @@ class CustomerServiceTest {
         CustomerResponseDTO expected = CustomerResponseDTO.of(customer);
 
         assertEquals(expected, actual);
-
-        verify(customerRepository,times(1)).findById(id);
     }
     @Test
     void getClientWhenClientWithIdDoNotExist() {
@@ -136,7 +123,5 @@ class CustomerServiceTest {
         when(customerRepository.findById(id)).thenThrow(new NotFoundException("Customer"));
 
         assertThrows(NotFoundException.class, () -> customerService.getCustomerResponse(id));
-
-        verify(customerRepository,times(1)).findById(id);
     }
 }

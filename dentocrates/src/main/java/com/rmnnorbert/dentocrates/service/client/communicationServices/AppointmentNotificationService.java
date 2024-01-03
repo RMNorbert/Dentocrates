@@ -19,18 +19,18 @@ public class AppointmentNotificationService {
     public boolean sendLeaveNotifications(LeaveRegisterDTO dto) {
         String leaveSubject = "Clinic Vacation/Leave Notice";
         String message = "Dear patient,\n\nWe would like to inform you that the clinic will be closed for vacation/leave from " +
-                    dto.startOfTheLeave().toLocalDate() + " to " + dto.endOfTheLeave().toLocalDate() + ". During this time, the clinic won't be able to provide appointments or services. " +
-                    "Your previously booked appointment('s) related to this clinic will be deleted between the given period. "+
-                    "We apologize for any inconvenience this may cause.\n\nThank you for your understanding.\n\nBest regards,\nThe Dentocrates Team";
+                dto.startOfTheLeave().toLocalDate() + " to " + dto.endOfTheLeave().toLocalDate() + ". During this time, the clinic won't be able to provide appointments or services. " +
+                "Your previously booked appointment('s) related to this clinic will be deleted between the given period. "+
+                "We apologize for any inconvenience this may cause.\n\nThank you for your understanding.\n\nBest regards,\nThe Dentocrates Team";
 
 
         List<String> emailsList = getEmailsToNotify(dto);
 
         try {
-        for (String email: emailsList) {
-            emailService.sendMail(email, leaveSubject, message, GMailerService.BASE_URL);
-        }
-        return true;
+            for (String email: emailsList) {
+                emailService.sendMail(email, leaveSubject, message, GMailerService.BASE_URL);
+            }
+            return true;
         }
         catch (Exception e) {
             return false;

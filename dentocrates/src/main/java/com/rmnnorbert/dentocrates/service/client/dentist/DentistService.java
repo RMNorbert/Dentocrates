@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class DentistService {
     private final DentistRepository dentistRepository;
@@ -30,9 +32,9 @@ public class DentistService {
         DentistResponseDTO dentist = getDentistById(dto.targetId());
         if(dto.userId() == dentist.id()) {
             dentistRepository.deleteById(dto.targetId());
-            return ResponseEntity.ok("Dentist deleted successfully");
+            return ResponseEntity.ok("Dentist" + DELETE_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid delete request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + "delete dentist");
     }
 
     public DentistResponseDTO getDentistById(long id){

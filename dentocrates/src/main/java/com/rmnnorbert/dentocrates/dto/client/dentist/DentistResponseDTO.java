@@ -11,7 +11,7 @@ public record DentistResponseDTO(@Min(1) long id,
                                  @NotBlank String email,
                                  @NotBlank String firstName,
                                  @NotBlank String lastName,
-                                  Role role,
+                                 Role role,
                                  @NotBlank String operatingLicenceNo) {
     public static DentistResponseDTO of(Dentist dentist) {
         return DentistResponseDTO.builder()

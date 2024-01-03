@@ -14,8 +14,9 @@ const Calendar = () => {
     const [leaveDates, setLeaveDates] = useState([]);
     const [clinic, setClinic] = useState([]);
     const [appointments, setAppointments] = useState([]);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [date, setDate] = useState({justDate:null,dateTime:null});
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
     const [isHidden, setIsHidden] = useState(true);
     const getCalendarData = async() =>{
         const clinicDataUrl = `/clinic/${id}`;
@@ -56,30 +57,38 @@ const Calendar = () => {
         const end = add(justDate, { hours: close });
         const interval = 30; //minutes
         const currentTime = new Date();
-
         const currentDate = beginning.toJSON().substring(0,10);
+
         const bookedAppointments = appointments.filter((date) =>
                                             date.reservation.substring(0,10) === currentDate)
                                             .map((obj) => obj.reservation.substring(11,16));
         const times = [];
         for(let i = beginning; i <= end; i = add(i, {minutes: interval})){
-            const formattedTime = format(i, 'kk:mm');
+            const formattedTime = format(i, "kk:mm");
             if (!bookedAppointments.includes(formattedTime) && i >= currentTime) {
                 times.push(i);
             }
         }
         return times;
     }
+
+    function adjustAppointment(appointment) {
+        let adjustAppointment = appointment.split('');
+        adjustAppointment[12] = String((Number(adjustAppointment[12]) + 1) % 10);
+        const adjustedAppointment = adjustAppointment.join("");
+        return adjustedAppointment.replace(" ","T") + ":00";
+    }
+
     const bookAppointment = async(appointment) => {
         try {
-        const calendarRegisterUrl = '/calendar/register';
-        const formattedAppointment  = appointment.replace(" ","T") + ":00";
+        const calendarRegisterUrl = "/calendar/register";
+        const formattedAppointment  = adjustAppointment(appointment);
+
         const bookingData = {
             clinicId: id,
             customerId: userId(),
             reservation: formattedAppointment
         };
-
         const response = await data(calendarRegisterUrl, 'POST', bookingData);
         setIsLoaded(false);
         if(response.includes('successfully')){
@@ -106,12 +115,16 @@ const Calendar = () => {
         return (
             <div className="cal">
                 {date.justDate ? (
-                    <div className="date">
+                    <div className="date roundBox appointment-select-box">
                         {times?.map((time, i) => (
                             <div key={`time-${i}`} >
                                 <button type="button"
-                                        className="times"
-                                        onClick={() => setDate((prev) => ({...prev, dateTime: time}))}
+                                        className={`times ${selectedAppointment === i ? 'selected' : ''}`}
+                                        onClick={() => {
+                                            setDate((prev) => ({...prev, dateTime: time}))
+                                            setSelectedAppointment(i);
+                                        }
+                                }
                                 >
                                     {format(time, 'kk:mm')}
                                 </button>
@@ -125,7 +138,7 @@ const Calendar = () => {
                                     :
                                 noDateChosen()
                         }
-                        >Book
+                        >Book The Selected
                             Appointment
                         </button>
                         <p className="message-box" hidden={isHidden}>{errorMessage}</p>

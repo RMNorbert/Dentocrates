@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 public class VerificationService {
     private final GMailerService gMailerService;
     private final VerificationRepository verificationRepository;
-    private final static String VERIFICATION_SUBJECT = "Verification";
-    private final static String SUCCESSFUL_MESSAGE = "Verification request successfully ";
+    public final static String VERIFICATION_SUBJECT = "Verification";
     @Autowired
     public VerificationService(GMailerService gMailerService, VerificationRepository verificationRepository) {
         this.gMailerService = gMailerService;
@@ -35,17 +35,15 @@ public class VerificationService {
     public ResponseEntity<String> sendVerification(String email, String role, String action, boolean reset) {
         String verificationCode = UUID.randomUUID().toString();
         String verificationMessage = "Verify " + action + " by login and to your profile page and send the verification code : ";
-        String verificationUrl = GMailerService.BASE_URL;
         Role roleAsEnum = Role.valueOf(role);
         ResponseEntity<String> response = registerVerification(email, roleAsEnum, verificationCode);
-        String link;
+
         if(reset) {
             verificationMessage += "reset password with: ";
         }
         verificationMessage += verificationCode;
 
-        link = verificationUrl;
-        gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,link);
+        gMailerService.sendMail(email,VERIFICATION_SUBJECT,verificationMessage,GMailerService.BASE_URL);
         return response;
     }
     public String sendAuthenticationCode(String email, String role) {
@@ -66,12 +64,12 @@ public class VerificationService {
                     .orElseThrow(() -> new NotFoundException("Verification"));
 
             verificationRepository.delete(verification);
-            return ResponseEntity.ok(SUCCESSFUL_MESSAGE + "deleted.");
+            return ResponseEntity.ok(VERIFICATION_SUBJECT + DELETE_RESPONSE_CONTENT);
 
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception details
+            e.printStackTrace();
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while processing the request.");
+                    .body(INTERNAL_SERVER_ERROR_RESPONSE_CONTENT);
         }
     }
 
@@ -79,15 +77,11 @@ public class VerificationService {
         Optional<Verification> searchedVerification = getVerification(code);
 
         if(searchedVerification.isEmpty()) {
-            Verification verification = Verification.builder()
-                    .verificationCode(code)
-                    .email(email)
-                    .role(role)
-                    .build();
+            Verification verification = Verification.of(email,role,code);
 
             verificationRepository.save(verification);
-            return ResponseEntity.ok(SUCCESSFUL_MESSAGE+ "registered.");
+            return ResponseEntity.ok(VERIFICATION_SUBJECT+ SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Verification code already registered.");
+        return ResponseEntity.badRequest().body( VERIFICATION_SUBJECT + " code already registered.");
     }
 }

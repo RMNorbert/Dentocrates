@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class LoginHistoryService {
+    private final static int IP_ADDRESS_INDEX = 0;
+    private final static int USER_AGENT_INDEX = 1;
     private final LoginHistoryRepository loginHistoryRepository;
     private final ClientRepository clientRepository;
     private final LoginNotificationService loginNotificationService;
@@ -29,7 +30,10 @@ public class LoginHistoryService {
     private final UserAgentSanitizer sanitizerService;
 
     @Autowired
-    public LoginHistoryService(LoginHistoryRepository loginHistoryRepository, ClientRepository clientRepository, LoginNotificationService loginNotificationService, IpAddressValidator validatorService, UserAgentSanitizer sanitizerService) {
+    public LoginHistoryService(LoginHistoryRepository loginHistoryRepository, ClientRepository clientRepository,
+                               LoginNotificationService loginNotificationService, IpAddressValidator validatorService,
+                               UserAgentSanitizer sanitizerService) {
+
         this.loginHistoryRepository = loginHistoryRepository;
         this.clientRepository = clientRepository;
         this.loginNotificationService = loginNotificationService;
@@ -40,8 +44,8 @@ public class LoginHistoryService {
     }
     public void successfulLogin(String userId) {
         try {
-        storeLoginAttempt(userId);
-        loginSuccessCounter.increment();
+            storeLoginAttempt(userId);
+            loginSuccessCounter.increment();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -60,22 +64,16 @@ public class LoginHistoryService {
         Optional<Client> client = clientRepository.getClientByEmail(userId);
         if (client.isPresent()) {
             String[] loginDetails = getLoginDetails();
-            String ipAddress = loginDetails[0];
-            String userAgent = loginDetails[1];
+            String ipAddress = loginDetails[IP_ADDRESS_INDEX];
+            String userAgent = loginDetails[USER_AGENT_INDEX];
             String email = client.get().getEmail();
 
-            LoginHistory loginHistory = LoginHistory.builder()
-                    .email(email)
-                    .time(LocalDateTime.now())
-                    .ip_address(ipAddress)
-                    .user_agent(userAgent)
-                    .build();
+            LoginHistory loginHistory = LoginHistory.of(email, ipAddress, userAgent);
 
             boolean registeredLoginDetails = isLoginDetailsRegistered(ipAddress, userAgent, email);
             if (!registeredLoginDetails) {
                 loginNotificationService.sendLoginNotification(ipAddress,userAgent, email);
             }
-
             loginHistoryRepository.save(loginHistory);
             return new String[]{email, ipAddress, userAgent};
         }
@@ -83,22 +81,22 @@ public class LoginHistoryService {
     }
 
     private String[] getLoginDetails() {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
 
-            if (request != null) {
-                String clientIpAddress = request.getRemoteAddr();
-                String userAgent = request.getHeader("User-Agent");
+        if (request != null) {
+            String clientIpAddress = request.getRemoteAddr();
+            String userAgent = request.getHeader("User-Agent");
 
-                if (!validatorService.isValidIPAddress(clientIpAddress)) {
-                    clientIpAddress = "Unknown";
-                }
-                userAgent = sanitizerService.sanitizeUserAgent(userAgent);
-
-                return new String[]{clientIpAddress, userAgent};
-            } else {
-                return new String[]{"Unknown", "Unknown"};
+            if (!validatorService.isValidIPAddress(clientIpAddress)) {
+                clientIpAddress = "Unknown";
             }
+            userAgent = sanitizerService.sanitizeUserAgent(userAgent);
+
+            return new String[]{clientIpAddress, userAgent};
+        } else {
+            return new String[]{"Unknown", "Unknown"};
+        }
     }
     private boolean isLoginDetailsRegistered(String ipAddress, String userAgent, String email){
         return loginHistoryRepository.existsByLoginDetails(email, ipAddress, userAgent);

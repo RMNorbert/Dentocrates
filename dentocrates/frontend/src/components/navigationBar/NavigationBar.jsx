@@ -1,5 +1,5 @@
-import './NavigationBar.css'
-import '../Element.css'
+import "./NavigationBar.css";
+import "../Element.css";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {email, role} from "../../utils/token/TokenDecoder";
@@ -25,7 +25,7 @@ function NavigationBar() {
         <div className='navigationBar'>
             <img
                 className='logo'
-                src={process.env.PUBLIC_URL + '/dentocrates-light-logo.png'}
+                src={process.env.PUBLIC_URL + '/dentocrates-website-favicon.png'}
                 alt="logo"
                 onClick={() => navigate("/home")}
             />
@@ -36,6 +36,7 @@ function NavigationBar() {
                 </>
             }
             <button id='tabs' onClick={() => navigate("/home")}>Home</button>
+            <button id='tabs' onClick={() => navigate("/contact")}>Contact us</button>
             {loggedInUserEmail !== null &&
                 <>
             <button id='tabs' onClick={() => navigate("/clinic")}>Search clinic</button>
@@ -50,7 +51,7 @@ function NavigationBar() {
                     <button id='tabs' onClick={() => navigate("/location")}>Register location</button>
                 </>
             }
-      {loggedInUserEmail != null ? <div className='logout'  style={role() === "DENTIST" ? { left: "14%" } : { left: "34%" }}
+      {loggedInUserEmail != null ? <div className='logout'
       >
                 <p
                   onMouseEnter={() => setIsHidden(!isHidden)}

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Random;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class LocationService {
     private final static double MIN_LATITUDE = 47.43436780681293;
@@ -37,13 +39,13 @@ public class LocationService {
         Location location = Location.of(locationDTO,longitude,latitude);
 
         locationRepository.save(location);
-        return ResponseEntity.ok("Location registered successfully");
+        return ResponseEntity.ok("Location" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
     public ResponseEntity<String> deleteLocationById(Long id){
         Location location = getLocationById(id);
         String locationName = location.getZipCode() + "-" +  location.getCity();
         locationRepository.deleteById(id);
-        return  ResponseEntity.ok("Location: " + locationName + " deleted successfully");
+        return  ResponseEntity.ok("Location: " + locationName + DELETE_RESPONSE_CONTENT);
     }
     private Location getLocationById(long id){
         return locationRepository.findById(id)

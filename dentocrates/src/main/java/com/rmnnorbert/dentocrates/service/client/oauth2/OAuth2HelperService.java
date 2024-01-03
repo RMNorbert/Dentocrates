@@ -15,18 +15,17 @@ import org.springframework.web.client.RestTemplate;
 import java.text.ParseException;
 @Service
 public class OAuth2HelperService {
-    private final String id = System.getenv("OAUTH_ID");
-    private final String secret = System.getenv("OAUTH_SECRET");
-    private final String redirectUri = System.getenv("REDIRECT_URI");
+    private final static String ID = System.getenv("OAUTH_ID");
+    private final static String SECRET = System.getenv("OAUTH_SECRET");
+    private final static String REDIRECT_URI = System.getenv("REDIRECT_URI");
+    private final static String OAUTH_TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token";
+    private final static String EMAIL_CLAIM = "email";
+    private final static String NAME_CLAIM = "name";
+    private final static int FIRST_NAME_INDEX = 0;
+    private final static int LAST_NAME_INDEX = 1;
 
     public ResponseEntity<TokenResponse> getGoogleTokenResponse(String code) {
-        String oauthTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
-        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("code", code);
-        requestBody.add("client_id", id);
-        requestBody.add("client_secret", secret);
-        requestBody.add("redirect_uri", redirectUri);
-        requestBody.add("grant_type", "authorization_code");
+        MultiValueMap<String, String> requestBody = buildRequestBody(code);
 
         // Set the headers for the request
         HttpHeaders headers = new HttpHeaders();
@@ -38,7 +37,7 @@ public class OAuth2HelperService {
         // Make the POST request to the token endpoint
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
-                oauthTokenUrl,
+                OAUTH_TOKEN_URL,
                 HttpMethod.POST,
                 requestEntity,
                 TokenResponse.class
@@ -54,9 +53,9 @@ public class OAuth2HelperService {
                 JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
                 // Extract user attributes from the claims set
                 String userId = claimsSet.getSubject();
-                String email = claimsSet.getStringClaim("email");
-                String[] name = claimsSet.getStringClaim("name").split(" ");
-                return new String[]{email,userId,name[0],name[1]};
+                String email = claimsSet.getStringClaim(EMAIL_CLAIM);
+                String[] name = claimsSet.getStringClaim(NAME_CLAIM).split(" ");
+                return new String[]{email,userId,name[FIRST_NAME_INDEX],name[LAST_NAME_INDEX]};
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -79,5 +78,15 @@ public class OAuth2HelperService {
         } else {
             throw new InvalidCredentialException();
         }
+    }
+    private MultiValueMap<String, String> buildRequestBody(String code) {
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("code", code);
+        requestBody.add("client_id", ID);
+        requestBody.add("client_secret", SECRET);
+        requestBody.add("redirect_uri", REDIRECT_URI);
+        requestBody.add("grant_type", "authorization_code");
+
+        return requestBody;
     }
 }

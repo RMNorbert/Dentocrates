@@ -28,13 +28,31 @@ button:active {
     left: 30%;
     width: 50%;
 }
+.roundBox {
+    border-radius: 10px;
+}
+.distanceHolder {
+    margin-bottom: 5px;
+}
+.upperDistanceHolder {
+    margin-top: 10px;
+}
+.shadowBorder {
+    border-style: double;
+    box-shadow: 2px 2px 2px 2px #010c80;
+}
+.shadowLightBorder {
+    border-top-style: double;
+    box-shadow: 1px 1px 1px 1px #010c80;
+    border-radius: 10px;
+}
 .home {
     position: absolute;
-    top: 140px;
-    left: 50px;
-    width: 1437px;
-    height: 1077px;
+    top: 110px;
+    height: 100vh;
+    background-size: cover;
     background-image:url("../../public/clinic/clinicaigeneratedpicture.jpg");
+    background-repeat: no-repeat;
 }
 .homeContent{
     margin-top: -50px;
@@ -82,7 +100,6 @@ button:active {
 }
 .listDetail1{
     list-style-type: none;
-    border-top: solid 0.5px rgb(255, 255, 255, 0.5);
     border-bottom: solid 0.5px rgb(255, 255, 255, 0.5);
     margin-left: -20px;
 }
@@ -100,11 +117,6 @@ button:active {
     border-top-style: groove;
     border-bottom-style: groove;
     border-radius: 10px;
-}
-
-.home-logo {
-    margin-top: 4.5%;
-    margin-left: 37%;
 }
 
 .footer {

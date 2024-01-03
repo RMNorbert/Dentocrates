@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class LeaveService {
     private final LeaveRepository leaveRepository;
@@ -35,16 +37,16 @@ public class LeaveService {
         Clinic clinic = getClinicById(dto.clinicId());
         Leave leave = Leave.of(dto,clinic);
         leaveRepository.save(leave);
-        return ResponseEntity.ok("Leave registered successfully");
+        return ResponseEntity.ok("Leave" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
 
     public ResponseEntity<String> deleteLeave(LeaveDeleteDTO dto) {
         Clinic clinic = getClinicById(dto.clinicId());
         if (dto.dentistId() == clinic.getDentistInContract().getId()) {
             leaveRepository.deleteById(dto.leaveId());
-            return ResponseEntity.ok("Leave deleted successfully");
+            return ResponseEntity.ok("Leave" + DELETE_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid delete request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + " delete leave");
     }
     private Clinic getClinicById(long id){
         return clinicRepository.findById(id)

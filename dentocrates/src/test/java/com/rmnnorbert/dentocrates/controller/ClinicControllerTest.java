@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ClinicControllerTest {
+    private static final long TEST_CLINIC_ID = 1L;
     private ClinicController clinicController;
     @Mock
     private ClinicService service;
@@ -58,23 +59,23 @@ class ClinicControllerTest {
     @Test
     void getClinicByIdShouldReturnExpectedClinic() {
         long searchedId = 1;
-        ClinicResponseDTO expected = new ClinicResponseDTO(1L,"name", "COMMUNITY_DENTAL_CLINIC","contact","site",1000,"street","6-2","1",1,10.17,10.15);
+        ClinicResponseDTO expected = new ClinicResponseDTO(TEST_CLINIC_ID,"name", "COMMUNITY_DENTAL_CLINIC","contact","site",1000,"street","6-2","1",1,10.17,10.15);
 
-        when(service.getClinicById(searchedId)).thenReturn(expected);
+        when(service.getClinicResponseDTOById(searchedId)).thenReturn(expected);
 
         ClinicResponseDTO actual = clinicController.getClinicById(searchedId);
 
         assertEquals(expected,actual);
-        verify(service,times(1)).getClinicById(searchedId);
+        verify(service,times(1)).getClinicResponseDTOById(searchedId);
     }
     @Test
     void getClinicByIdShouldReturnNotFoundException() {
         long searchedId = 1;
 
-        when(service.getClinicById(searchedId)).thenThrow(NotFoundException.class);
+        when(service.getClinicResponseDTOById(searchedId)).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, () -> clinicController.getClinicById(searchedId));
-        verify(service,times(1)).getClinicById(searchedId);
+        verify(service,times(1)).getClinicResponseDTOById(searchedId);
     }
     @Test
     void registerClinicShouldReturnOkStatusAndExpectedMessage() {
@@ -119,27 +120,24 @@ class ClinicControllerTest {
 
     @Test
     void deleteClinicShouldReturnOkStatusAndExpectedMessage() {
-        long id = 1;
         ResponseEntity<String> expected = ResponseEntity.ok("Clinic deleted successfully");
 
-        when(service.deleteClinicById(id)).thenReturn(expected);
+        when(service.deleteClinicById(TEST_CLINIC_ID)).thenReturn(expected);
 
-        ResponseEntity<String> actual = clinicController.deleteClinic(id);
+        ResponseEntity<String> actual = clinicController.deleteClinic(TEST_CLINIC_ID);
         assertEquals(expected, actual);
-        verify(service,times(1)).deleteClinicById(id);
+        verify(service,times(1)).deleteClinicById(TEST_CLINIC_ID);
     }
     @Test
     void deleteClinicShouldReturnNotFoundException() {
-        long id = 1;
+        when(service.deleteClinicById(TEST_CLINIC_ID)).thenThrow(NotFoundException.class);
 
-        when(service.deleteClinicById(id)).thenThrow(NotFoundException.class);
-
-        assertThrows(NotFoundException.class, () -> clinicController.deleteClinic(id));
-        verify(service,times(1)).deleteClinicById(id);
+        assertThrows(NotFoundException.class, () -> clinicController.deleteClinic(TEST_CLINIC_ID));
+        verify(service,times(1)).deleteClinicById(TEST_CLINIC_ID);
     }
     private static Stream<Arguments> provideExpectedList() {
         return Stream.of(
-                Arguments.of( List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1,17.5,10.5))),
+                Arguments.of(List.of(new ClinicResponseDTO(1,"name", "PRIVATE_DENTAL_CLINIC","site","a232323",10000,"city","street","1-2",1,17.5,10.5))),
                 Arguments.of(List.of())
         );
     }

@@ -4,12 +4,12 @@ import { Terms } from "../../../termsAndConditions/TermsAndConditions";
 
 function RegisterPage (){
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [operatingLicenceNo, setOperatingLicenceNo] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [operatingLicenceNo, setOperatingLicenceNo] = useState("");
     const [message, setMessage] = useState([]);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [dentist, setDentist] = useState(false);
     const [hidden, setHidden] = useState(true);
     const isMounted = useRef(true);
@@ -45,12 +45,12 @@ function RegisterPage (){
         await postRegistration(email,password);
     }
     const postRegistration = async(email, password)=>{
-        const dentistUrl = '/api/register/dentist';
+        const dentistUrl = "/api/register/dentist";
         const customerUrl = "/api/register/customer";
         fetch(dentist ? dentistUrl : customerUrl, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: dentist ? JSON.stringify({
                 email: email,
@@ -67,19 +67,18 @@ function RegisterPage (){
             }),
         })
             .then(response => {
-                if (response.status === 200) {
-                    navigate('/');
-                } else {
-                    setHidden(false);
+                if (response.status === 201) {
+                    navigate("/");
+                } else if(response.status !== 201){
                     response.text().then(errorMessage => setMessage(errorMessage
                         .replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";")));
+                    setHidden(false);
                 }
             })
             .catch(error => console.error(error));
-            setMessage(["Wrong username or password"])
     };
      return (
-            <div className="pageContent">
+            <div className="pageContent  shadowBorder roundBox">
                 {!dentist ?
                     <h1 className="register-title">
                         Register
@@ -120,15 +119,32 @@ function RegisterPage (){
                             :
                             <></>
                         }
-                        <div className="inputBox">
-                        <button type="submit">Register</button>
+                        <div className="inputBox ">
+                        <button
+                            className="shadowBorder"
+                            type="submit"
+                        >
+                            Register
+                        </button>
                         <></>
                         { !dentist ?
-                            <button type="button"  onClick={() => setDentist(!dentist)}>Register as Dentist ➔</button>
+                            <button
+                                className="shadowBorder"
+                                type="button"
+                                onClick={() => setDentist(!dentist)}
+                            >
+                                Register as Dentist ➔
+                            </button>
                             :
-                            <button type="button"  onClick={() => setDentist(!dentist)}>Register as customer ➔</button>
+                            <button
+                                className="shadowBorder"
+                                type="button"
+                                onClick={() => setDentist(!dentist)}
+                            >
+                                Register as customer ➔
+                            </button>
                         }
-                        <button className="register"
+                        <button className="register shadowBorder"
                             onClick={() => navigate("/")}
                         >
                             Registered already?

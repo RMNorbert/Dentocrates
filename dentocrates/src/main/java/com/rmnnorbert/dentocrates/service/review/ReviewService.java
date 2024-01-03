@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
+
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
@@ -49,25 +51,19 @@ public class ReviewService {
         Clinic clinic = clinicRepository.getReferenceById(dto.reviewedClinicId());
         AppointmentCalendar reservation = appointmentCalendarRepository.getReferenceById(dto.reviewedAppointmentId());
 
-        Review review = Review.builder()
-                .reviewer(customer)
-                .reviewedClinic(clinic)
-                .reviewedAppointment(reservation)
-                .rating(dto.rating())
-                .review(dto.review())
-                .build();
+        Review review = Review.of(customer, clinic, reservation, dto);
 
         reviewRepository.save(review);
-        return ResponseEntity.ok("Review registered successfully");
+        return ResponseEntity.ok("Review" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
 
     public ResponseEntity<String> deleteReviewById(DeleteDTO dto) {
         Review review = reviewRepository.getReferenceById(dto.targetId());
         if(dto.userId() == review.getReviewer().getId()) {
             reviewRepository.deleteById(dto.targetId());
-            return ResponseEntity.ok("Review deleted successfully");
+            return ResponseEntity.ok("Review" +  DELETE_RESPONSE_CONTENT);
         }
-        return ResponseEntity.badRequest().body("Invalid delete request.");
+        return ResponseEntity.badRequest().body(INVALID_REQUEST_RESPONSE_CONTENT + " delete review");
     }
 
     public Double getRatingByClinic(Long id) {
@@ -76,7 +72,6 @@ public class ReviewService {
 
     private double roundRating(Double number){
         if(number == null) return WITHOUT_REVIEW_RATING_VALUE;
-
         DecimalFormat df = new DecimalFormat("#.#");
         String formattedNumber = df.format(number);
         return Double.parseDouble(formattedNumber);
