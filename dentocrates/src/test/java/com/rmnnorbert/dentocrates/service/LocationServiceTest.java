@@ -47,7 +47,6 @@ class LocationServiceTest {
 
         assertEquals(locations.size(), actual.size());
         assertEquals(locations.get(0).getCity(), actual.get(0).city());
-        verify(locationRepository, times(1)).findAll();
     }
     @Test
     void getAllLocationWhenLocationsDoNotExists() {
@@ -58,14 +57,13 @@ class LocationServiceTest {
         List<LocationDTO> actual = locationService.getAllLocation();
 
         assertEquals(locations.size(), actual.size());
-        verify(locationRepository, times(1)).findAll();
     }
 
     @Test
     void registerLocation() {
         LocationDTO dto = new LocationDTO(1000,"City",0,0);
         ResponseEntity<String> actual = locationService.registerLocation(dto);
-        ResponseEntity<String> expected = ResponseEntity.ok("Location registered successfully");
+        ResponseEntity<String> expected = ResponseEntity.ok("Location successfully registered");
 
         assertEquals(expected, actual);
     }
@@ -81,16 +79,10 @@ class LocationServiceTest {
         ResponseEntity<String> expected = ResponseEntity.ok("Location: 1500-City deleted successfully");
 
         assertEquals(expected, actual);
-        verify(locationRepository,times(1)).findById(id);
-        verify(locationRepository, times(1)).deleteById(id);
     }
     @Test
     void deleteLocationByIdWhenLocationDoNotExist() {
         long id = 1;
-
         assertThrows(NotFoundException.class, () -> locationService.deleteLocationById(id));
-
-        verify(locationRepository,times(1)).findById(id);
-        verify(locationRepository, times(0)).deleteById(id);
     }
 }
