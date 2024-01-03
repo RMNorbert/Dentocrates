@@ -30,9 +30,9 @@ public class Leave {
 
     public static Leave of(LeaveRegisterDTO dto , Clinic clinicToRegister) {
         return Leave.builder()
-                    .clinic(clinicToRegister)
-                    .startOfTheLeave(dto.startOfTheLeave())
-                    .endOfTheLeave(dto.endOfTheLeave())
-                    .build();
+                .clinic(clinicToRegister)
+                .startOfTheLeave(dto.startOfTheLeave())
+                .endOfTheLeave(dto.endOfTheLeave())
+                .build();
     }
 }
