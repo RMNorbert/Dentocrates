@@ -17,14 +17,24 @@ export const Reset = () => {
             }
         } catch (e) {
             setMessage("Invalid email");
-            console.log(e)
+            console.error(e);
         }
     }
     return (
         <div className="inputBox">
             <label htmlFor="email">Email to send reset link:</label>
-            <input type="text" id="email" value={email} onChange={handleEmailChange} />
-            <button onClick={() => postResetRequest()}>Send link</button>
+            <input
+                className="shadowBorder"
+                type="text" id="email"
+                value={email}
+                onChange={handleEmailChange}
+            />
+            <button
+                className="shadowBorder"
+                onClick={() => postResetRequest()}
+            >
+                Send link
+            </button>
             <p display={message.length > 0 ? "block" : "none"}>{message}</p>
         </div>
     )
