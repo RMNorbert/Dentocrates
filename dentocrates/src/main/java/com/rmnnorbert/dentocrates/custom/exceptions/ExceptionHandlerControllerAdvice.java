@@ -24,7 +24,6 @@ public class ExceptionHandlerControllerAdvice {
         String errorMessage = fieldErrors.stream()
                 .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
-        System.out.println(errorMessage);
         return ResponseEntity.badRequest().body(errorMessage);
     }
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -35,9 +34,9 @@ public class ExceptionHandlerControllerAdvice {
         }
         int detailStartIndex = cause.indexOf("=");
         String message = cause.substring(detailStartIndex + 1).trim().replaceAll("[()]", "");
-        System.out.println(message);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
     }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -45,8 +44,14 @@ public class ExceptionHandlerControllerAdvice {
     @ExceptionHandler({SQLException.class, PersistenceException.class})
     public ResponseEntity<Object> handleDatabaseException() {
         String errorMessage = "An error occurred while accessing the database.";
-        System.out.println(errorMessage);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
-
+    @ExceptionHandler(InvalidCredentialException.class)
+    public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+    @ExceptionHandler(InvalidOAuth2ClientRegistrationException.class)
+    public ResponseEntity<String> handleInvalidOAuth2ClientRegistrationException(InvalidOAuth2ClientRegistrationException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 }
