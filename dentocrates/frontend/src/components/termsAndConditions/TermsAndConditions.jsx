@@ -49,8 +49,8 @@ export const Terms = (title) => {
         :
         (
     <div id="overlay">
-        <div className="container_body">
-            <div className="container">
+        <div className="container_body  shadowBorder roundBox">
+            <div className="container roundBox">
             <div className="tabs">
                 <ul>
                     <li className={displayTermsOfUse === "block" ? "active" : ""}
@@ -120,7 +120,7 @@ export const Terms = (title) => {
                 <label htmlFor="#agree" id="agree-check">
                     I agree
                 </label>
-                <button className="accept"
+                <button className="accept shadowBorder"
                         disabled={!isAgreed}
                         onClick={() => setIsAccepted(!isAccepted)}
                 >
