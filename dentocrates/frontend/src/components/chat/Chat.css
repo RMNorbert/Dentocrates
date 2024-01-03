@@ -41,6 +41,7 @@
     transform: translateY(-40px);
     z-index: 1;
     opacity: 1;
+    background-color: transparent;
 }
 
 .chatbox__button {
@@ -110,11 +111,10 @@
 
 .chatbox__support {
     background: #f9f9f9;
-    height: 450px;
+    height: 500px;
     width: 350px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-radius: 15px;
 }
 
 .chatbox__header {
@@ -123,7 +123,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px;
+    padding: 0px 20px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     box-shadow: var(--primaryBoxShadow);
