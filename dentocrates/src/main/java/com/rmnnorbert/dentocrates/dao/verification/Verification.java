@@ -37,5 +37,11 @@ public class Verification {
             registrationTime = LocalDateTime.now();
         }
     }
-
+    public static Verification of(String email, Role role, String code) {
+        return Verification.builder()
+                .verificationCode(code)
+                .email(email)
+                .role(role)
+                .build();
+    }
 }
