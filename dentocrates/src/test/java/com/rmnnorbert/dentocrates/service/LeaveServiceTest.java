@@ -86,7 +86,7 @@ class LeaveServiceTest {
         when(clinicRepository.findById(id)).thenReturn(Optional.ofNullable(clinic));
 
         ResponseEntity<String> actual = leaveService.registerLeave(dto);
-        ResponseEntity<String> expected = ResponseEntity.ok("Leave registered successfully");
+        ResponseEntity<String> expected = ResponseEntity.ok("Leave successfully registered");
 
         assertEquals(expected, actual);
 
@@ -153,7 +153,7 @@ class LeaveServiceTest {
         when(clinicRepository.findById(id)).thenReturn(Optional.ofNullable(clinic));
 
         ResponseEntity<String> actual = leaveService.deleteLeave(dto);
-        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid delete request.");
+        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid request to  delete leave");
 
         assertEquals(expected, actual);
 
