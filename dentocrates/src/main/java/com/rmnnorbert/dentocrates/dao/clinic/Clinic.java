@@ -49,7 +49,7 @@ public class Clinic {
     @NotBlank
     private final String openingHours;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "dentist_in_contract", referencedColumnName = "id")
     private final Client dentistInContract;
 
@@ -70,9 +70,6 @@ public class Clinic {
                 .openingHours(clinicRegisterDTO.openingHours())
                 .dentistInContract(dentist)
                 .build();
-    }
-    public void setWebsite(String newWebsite){
-        website = newWebsite;
     }
 
 }
