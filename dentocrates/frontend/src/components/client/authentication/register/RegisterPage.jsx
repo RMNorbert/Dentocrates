@@ -70,10 +70,11 @@ function RegisterPage (){
                 if (response.status === 201) {
                     navigate("/");
                 } else if(response.status !== 201){
-                    response.text().then(errorMessage => setMessage(errorMessage
+                    response.text().then(errorMessage => !errorMessage.includes("Proxy") &&
+                     setMessage(errorMessage
                         .replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";")));
-                    setHidden(false);
                 }
+                setHidden(false)
             })
             .catch(error => console.error(error));
     };
