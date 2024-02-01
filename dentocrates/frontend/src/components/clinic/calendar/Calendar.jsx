@@ -79,6 +79,14 @@ const Calendar = () => {
         return adjustedAppointment.replace(" ","T") + ":00";
     }
 
+    function adjustSelectedAppointment(appointment) {
+            let hourAndMinutesOfAppointment = date.dateTime.toISOString().substring(11, 16).replace("T", " ");
+            let adjustAppointment = hourAndMinutesOfAppointment.split('');
+            adjustAppointment[1] = String((Number(adjustAppointment[1]) + 1) % 10);
+            const adjustedAppointment = adjustAppointment.join("");
+            return adjustedAppointment.replace(" ","T");
+        }
+
     const bookAppointment = async(appointment) => {
         try {
         const calendarRegisterUrl = "/calendar/register";
@@ -114,6 +122,9 @@ const Calendar = () => {
         const times = getTimes();
         return (
             <div className="cal">
+            { date.dateTime && <div className="date roundBox appointment-selected-box shadowLightBorder distanceHolder">
+               <strong> The currently selected appointment: {adjustSelectedAppointment(date.dateTime)}</strong>
+            </div> }
                 {date.justDate ? (
                     <div className="date roundBox appointment-select-box">
                         {times?.map((time, i) => (
