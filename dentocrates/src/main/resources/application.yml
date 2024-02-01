@@ -46,6 +46,8 @@ management:
         enabled: true
     metrics:
         enabled: true
+cron:
+  expression: "0 0 0 * * *"
 dentocrates:
   dev-url: http://localhost:8080
 

@@ -97,6 +97,7 @@ function ClinicRegisterPage (props){
         };
         try {
             if(props.update) {
+                registerData["clinicId"] = id;
                 const response = await data(`/clinic/update/${id}`, "Put", registerData);
                 setErrorMessage(response.replace(/[A-Z]/g, match => ' ' + match).trim().toLowerCase().split(";"));
                 if (response.includes("successfully")) {

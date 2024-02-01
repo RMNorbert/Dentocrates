@@ -17,6 +17,6 @@ public interface ClientRepository<T extends Client> extends JpaRepository<T, Lon
     Optional<Role> findRoleByEmail(@Param("email") String email);
 
     @Modifying
-    @Query("DELETE FROM Client c WHERE FUNCTION('HOUR_ADD', c.registrationTime, 12) < NOW() AND c.verified = false")
-    int deleteUnverifiedClients();
+    @Query(value = "DELETE FROM Client c WHERE c.registration_time + interval '1h' * :hours  < CURRENT_TIMESTAMP AND c.verified = false", nativeQuery = true)
+    void deleteUnverifiedClients(@Param("hours") int hours);
 }

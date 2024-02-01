@@ -175,7 +175,7 @@ export const ClinicPage = () => {
                         ))}
                     </div>
                 )}
-                <div>
+                <div className="distanceHolder">
                     <ReviewPage
                         id={id}
                         byClinic={true}

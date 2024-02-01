@@ -163,7 +163,8 @@ export const Appointment = () => {
         {role() === "DENTIST" &&
             <div className="appointment">
                 <h2 className="appointment-text">
-                    {appointments.length > 0 ? "Booked appointments by clinics:" : "You have no appointments registered to your clinics yet"}
+                    {appointments.length > 0 ? "Booked appointments by clinics:" :
+                     "You have no appointments registered to your clinics for the next week"}
                 </h2>
                 <div className="appintment-content">
                     {appointments.map((appointment, index) => (

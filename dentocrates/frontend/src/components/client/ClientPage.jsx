@@ -18,10 +18,14 @@ export const ClientPage = () => {
     const [clientData, setClientData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isResetRequestMessageHidden, setIsResetRequestMessageHidden] = useState(true);
+    const [isDeleteRequested, setIsDeleteRequested] = useState(false);
     const [leaveMessage, setLeaveMessage] = useState("");
     const [isLeaveMessageHidden, setIsLeaveMessageHidden] = useState(true);
     const [validationCode, setValidationCode] = useState("");
+    const [validationTextToDelete, setValidationTextToDelete] = useState("");
+    const [generatedTextToDelete, setGeneratedTextToDelete] = useState("");
     const [resetCode, setResetCode] = useState("");
+
     const getClientDetails = async() =>{
         if(role() === "CUSTOMER") {
             const clientDetailsUrl = `/client/${userId()}`;
@@ -53,21 +57,26 @@ export const ClientPage = () => {
         }
         setLeaveData(leaves);
     }
+
     const handleClinicChange = (event) => {
         let chosen = event.target.value.replace(/\D/g, "");
         setClinicId(chosen);
     };
+
     const handleStartChange = (event) => {
         let chosen = event.target.value;
         setStartDate(chosen + 'T00:00:00');
     }
+
     const handleEndChange = (event) => {
         let chosen = event.target.value;
         setEndDate(chosen + 'T00:00:00');
     }
+
     const handleValidationCodeChange = (event, setState) => {
         setState(event.target.value);
     }
+
     const handleLeaveSubmit = async () => {
         let registerData = {
             clinicId : clinicId,
@@ -87,6 +96,7 @@ export const ClientPage = () => {
             console.error("Error:", error);
         }
     }
+
     const handleResetRequest = async (email) => {
         const passwordResetRequestUrl = "/verify/reset/register";
         const requestBody = {email: email,  role:role()};
@@ -97,15 +107,39 @@ export const ClientPage = () => {
             console.error("Error:", error);
         }
     };
+
+    const generateRandomString = (length) => {
+      const characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      let result = '';
+
+      // Create an array of 32-bit unsigned integers
+      const randomValues = new Uint32Array(length);
+
+      // Generate random values
+      window.crypto.getRandomValues(randomValues);
+      randomValues.forEach((value) => {
+        result += characters.charAt(value % charactersLength);
+      });
+      return result;
+    }
+
+    const handleDeleteRequest = () => {
+        setGeneratedTextToDelete(generateRandomString(10));
+        setIsDeleteRequested(true);
+    }
     const handleDelete = async (currentId) => {
-        const clientDeleteUrl = role() === "CUSTOMER" ? "/client/" :
-            role() === "DENTIST" ? "/dentist/": false;
-        const requestBody = {userId: userId(), targetId: currentId};
-        const response =  await data(clientDeleteUrl, "DELETE", requestBody);
-        if(response) {
-            localStorage.clear();
-            const redirectUrl = window.location.toString();
-            window.location.replace(redirectUrl.replace('client', ''));
+        if(validationTextToDelete === generatedTextToDelete){
+            const clientDeleteUrl = role() === "CUSTOMER" ? "/client/" :
+                role() === "DENTIST" ? "/dentist/": false;
+            const requestBody = {userId: userId(), targetId: currentId};
+            const response =  await data(clientDeleteUrl, "DELETE", requestBody);
+            if(response) {
+                localStorage.clear();
+                const redirectUrl = window.location.toString();
+                window.location.replace(redirectUrl.replace('client', ''));
+            }
         }
     };
 
@@ -158,13 +192,39 @@ export const ClientPage = () => {
                         </button>
                     </div>
                 }
+                {!isDeleteRequested ?
                     <button className="button shadowBorder"
-                        onClick={() => handleDelete(clientData.id)}
+                        onClick={() => handleDeleteRequest()}
                     >
-                        Delete account
+                            Delete account
                     </button>
+                    :
+                    <div className="roundBox shadowBorder distanceHolder">
+                    The generated text: <strong>{generatedTextToDelete}</strong>
+                    <div className="inputBox">
+                        <input
+                            className="shadowLightBorder upperDistanceHolder"
+                            type="text"
+                            placeholder="Write here the generated text upper to this to delete your account"
+                            onChange={(e) => handleValidationCodeChange(e, setValidationTextToDelete)}
+                        />
+                        <button
+                            className="shadowBorder"
+                            onClick={() => handleDelete(clientData.id)}
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            className="shadowBorder"
+                                onClick={() => setIsDeleteRequested(false)}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                    </div>
+                }
                 {role() && clientData.verified === false ?
-                <div className="inputBox">
+                <div className="inputBox upperDistanceHolder">
                     <input
                         className="shadowLightBorder"
                         type="text"
