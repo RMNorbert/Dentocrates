@@ -45,9 +45,6 @@
             <column name="dentist_in_contract" type="BIGINT" >
                 <constraints nullable="false"/>
             </column>
-
-            <column name="appointment_calendar_id" type="BIGINT"/>
-
         </createTable>
     </changeSet>
 </databaseChangeLog>
