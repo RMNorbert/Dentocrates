@@ -38,10 +38,16 @@ function LoginPage() {
             if (response === true) {
                 setClientIsValid(true);
             }
+            else if(response.includes("Proxy")) {
+                setMessage("Could not make request, try again later")
+                setMessageIsHidden(false);
+            }
+            else {
+                setMessage(response)
+                setMessageIsHidden(false);
+            }
         } catch (e) {
             console.error(e);
-            setMessage("Invalid email or password")
-            setMessageIsHidden(false);
         }
     }
     const handleSubmit = async (event) => {
