@@ -1,4 +1,4 @@
-package com.rmnnorbert.dentocrates.dao.appointmentCalendar;
+package com.rmnnorbert.dentocrates.dao.appointment;
 
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-public class AppointmentCalendar {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
