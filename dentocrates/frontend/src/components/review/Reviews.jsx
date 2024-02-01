@@ -43,7 +43,7 @@ export const ReviewPage = ({id, byClinic} ) => {
                   >
                      <h3 className="reviewBorder">{review.reviewer}</h3>
                       {!byClinic?
-                          <div>
+                          <div className="distanceHolder">
                              <strong> {review.reviewedClinic} </strong>
                           </div>
                           :
@@ -51,7 +51,7 @@ export const ReviewPage = ({id, byClinic} ) => {
                       }
                           <div>
                               <div
-                                  className="review-rating"
+                                  className="review-rating upperDistanceHolder"
                               >
                               <strong> Rating:    {review.rating} </strong>
                               </div>
