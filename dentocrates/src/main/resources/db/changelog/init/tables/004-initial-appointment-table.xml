@@ -5,13 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="create-appointments-calendar-table" author="RMNorbert">
+    <changeSet id="create-appointments-table" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="appointment_calendar"/>
+                <tableExists tableName="appointment"/>
             </not>
         </preConditions>
-        <createTable tableName="appointment_calendar">
+        <createTable tableName="appointment">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

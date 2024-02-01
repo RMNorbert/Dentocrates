@@ -52,7 +52,7 @@
                 baseTableName="review"
                 baseColumnNames="reviewed_appointment"
                 constraintName="fk_review_appointment"
-                referencedTableName="appointment_calendar"
+                referencedTableName="appointment"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"

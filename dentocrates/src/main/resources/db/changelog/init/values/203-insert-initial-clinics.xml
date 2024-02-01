@@ -20,7 +20,6 @@
             <column name="street">Street street</column>
             <column name="opening_hours">6-12</column>
             <column name="dentist_in_contract">12</column>
-            <column name="appointment_calendar_id">101</column>
         </insert>
         <insert tableName="clinic">
             <column name="id">102</column>
@@ -32,7 +31,6 @@
             <column name="street">New street</column>
             <column name="opening_hours">8-16</column>
             <column name="dentist_in_contract">12</column>
-            <column name="appointment_calendar_id">102</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

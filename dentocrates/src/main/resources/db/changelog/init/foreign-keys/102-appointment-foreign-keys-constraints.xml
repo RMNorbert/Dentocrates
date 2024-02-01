@@ -5,17 +5,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="add-appointment-calendar-clinic-foreign-keys-constraints" author="RMNorbert">
+    <changeSet id="add-appointment-clinic-foreign-keys-constraints" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
             <not>
-                <foreignKeyConstraintExists foreignKeyName="fk_appointment_calendar_clinic"/>
+                <foreignKeyConstraintExists foreignKeyName="fk_appointment_clinic"/>
             </not>
         </preConditions>
 
         <addForeignKeyConstraint
-                baseTableName="appointment_calendar"
+                baseTableName="appointment"
                 baseColumnNames="clinic_id"
-                constraintName="fk_appointment_calendar_clinic"
+                constraintName="fk_appointment_clinic"
                 referencedTableName="clinic"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
@@ -23,17 +23,17 @@
         />
     </changeSet>
 
-    <changeSet id="add-appointment-calendar-client-foreign-keys-constraints" author="RMNorbert">
+    <changeSet id="add-appointment-client-foreign-keys-constraints" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
           <not>
-            <foreignKeyConstraintExists foreignKeyName="fk_appointment_calendar_customer"/>
+            <foreignKeyConstraintExists foreignKeyName="fk_appointment_customer"/>
           </not>
         </preConditions>
 
         <addForeignKeyConstraint
-                baseTableName="appointment_calendar"
+                baseTableName="appointment"
                 baseColumnNames="customer_id"
-                constraintName="fk_appointment_calendar_customer"
+                constraintName="fk_appointment_customer"
                 referencedTableName="client"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
