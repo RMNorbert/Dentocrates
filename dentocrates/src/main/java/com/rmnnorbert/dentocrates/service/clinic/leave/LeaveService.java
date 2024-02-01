@@ -21,7 +21,8 @@ public class LeaveService {
     private final LeaveRepository leaveRepository;
     private final ClinicRepository clinicRepository;
     @Autowired
-    public LeaveService(LeaveRepository leaveRepository, ClinicRepository clinicRepository) {
+    public LeaveService(LeaveRepository leaveRepository,
+                        ClinicRepository clinicRepository) {
         this.leaveRepository = leaveRepository;
         this.clinicRepository = clinicRepository;
     }
@@ -34,8 +35,7 @@ public class LeaveService {
     }
 
     public ResponseEntity<String> registerLeave(LeaveRegisterDTO dto) {
-        Clinic clinic = getClinicById(dto.clinicId());
-        Leave leave = Leave.of(dto,clinic);
+        Leave leave = createLeaveFromDTO(dto);
         leaveRepository.save(leave);
         return ResponseEntity.ok("Leave" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
     }
@@ -51,5 +51,16 @@ public class LeaveService {
     private Clinic getClinicById(long id){
         return clinicRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Clinic"));
+    }
+
+    /**
+     * Creates a Leave entity based on the information provided in the LeaveRegisterDTO.
+     *
+     * @param dto The LeaveRegisterDTO containing the data for leave registration.
+     * @return A Leave entity with associated Clinic entities.
+     */
+    private Leave createLeaveFromDTO(LeaveRegisterDTO dto) {
+        Clinic clinic = getClinicById(dto.clinicId());
+        return Leave.of(dto,clinic);
     }
 }
