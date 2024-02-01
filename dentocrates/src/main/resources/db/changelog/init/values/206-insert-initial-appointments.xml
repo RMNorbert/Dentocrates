@@ -5,13 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
 >
-    <changeSet id="insert-initial-appointments-calendar" author="RMNorbert">
+    <changeSet id="insert-initial-appointments" author="RMNorbert">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="client"/>
-            <tableExists tableName="appointment_calendar"/>
-            <tableIsEmpty tableName="appointment_calendar"/>
+            <tableExists tableName="appointment"/>
+            <tableIsEmpty tableName="appointment"/>
         </preConditions>
-        <insert tableName="appointment_calendar">
+        <insert tableName="appointment">
             <column name="id">11</column>
             <column name="clinic_id">101</column>
             <column name="customer_id">11</column>
@@ -19,7 +19,7 @@
             <column name="appeared">true</column>
             <column name="reviewed">true</column>
         </insert>
-        <insert tableName="appointment_calendar">
+        <insert tableName="appointment">
             <column name="id">102</column>
             <column name="clinic_id">102</column>
             <column name="customer_id">11</column>
