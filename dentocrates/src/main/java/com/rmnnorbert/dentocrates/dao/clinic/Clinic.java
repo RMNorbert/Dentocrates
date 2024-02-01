@@ -1,6 +1,5 @@
 package com.rmnnorbert.dentocrates.dao.clinic;
 
-import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
 import com.rmnnorbert.dentocrates.dao.location.Location;
 import com.rmnnorbert.dentocrates.dto.clinic.ClinicRegisterDTO;
 import com.rmnnorbert.dentocrates.dao.client.Client;
@@ -52,10 +51,6 @@ public class Clinic {
     @ManyToOne
     @JoinColumn(name = "dentist_in_contract", referencedColumnName = "id")
     private final Client dentistInContract;
-
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    private AppointmentCalendar appointmentCalendar;
 
     public static Clinic of(ClinicRegisterDTO clinicRegisterDTO, Dentist dentist, Location clinicLocation) {
         ClinicType type = ClinicType.valueOf(clinicRegisterDTO.clinicType());
