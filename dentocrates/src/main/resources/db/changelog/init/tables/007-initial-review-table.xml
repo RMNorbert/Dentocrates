@@ -9,7 +9,7 @@
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="client" />
             <tableExists tableName="clinic" />
-            <tableExists tableName="appointment_calendar" />
+            <tableExists tableName="appointment" />
             <not>
                 <tableExists tableName="review"/>
             </not>
