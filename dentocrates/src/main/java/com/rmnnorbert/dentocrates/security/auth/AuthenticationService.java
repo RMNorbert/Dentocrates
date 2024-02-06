@@ -15,9 +15,11 @@ import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationEmailService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationEntityService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,14 +62,22 @@ public class AuthenticationService {
     private final LoginHistoryService loginHistoryService;
     private final OAuth2HelperService oAuth2Helper;
     private final JwtService jwtService;
-    private final VerificationService verificationService;
+    private final VerificationEmailService verificationEmailService;
+    private final VerificationEntityService verificationEntityService;
+    private final VerificationValidationService verificationValidationService;
     @Autowired
-    public AuthenticationService(ClientRepository clientRepository, DentistService dentistService,
-                                 CustomerRepository customerRepository, PasswordEncoder passwordEncoder,
-                                 JwtService jwtService, AuthenticationManager authenticationManager,
-                                 VerificationService verificationService,
+    public AuthenticationService(ClientRepository clientRepository,
+                                 DentistService dentistService,
+                                 CustomerRepository customerRepository,
+                                 PasswordEncoder passwordEncoder,
+                                 JwtService jwtService,
+                                 AuthenticationManager authenticationManager,
+                                 VerificationEmailService verificationEmailService,
                                  ClientRegistrationRepository clientRegistrationRepository,
-                                 OAuth2HelperService oAuth2Helper, LoginHistoryService loginHistoryService) {
+                                 OAuth2HelperService oAuth2Helper,
+                                 LoginHistoryService loginHistoryService,
+                                 VerificationEntityService verificationEntityService,
+                                 VerificationValidationService verificationValidationService) {
 
         this.clientRepository = clientRepository;
         this.dentistService = dentistService;
@@ -75,10 +85,12 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-        this.verificationService = verificationService;
+        this.verificationEmailService = verificationEmailService;
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.oAuth2Helper = oAuth2Helper;
         this.loginHistoryService = loginHistoryService;
+        this.verificationEntityService = verificationEntityService;
+        this.verificationValidationService = verificationValidationService;
     }
 
     /**
@@ -96,7 +108,7 @@ public class AuthenticationService {
             Customer customer = Customer.toEntity(request,password);
 
             customerRepository.save(customer);
-            verificationService.sendVerification(request.email(), CUSTOMER_ROLE, REGISTRATION_ACTION, false);
+            verificationEmailService.sendVerification(request.email(), CUSTOMER_ROLE, REGISTRATION_ACTION, false);
 
             return true;
         } else{
@@ -109,7 +121,7 @@ public class AuthenticationService {
             Dentist dentist = Dentist.toEntity(request,password);
 
             dentistService.saveDentist(dentist);
-            verificationService.sendVerification(request.email(), DENTIST_ROLE, REGISTRATION_ACTION, false);
+            verificationEmailService.sendVerification(request.email(), DENTIST_ROLE, REGISTRATION_ACTION, false);
 
             return true;
         } else{
@@ -180,7 +192,7 @@ public class AuthenticationService {
                     new UsernamePasswordAuthenticationToken(request.email(), request.password())
             );
 
-            boolean isAuthenticationCodeValid = verificationService.validate(request.authenticationCode(),
+            boolean isAuthenticationCodeValid = verificationValidationService.validate(request.authenticationCode(),
                                                                              request.email());
             if (isAuthenticationCodeValid) {
                 return generateAuthenticationResponse(client, request);
@@ -257,7 +269,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(additionalClaims, client);
         VerifyDTO dto = new VerifyDTO(request.authenticationCode());
 
-        verificationService.deleteVerification(dto);
+        verificationEntityService.deleteVerification(dto);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -274,7 +286,7 @@ public class AuthenticationService {
      * @return The generated authentication code.
      */
     private String generateAuthenticationCode(String email, String role) {
-        return verificationService.sendAuthenticationCode(email, role);
+        return verificationEmailService.sendAuthenticationCode(email, role);
     }
 
     /**
