@@ -5,11 +5,14 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jwt.SignedJWT;
 import com.rmnnorbert.dentocrates.custom.exceptions.InvalidCredentialException;
+import com.rmnnorbert.dentocrates.custom.exceptions.InvalidOAuth2ClientRegistrationException;
+import com.rmnnorbert.dentocrates.custom.exceptions.OAuth2AuthenticationException;
 import com.rmnnorbert.dentocrates.security.auth.TokenResponse;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
@@ -50,7 +53,6 @@ public class OAuth2HelperService {
                 String idToken = tokenResponse.getId_token();
                 return parseToken(idToken);
             } else {
-                System.out.println("Token exchange failed. Status code: " + responseEntity.getStatusCode());
                 throw new InvalidCredentialException();
             }
         } else {
@@ -63,25 +65,32 @@ public class OAuth2HelperService {
      *
      * @param code The authorization code received during the OAuth authorization flow.
      * @return ResponseEntity containing the Google OAuth token response.
+     * @throws OAuth2AuthenticationException if an error occurs during the authentication process.
+     * @throws InvalidOAuth2ClientRegistrationException if there is an issue with the OAuth2 client registration.
      */
     private ResponseEntity<TokenResponse> getGoogleTokenResponse(String code) {
-        MultiValueMap<String, String> requestBody = buildRequestBody(code);
+        try {
+            MultiValueMap<String, String> requestBody = buildRequestBody(code);
+            // Set the headers for the request
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        // Set the headers for the request
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            // Create the HTTP entity with the headers and body
+            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        // Create the HTTP entity with the headers and body
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
-
-        // Make the POST request to the token endpoint
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(
-                OAUTH_TOKEN_URL,
-                HttpMethod.POST,
-                requestEntity,
-                TokenResponse.class
-        );
+            // Make the POST request to the token endpoint
+            RestTemplate restTemplate = new RestTemplate();
+            return restTemplate.exchange(
+                    OAUTH_TOKEN_URL,
+                    HttpMethod.POST,
+                    requestEntity,
+                    TokenResponse.class
+            );
+        } catch (HttpClientErrorException ex) {
+            throw new OAuth2AuthenticationException(ex.getMessage());
+        } catch (Exception e) {
+            throw new InvalidOAuth2ClientRegistrationException(e.getMessage());
+        }
     }
 
     /**
