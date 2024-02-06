@@ -4,7 +4,7 @@ import com.rmnnorbert.dentocrates.dto.DeleteDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
-import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,10 +25,10 @@ import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
 @RestController
 @RequestMapping("/calendar")
 public class AppointmentController {
-    private final AppointmentCalendarService appointmentCalendarService;
+    private final AppointmentService appointmentService;
     @Autowired
-    public AppointmentController(AppointmentCalendarService appointmentCalendarService) {
-        this.appointmentCalendarService = appointmentCalendarService;
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
     @Operation(
@@ -45,7 +45,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @GetMapping("/customer/{id}")
     public List<AppointmentDTO> getCustomerAppointments(@PathVariable Long id ){
-        return appointmentCalendarService.getAllAppointmentById(id);
+        return appointmentService.getAllAppointmentById(id);
     }
 
     @Operation(
@@ -69,7 +69,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PostMapping("/register")
     public ResponseEntity<String> addCalendar(@Valid @RequestBody AppointmentRegisterDTO appointmentDTO){
-        return appointmentCalendarService.registerAppointment(appointmentDTO);
+        return appointmentService.registerAppointment(appointmentDTO);
     }
 
     @Operation(
@@ -90,7 +90,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PostMapping("/")
     public ResponseEntity<String> reviewAppointment(@RequestBody Long id) {
-        return appointmentCalendarService.updateReviewStateOfAppointment(id);
+        return appointmentService.updateReviewStateOfAppointment(id);
     }
 
     @Operation(
@@ -111,7 +111,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @DeleteMapping("/")
     public ResponseEntity<String> removeAppointment(@Valid @RequestBody DeleteDTO dto){
-        return appointmentCalendarService.deleteAppointmentById(dto);
+        return appointmentService.deleteAppointmentById(dto);
     }
 
     @Operation(
@@ -129,7 +129,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @GetMapping("/clinic/{id}")
     public List<AppointmentDTO> getAppointmentsByClinic(@PathVariable Long id ){
-        return appointmentCalendarService.getAllAppointmentByClinic(id);
+        return appointmentService.getAllAppointmentByClinic(id);
     }
     @Operation(
             summary = "Return a list of appointments of a clinic for the next 7 days by id",
@@ -147,7 +147,7 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @GetMapping("/clinic/weekly/{id}")
     public List<AppointmentDTO> getNextWeekAppointmentsByClinic(@PathVariable Long id ){
-        return appointmentCalendarService.getAllAppointmentsForTheWeekByClinic(id);
+        return appointmentService.getAllAppointmentsForTheWeekByClinic(id);
     }
     @Operation(
             summary = "Update an appointment appeared status by id",
@@ -173,6 +173,6 @@ public class AppointmentController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PutMapping("/")
     public ResponseEntity<String> updateAppointment(@Valid @RequestBody AppointmentUpdateDTO dto) {
-        return appointmentCalendarService.updateAppointment(dto);
+        return appointmentService.updateAppearanceOnAppointment(dto);
     }
 }
