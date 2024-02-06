@@ -92,7 +92,7 @@ function RegisterPage (){
                 <Terms title="Dentocrates"/>
                 </div>
                 <div className="inputBox message-box" hidden={hidden}>{message.map((error) =>
-                    <h4 className="message">{error}</h4>)}
+                    <h4 className="message" key={error}>{error}</h4>)}
                 </div>
                 <div className="flex justify-center flex-col items-center text-2xl ">
                     <form onSubmit={HandleSubmit}>

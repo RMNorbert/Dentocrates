@@ -1,7 +1,7 @@
 package com.rmnnorbert.dentocrates.dao.review;
 
 import com.rmnnorbert.dentocrates.dao.client.Customer;
-import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
+import com.rmnnorbert.dentocrates.dao.appointment.Appointment;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
 import com.rmnnorbert.dentocrates.dto.review.ReviewRegisterDTO;
 import jakarta.persistence.*;
@@ -30,13 +30,13 @@ public class Review {
     @ManyToOne
     @NonNull
     @JoinColumn(name = "reviewed_appointment", referencedColumnName = "id")
-    private AppointmentCalendar reviewedAppointment;
+    private Appointment reviewedAppointment;
 
     private int rating;
 
     private String review;
 
-    public static Review of(Customer customer, Clinic clinic, AppointmentCalendar reservation, ReviewRegisterDTO dto) {
+    public static Review of(Customer customer, Clinic clinic, Appointment reservation, ReviewRegisterDTO dto) {
         return Review.builder()
                 .reviewer(customer)
                 .reviewedClinic(clinic)

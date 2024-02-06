@@ -8,7 +8,7 @@ import com.rmnnorbert.dentocrates.dto.appointment.AppointmentDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentRegisterDTO;
 import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
-import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class AppointmentControllerTest {
     private AppointmentController appointmentController;
     private ObjectMapper objectMapper;
     @Mock
-    private AppointmentCalendarService service;
+    private AppointmentService service;
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
@@ -126,35 +126,35 @@ class AppointmentControllerTest {
         AppointmentUpdateDTO dto = new AppointmentUpdateDTO(1,1,1,true);
         ResponseEntity<String> expected = ResponseEntity.ok("Appointment updated successfully");
 
-        when(service.updateAppointment(dto)).thenReturn(expected);
+        when(service.updateAppearanceOnAppointment(dto)).thenReturn(expected);
 
         ResponseEntity<String> actual = appointmentController.updateAppointment(dto);
 
         assertEquals(expected,actual);
-        verify(service,times(1)).updateAppointment(dto);
+        verify(service,times(1)).updateAppearanceOnAppointment(dto);
     }
     @Test
     void updateAppointmentShouldReturnBadRequestStatusAndExpectedMessage() {
         AppointmentUpdateDTO dto = new AppointmentUpdateDTO(1,1,1,true);
         ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid update request.");
 
-        when(service.updateAppointment(dto)).thenReturn(expected);
+        when(service.updateAppearanceOnAppointment(dto)).thenReturn(expected);
 
         ResponseEntity<String> actual = appointmentController.updateAppointment(dto);
 
         assertEquals(expected,actual);
-        verify(service,times(1)).updateAppointment(dto);
+        verify(service,times(1)).updateAppearanceOnAppointment(dto);
     }
 
     @Test
     void updateAppointmentShouldReturnNotFoundException() {
         AppointmentUpdateDTO dto = new AppointmentUpdateDTO(1,1,1,true);
 
-        when(service.updateAppointment(dto)).thenThrow(NotFoundException.class);
+        when(service.updateAppearanceOnAppointment(dto)).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, () -> appointmentController.updateAppointment(dto));
 
-        verify(service,times(1)).updateAppointment(dto);
+        verify(service,times(1)).updateAppearanceOnAppointment(dto);
     }
 
     private static Stream<Arguments> provideIdAndExpectedList() {

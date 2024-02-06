@@ -7,13 +7,13 @@ import com.rmnnorbert.dentocrates.dto.appointment.AppointmentUpdateDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.dao.client.Dentist;
-import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
+import com.rmnnorbert.dentocrates.dao.appointment.Appointment;
 import com.rmnnorbert.dentocrates.dao.clinic.Clinic;
 import com.rmnnorbert.dentocrates.data.authentication.Role;
-import com.rmnnorbert.dentocrates.repository.clinic.appointmentCalendar.AppointmentCalendarRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.appointment.AppointmentRepository;
 import com.rmnnorbert.dentocrates.repository.clinic.ClinicRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
-import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentCalendarService;
+import com.rmnnorbert.dentocrates.service.clinic.calendar.AppointmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,16 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class AppointmentCalendarServiceTest {
+class AppointmentServiceTest {
     private static final long TEST_ID=1;
     @Mock
-    private AppointmentCalendarRepository appointmentCalendarRepository;
+    private AppointmentRepository appointmentRepository;
     @Mock
     private CustomerRepository customerRepository;
     @Mock
     private ClinicRepository clinicRepository;
     @InjectMocks
-    private AppointmentCalendarService appointmentCalendarService;
+    private AppointmentService appointmentService;
 
     @BeforeEach
     void setUp() {
@@ -50,14 +50,14 @@ class AppointmentCalendarServiceTest {
     void getAllAppointmentByIdWhenThereAreAppointments() {
         Customer customer = new Customer(TEST_ID, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
         Clinic clinic = Clinic.builder().id(TEST_ID).build();
-        AppointmentCalendar appointment1 = AppointmentCalendar.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
-        AppointmentCalendar appointment2 = AppointmentCalendar.builder().id(2L).customer(customer).clinic(clinic).build();
-        List<AppointmentCalendar> appointments = List.of(appointment1, appointment2);
+        Appointment appointment1 = Appointment.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
+        Appointment appointment2 = Appointment.builder().id(2L).customer(customer).clinic(clinic).build();
+        List<Appointment> appointments = List.of(appointment1, appointment2);
 
-        when(appointmentCalendarRepository.getAllByCustomer_Id(TEST_ID)).thenReturn(appointments);
+        when(appointmentRepository.getAllByCustomer_Id(TEST_ID)).thenReturn(appointments);
         when(customerRepository.findById(TEST_ID)).thenReturn(java.util.Optional.of(customer));
 
-        List<AppointmentDTO> result = appointmentCalendarService.getAllAppointmentById(TEST_ID);
+        List<AppointmentDTO> result = appointmentService.getAllAppointmentById(TEST_ID);
 
         assertEquals(appointments.size(), result.size());
         assertEquals(1L, result.get(0).id());
@@ -67,12 +67,12 @@ class AppointmentCalendarServiceTest {
     @Test
     void getAllAppointmentByIdWhenThereAreNoAppointments() {
         Customer customer = new Customer(TEST_ID, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
-        List<AppointmentCalendar> appointments = new ArrayList<>();
+        List<Appointment> appointments = new ArrayList<>();
 
-        when(appointmentCalendarRepository.getAllByCustomer_Id(TEST_ID)).thenReturn(appointments);
+        when(appointmentRepository.getAllByCustomer_Id(TEST_ID)).thenReturn(appointments);
         when(customerRepository.findById(TEST_ID)).thenReturn(java.util.Optional.of(customer));
 
-        List<AppointmentDTO> result = appointmentCalendarService.getAllAppointmentById(TEST_ID);
+        List<AppointmentDTO> result = appointmentService.getAllAppointmentById(TEST_ID);
 
         assertEquals(0, result.size());
     }
@@ -86,7 +86,7 @@ class AppointmentCalendarServiceTest {
         when(clinicRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(clinic));
         when(customerRepository.findById(TEST_ID)).thenReturn(java.util.Optional.of(customer));
 
-        ResponseEntity<String> actual = appointmentCalendarService.registerAppointment(dto);
+        ResponseEntity<String> actual = appointmentService.registerAppointment(dto);
         ResponseEntity<String> expected = ResponseEntity.ok("Appointment successfully registered");
         assertEquals(expected,actual);
     }
@@ -94,7 +94,7 @@ class AppointmentCalendarServiceTest {
     void registerAppointmentWhenClinicDoesNotExist() {
         AppointmentRegisterDTO dto = new AppointmentRegisterDTO(TEST_ID,TEST_ID,LocalDateTime.now());
 
-        assertThrows(NotFoundException.class, () -> appointmentCalendarService.registerAppointment(dto));
+        assertThrows(NotFoundException.class, () -> appointmentService.registerAppointment(dto));
     }
     @Test
     void registerAppointmentWhenCustomerDoesNotExist() {
@@ -103,17 +103,17 @@ class AppointmentCalendarServiceTest {
 
         when(clinicRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(clinic));
 
-        assertThrows(NotFoundException.class, () -> appointmentCalendarService.registerAppointment(dto));
+        assertThrows(NotFoundException.class, () -> appointmentService.registerAppointment(dto));
     }
     @Test
     void deleteAppointmentById() {
         Clinic clinic = Clinic.builder().id(TEST_ID).build();
         Customer customer = new Customer(TEST_ID, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
-        AppointmentCalendar appointment1 = AppointmentCalendar.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
+        Appointment appointment1 = Appointment.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
         DeleteDTO dto = new DeleteDTO(TEST_ID,TEST_ID);
-        when(appointmentCalendarRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointment1));
+        when(appointmentRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointment1));
 
-        ResponseEntity<String> actual = appointmentCalendarService.deleteAppointmentById(dto);
+        ResponseEntity<String> actual = appointmentService.deleteAppointmentById(dto);
         ResponseEntity<String> expected = ResponseEntity.ok("Appointment deleted successfully");
 
         assertEquals(expected,actual);
@@ -123,11 +123,11 @@ class AppointmentCalendarServiceTest {
         long originalUserId = 2;
         Clinic clinic = Clinic.builder().id(TEST_ID).build();
         Customer customer = new Customer(TEST_ID, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
-        AppointmentCalendar appointment1 = AppointmentCalendar.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
+        Appointment appointment1 = Appointment.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
         DeleteDTO dto = new DeleteDTO(originalUserId,TEST_ID);
-        when(appointmentCalendarRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointment1));
+        when(appointmentRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointment1));
 
-        ResponseEntity<String> actual = appointmentCalendarService.deleteAppointmentById(dto);
+        ResponseEntity<String> actual = appointmentService.deleteAppointmentById(dto);
         ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid request to  delete appointment");
 
         assertEquals(expected,actual);
@@ -137,8 +137,8 @@ class AppointmentCalendarServiceTest {
         long userId = 2;
         DeleteDTO dto = new DeleteDTO(userId,TEST_ID);
 
-        assertThrows(NotFoundException.class, () -> appointmentCalendarService.deleteAppointmentById(dto));
-        verify(appointmentCalendarRepository,times(1)).findById(TEST_ID);
+        assertThrows(NotFoundException.class, () -> appointmentService.deleteAppointmentById(dto));
+        verify(appointmentRepository,times(1)).findById(TEST_ID);
     }
     @Test
     void getAllAppointmentByClinic() {
@@ -146,24 +146,24 @@ class AppointmentCalendarServiceTest {
         Customer customer = new Customer(TEST_ID, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
         Customer customer2 = new Customer(id2, "email@example.com", "password", "John", "Doe", Role.CUSTOMER);
         Clinic clinic = Clinic.builder().id(TEST_ID).build();
-        AppointmentCalendar appointment1 = AppointmentCalendar.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
-        AppointmentCalendar appointment2 = AppointmentCalendar.builder().id(id2).customer(customer2).clinic(clinic).build();
-        List<AppointmentCalendar> appointments = List.of(appointment1, appointment2);
+        Appointment appointment1 = Appointment.builder().id(TEST_ID).customer(customer).clinic(clinic).build();
+        Appointment appointment2 = Appointment.builder().id(id2).customer(customer2).clinic(clinic).build();
+        List<Appointment> appointments = List.of(appointment1, appointment2);
 
-        when(appointmentCalendarRepository.getAllByClinic_Id(TEST_ID)).thenReturn(appointments);
+        when(appointmentRepository.getAllByClinic_Id(TEST_ID)).thenReturn(appointments);
 
-        List<AppointmentDTO> result = appointmentCalendarService.getAllAppointmentByClinic(TEST_ID);
+        List<AppointmentDTO> result = appointmentService.getAllAppointmentByClinic(TEST_ID);
 
         assertEquals(2, result.size());
     }
     @Test
     void getAllAppointmentByClinicWhenNoAppointmentExist() {
         long id = 1;
-        List<AppointmentCalendar> appointments = new ArrayList<>();
+        List<Appointment> appointments = new ArrayList<>();
 
-        when(appointmentCalendarRepository.getAllByClinic_Id(id)).thenReturn(appointments);
+        when(appointmentRepository.getAllByClinic_Id(id)).thenReturn(appointments);
 
-        List<AppointmentDTO> result = appointmentCalendarService.getAllAppointmentByClinic(id);
+        List<AppointmentDTO> result = appointmentService.getAllAppointmentByClinic(id);
 
         assertEquals(appointments.size(), result.size());
     }
@@ -173,12 +173,12 @@ class AppointmentCalendarServiceTest {
         Dentist dentist = Dentist.builder().id(TEST_ID).build();
         Customer customer = Customer.builder().build();
         Clinic clinic = Clinic.builder().id(TEST_ID).dentistInContract(dentist).build();
-        AppointmentCalendar appointmentCalendar = AppointmentCalendar.builder().clinic(clinic).customer(customer).build();
+        Appointment appointment = Appointment.builder().clinic(clinic).customer(customer).build();
 
-        when(appointmentCalendarRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointmentCalendar));
+        when(appointmentRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(appointment));
         when(clinicRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(clinic));
 
-        ResponseEntity<String> actual = appointmentCalendarService.updateAppointment(dto);
+        ResponseEntity<String> actual = appointmentService.updateAppearanceOnAppointment(dto);
         ResponseEntity<String> expected = ResponseEntity.ok("Appointment updated successfully registered");
 
         assertEquals(expected, actual);
@@ -189,7 +189,7 @@ class AppointmentCalendarServiceTest {
 
         when(clinicRepository.findById(TEST_ID)).thenThrow(new NotFoundException("Clinic"));
 
-        assertThrows(NotFoundException.class, () -> appointmentCalendarService.updateAppointment(dto));
+        assertThrows(NotFoundException.class, () -> appointmentService.updateAppearanceOnAppointment(dto));
     }
     @Test
     void updateAppointmentWhenUserIdInvalid(){
@@ -200,7 +200,7 @@ class AppointmentCalendarServiceTest {
 
         when(clinicRepository.findById(TEST_ID)).thenReturn(Optional.ofNullable(clinic));
 
-        ResponseEntity<String> actual = appointmentCalendarService.updateAppointment(dto);
+        ResponseEntity<String> actual = appointmentService.updateAppearanceOnAppointment(dto);
         ResponseEntity<String> expected = ResponseEntity.badRequest().body("Invalid request to  update appointment");
 
         assertEquals(expected, actual);

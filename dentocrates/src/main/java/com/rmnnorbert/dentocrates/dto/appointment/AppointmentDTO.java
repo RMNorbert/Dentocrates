@@ -1,6 +1,6 @@
 package com.rmnnorbert.dentocrates.dto.appointment;
 
-import com.rmnnorbert.dentocrates.dao.appointmentCalendar.AppointmentCalendar;
+import com.rmnnorbert.dentocrates.dao.appointment.Appointment;
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
 
@@ -14,7 +14,7 @@ public record AppointmentDTO(@Min(1) long id,
                              boolean appeared,
                              boolean reviewed
                             ) {
-    public static AppointmentDTO of(AppointmentCalendar calendar) {
+    public static AppointmentDTO of(Appointment calendar) {
         return AppointmentDTO.builder()
                 .id(calendar.getId())
                 .customerId(calendar.getCustomer().getId())

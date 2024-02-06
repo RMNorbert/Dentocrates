@@ -15,6 +15,11 @@ import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
 
 @Service
 public class LocationService {
+    /** To optimize Mapbox API usage:
+     * Default range values are used to provide a random sample coordinate in the area of Budapest for displaying
+     * clinics on the map.
+     * These default values can be replaced with actual coordinates fetched from the provided location.
+     */
     private final static double MIN_LATITUDE = 47.43436780681293;
     private final static double MAX_LATITUDE = 47.6015897075242;
     private final static double MIN_LONGITUDE = 18.988484817303743;
@@ -22,7 +27,8 @@ public class LocationService {
     private final Random random;
     private final LocationRepository locationRepository;
     @Autowired
-    public LocationService(Random random, LocationRepository locationRepository) {
+    public LocationService(Random random,
+                           LocationRepository locationRepository) {
         this.random = random;
         this.locationRepository = locationRepository;
     }
@@ -33,6 +39,14 @@ public class LocationService {
                 .map(LocationDTO::of)
                 .toList();
     }
+
+    /**
+     * Registers a new location based on the information provided in the LocationDTO.
+     * Generates random coordinates for the location's longitude and latitude.
+     *
+     * @param locationDTO The LocationDTO containing the data for location registration.
+     * @return ResponseEntity with a success message if the registration is successful.
+     */
     public ResponseEntity<String> registerLocation(LocationDTO locationDTO){
         double longitude = generateRandomCoordinates(MIN_LONGITUDE,MAX_LONGITUDE);
         double latitude = generateRandomCoordinates(MIN_LATITUDE,MAX_LATITUDE);
@@ -43,8 +57,8 @@ public class LocationService {
     }
     public ResponseEntity<String> deleteLocationById(Long id){
         Location location = getLocationById(id);
-        String locationName = location.getZipCode() + "-" +  location.getCity();
         locationRepository.deleteById(id);
+        String locationName = location.getZipCode() + "-" +  location.getCity();
         return  ResponseEntity.ok("Location: " + locationName + DELETE_RESPONSE_CONTENT);
     }
     private Location getLocationById(long id){

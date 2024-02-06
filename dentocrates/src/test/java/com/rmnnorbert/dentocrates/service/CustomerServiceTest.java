@@ -6,7 +6,7 @@ import com.rmnnorbert.dentocrates.dto.client.customer.CustomerResponseDTO;
 import com.rmnnorbert.dentocrates.custom.exceptions.NotFoundException;
 import com.rmnnorbert.dentocrates.dao.client.Customer;
 import com.rmnnorbert.dentocrates.data.authentication.Role;
-import com.rmnnorbert.dentocrates.repository.clinic.appointmentCalendar.AppointmentCalendarRepository;
+import com.rmnnorbert.dentocrates.repository.clinic.appointment.AppointmentRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.service.client.customer.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ class CustomerServiceTest {
     @Mock
     private CustomerRepository customerRepository;
     @Mock
-    private AppointmentCalendarRepository appointmentCalendarRepository;
+    private AppointmentRepository appointmentRepository;
     @InjectMocks
     private CustomerService customerService;
     @BeforeEach

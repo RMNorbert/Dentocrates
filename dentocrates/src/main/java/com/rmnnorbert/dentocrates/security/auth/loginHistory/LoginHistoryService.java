@@ -19,7 +19,9 @@ import java.util.Optional;
 
 @Service
 public class LoginHistoryService {
+    /** Index constants of ip address for the login details array. */
     private final static int IP_ADDRESS_INDEX = 0;
+    /** Index constants of user agent for the login details array. */
     private final static int USER_AGENT_INDEX = 1;
     private final LoginHistoryRepository loginHistoryRepository;
     private final ClientRepository clientRepository;
@@ -30,8 +32,10 @@ public class LoginHistoryService {
     private final UserAgentSanitizer sanitizerService;
 
     @Autowired
-    public LoginHistoryService(LoginHistoryRepository loginHistoryRepository, ClientRepository clientRepository,
-                               LoginNotificationService loginNotificationService, IpAddressValidator validatorService,
+    public LoginHistoryService(LoginHistoryRepository loginHistoryRepository,
+                               ClientRepository clientRepository,
+                               LoginNotificationService loginNotificationService,
+                               IpAddressValidator validatorService,
                                UserAgentSanitizer sanitizerService) {
 
         this.loginHistoryRepository = loginHistoryRepository;
@@ -60,6 +64,15 @@ public class LoginHistoryService {
         }
     }
 
+    /**
+     * Stores login attempt details and sends a notification if the login details are not registered.
+     * The method checks if the provided user exists, generates login details, and stores them in the database.
+     * If the login details are not registered previously, it sends a login notification.
+     *
+     * @param userId The user ID for which the login attempt is being stored.
+     * @return An array containing email, IP address, and user agent of the user if the user is found,
+     * otherwise an empty array.
+     */
     private String[] storeLoginAttempt(String userId) {
         Optional<Client> client = clientRepository.getClientByEmail(userId);
         if (client.isPresent()) {
@@ -80,6 +93,12 @@ public class LoginHistoryService {
         return new String[]{};
     }
 
+    /**
+     * Retrieves login details including client IP address and user agent from the current HTTP request.
+     * If the request is not available, returns default values ("Unknown").
+     *
+     * @return Array containing client IP address at index 0 and user agent at index 1.
+     */
     private String[] getLoginDetails() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
@@ -88,6 +107,7 @@ public class LoginHistoryService {
             String clientIpAddress = request.getRemoteAddr();
             String userAgent = request.getHeader("User-Agent");
 
+            // Validate and sanitize the obtained values
             if (!validatorService.isValidIPAddress(clientIpAddress)) {
                 clientIpAddress = "Unknown";
             }
@@ -95,6 +115,7 @@ public class LoginHistoryService {
 
             return new String[]{clientIpAddress, userAgent};
         } else {
+            // Return default values if the request is not available
             return new String[]{"Unknown", "Unknown"};
         }
     }

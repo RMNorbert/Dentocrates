@@ -12,5 +12,7 @@ public record ClinicUpdateDTO(@NotBlank String name,
                               @Max(10000) int zipCode,
                               @NotBlank String city,
                               @NotBlank String street,
-                              @NotBlank String openingHours) {
+                              @NotBlank String openingHours,
+                              @Min(1) Long dentistId,
+                              @Min(1) Long clinicId) {
 }

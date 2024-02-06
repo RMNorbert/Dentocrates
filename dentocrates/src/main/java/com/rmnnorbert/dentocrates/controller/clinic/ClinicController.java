@@ -148,9 +148,9 @@ public class ClinicController {
             @ApiResponse(responseCode = INTERNAL_SERVER_ERROR_RESPONSE_CODE, description = INTERNAL_SERVER_ERROR_RESPONSE_CONTENT,
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateClinicById(@PathVariable Long id,
+    public ResponseEntity<String> updateClinicById(
             @Valid @RequestBody ClinicUpdateDTO dto){
-        return clinicService.updateClinicById(id,dto);
+        return clinicService.updateClinicById(dto);
     }
 
 }
