@@ -3,7 +3,9 @@ package com.rmnnorbert.dentocrates.controller.client.authentication;
 import com.rmnnorbert.dentocrates.dto.client.update.ResetPasswordRequestDTO;
 import com.rmnnorbert.dentocrates.dto.client.verification.VerificationValidationDTO;
 import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationEmailService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationEntityService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationValidationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -16,16 +18,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.*;
-import static com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService.VERIFICATION_SUBJECT;
+import static com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationEmailService.VERIFICATION_SUBJECT;
 
 @Tag(name = "Client verification", description = "Client verification management APIs")
 @RestController
 @RequestMapping("/verify")
 public class VerificationController {
-    private final VerificationService verificationService;
+    private final VerificationEmailService verificationEmailService;
+    private final VerificationEntityService verificationEntityService;
+    private final VerificationValidationService verificationValidationService;
     @Autowired
-    public VerificationController(VerificationService verificationService) {
-        this.verificationService = verificationService;
+    public VerificationController(VerificationEmailService verificationEmailService,
+                                  VerificationEntityService verificationEntityService,
+                                  VerificationValidationService verificationValidationService) {
+        this.verificationEmailService = verificationEmailService;
+        this.verificationEntityService = verificationEntityService;
+        this.verificationValidationService = verificationValidationService;
     }
 
     @Operation(
@@ -42,7 +50,7 @@ public class VerificationController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PostMapping("/{id}")
     public ResponseEntity<Boolean> validateResetVerification(@RequestBody VerificationValidationDTO dto) {
-        return ResponseEntity.ok(verificationService.validate(dto.verificationCode(), dto.email()));
+        return ResponseEntity.ok(verificationValidationService.validate(dto.verificationCode(), dto.email()));
     }
 
     @Operation(
@@ -63,7 +71,7 @@ public class VerificationController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @DeleteMapping("/")
     public ResponseEntity<String> deleteVerification(@RequestBody VerifyDTO verificationCode) {
-        return verificationService.deleteVerification(verificationCode);
+        return verificationEntityService.deleteVerification(verificationCode);
     }
 
     @Operation(
@@ -84,6 +92,6 @@ public class VerificationController {
                     content = { @Content(schema = @Schema(implementation = String.class), mediaType = RESPONSE_MEDIA_TYPE) })})
     @PostMapping("/reset/register")
     public ResponseEntity<String> registerReset(@RequestBody ResetPasswordRequestDTO dto) {
-        return verificationService.sendVerification(dto.email(),  dto.role(), "reset",true );
+        return verificationEmailService.sendVerification(dto.email(),  dto.role(), "reset",true );
     }
 }
