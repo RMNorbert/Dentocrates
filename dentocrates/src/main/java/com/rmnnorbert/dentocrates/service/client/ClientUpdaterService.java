@@ -5,9 +5,11 @@ import com.rmnnorbert.dentocrates.dao.verification.Verification;
 import com.rmnnorbert.dentocrates.data.authentication.Role;
 import com.rmnnorbert.dentocrates.dto.client.update.ResetPasswordDTO;
 import com.rmnnorbert.dentocrates.dto.client.verification.VerifyDTO;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationEmailService;
 import com.rmnnorbert.dentocrates.service.client.customer.CustomerService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationEntityService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,16 +19,23 @@ import static com.rmnnorbert.dentocrates.controller.ApiResponseConstants.SUCCESS
 
 @Service
 public class ClientUpdaterService {
-    private final VerificationService verificationService;
+    private final VerificationEmailService verificationEmailService;
+    private final VerificationEntityService verificationEntityService;
+    private final VerificationValidationService verificationValidationService;
+
     private final CustomerService customerService;
     private final DentistService dentistService;
     private final PasswordEncoder passwordEncoder;
     @Autowired
-    public ClientUpdaterService(VerificationService verificationService,
+    public ClientUpdaterService(VerificationEmailService verificationEmailService,
+                                VerificationEntityService verificationEntityService,
+                                VerificationValidationService verificationValidationService,
                                 CustomerService customerService,
                                 DentistService dentistService,
                                 PasswordEncoder passwordEncoder) {
-        this.verificationService = verificationService;
+        this.verificationEmailService = verificationEmailService;
+        this.verificationEntityService = verificationEntityService;
+        this.verificationValidationService = verificationValidationService;
         this.customerService = customerService;
         this.dentistService = dentistService;
         this.passwordEncoder = passwordEncoder;
@@ -40,9 +49,9 @@ public class ClientUpdaterService {
      * @throws InvalidCredentialException If the reset request is not valid or the verification code is incorrect.
      */
     public ResponseEntity<String> resetPassword(ResetPasswordDTO dto) {
-        boolean isResetRequestValid = verificationService.validate(dto.verificationCode(), dto.email());
+        boolean isResetRequestValid = verificationValidationService.validate(dto.verificationCode(), dto.email());
         if(isResetRequestValid) {
-            Verification verification = verificationService.getVerification(dto.verificationCode());
+            Verification verification = verificationEntityService.getVerification(dto.verificationCode());
 
             updateClientPassword(verification, dto.password());
             return ResponseEntity.ok().body("Password change" + SUCCESSFUL_REGISTER_RESPONSE_CONTENT);
@@ -59,7 +68,7 @@ public class ClientUpdaterService {
      * @return ResponseEntity with a success message if the client verification is successful.
      */
     public ResponseEntity<String> verifyClient(VerifyDTO dto) {
-        Verification verification = verificationService.getVerification(dto.verificationCode());
+        Verification verification = verificationEntityService.getVerification(dto.verificationCode());
 
         if(verification.getRole().equals(Role.CUSTOMER)) {
             customerService.verifyCustomer(verification.getEmail());
