@@ -12,9 +12,11 @@ import com.rmnnorbert.dentocrates.dto.client.dentist.DentistRegisterDTO;
 import com.rmnnorbert.dentocrates.repository.client.ClientRepository;
 import com.rmnnorbert.dentocrates.repository.client.CustomerRepository;
 import com.rmnnorbert.dentocrates.security.auth.loginHistory.LoginHistoryService;
-import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationService;
+import com.rmnnorbert.dentocrates.service.client.communicationServices.VerificationEmailService;
 import com.rmnnorbert.dentocrates.service.client.dentist.DentistService;
 import com.rmnnorbert.dentocrates.service.client.oauth2.OAuth2HelperService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationEntityService;
+import com.rmnnorbert.dentocrates.service.client.verification.VerificationValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -45,7 +47,11 @@ class AuthenticationServiceTest {
     @Mock
     private AuthenticationManager authenticationManager;
     @Mock
-    private VerificationService verificationService;
+    private VerificationEmailService verificationEmailService;
+    @Mock
+    private VerificationEntityService verificationEntityService;
+    @Mock
+    private VerificationValidationService verificationValidationService;
     @Mock
     private OAuth2HelperService oAuth2Helper;
     @Mock
@@ -63,10 +69,13 @@ class AuthenticationServiceTest {
                 passwordEncoder,
                 jwtService,
                 authenticationManager,
-                verificationService,
+                verificationEmailService,
                 clientRegistrationRepository,
                 oAuth2Helper,
-                loginHistoryService);
+                loginHistoryService,
+                verificationEntityService,
+                verificationValidationService
+                );
     }
 
     @Test
@@ -115,7 +124,7 @@ class AuthenticationServiceTest {
         when(clientRepository.getClientByEmail(request.email())).thenReturn(optionalClient);
         when(jwtService.generateToken(additionalClaims, optionalClient.get())).thenReturn(jwtToken);
         when(passwordEncoder.matches(request.password(),request.password())).thenReturn(true);
-        when(verificationService.validate(request.authenticationCode(),request.email())).thenReturn(true);
+        when(verificationValidationService.validate(request.authenticationCode(),request.email())).thenReturn(true);
 
         AuthenticationResponse expected = new AuthenticationResponse(jwtToken,expectedId);
         AuthenticationResponse actual = authenticationService.authenticate(request);

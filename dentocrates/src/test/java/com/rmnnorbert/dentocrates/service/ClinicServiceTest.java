@@ -93,7 +93,7 @@ class ClinicServiceTest {
         Dentist dentist = Dentist.builder().id(id).build();
         Location location = Location.builder().build();
 
-        when(dentistRepository.getReferenceById(id)).thenReturn(dentist);
+        when(dentistRepository.findById(id)).thenReturn(Optional.ofNullable(dentist));
         when(locationRepository.getByZipCode(dto.zipCode())).thenReturn(Optional.ofNullable(location));
 
         ResponseEntity<String> actual = clinicService.registerClinic(dto);
@@ -114,10 +114,10 @@ class ClinicServiceTest {
                 "6-12",
                 id);
 
-        when(dentistRepository.getReferenceById(id)).thenThrow(new NotFoundException("Dentist"));
+        when(dentistRepository.findById(id)).thenThrow(new NotFoundException("Dentist"));
 
         assertThrows(NotFoundException.class, () -> clinicService.registerClinic(dto));
-        verify(dentistRepository,times(1)).getReferenceById(id);
+        verify(dentistRepository,times(1)).findById(id);
     }
     @Test
     void registerClinicWithInvalidLocation() {
@@ -133,13 +133,10 @@ class ClinicServiceTest {
                 id);
         Dentist dentist = Dentist.builder().id(id).build();
 
-        when(dentistRepository.getReferenceById(id)).thenReturn(dentist);
+        when(dentistRepository.findById(id)).thenReturn(Optional.ofNullable(dentist));
         when(locationRepository.getByZipCode(dto.zipCode())).thenReturn(Optional.empty());
 
-        ResponseEntity<String> actual = clinicService.registerClinic(dto);
-        ResponseEntity<String> expected = ResponseEntity.badRequest().body("Location not found.");
-
-        assertEquals(expected,actual);
+        assertThrows(NotFoundException.class, () -> clinicService.registerClinic(dto));
     }
 
     @Test
