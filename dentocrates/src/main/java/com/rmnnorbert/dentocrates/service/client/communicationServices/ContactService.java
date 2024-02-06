@@ -1,5 +1,6 @@
 package com.rmnnorbert.dentocrates.service.client.communicationServices;
 
+import com.rmnnorbert.dentocrates.custom.exceptions.EmailSendingException;
 import com.rmnnorbert.dentocrates.dto.client.contact.ContactMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class ContactService {
      * Dentocrates support team's email address using the emailService.
      *
      * @param message The ContactMessageDTO containing sender's details, message, and subject.
-     * @return True if the message was sent successfully; false otherwise.
+     * @return True if the message was sent successfully; throw EmailException otherwise.
      */
     public boolean sendMessage(ContactMessageDTO message) {
         try {
@@ -30,8 +31,7 @@ public class ContactService {
             emailService.sendMail(SUPPORT_TEAM_EMAIL_ADDRESS, message.subject(), messageToSend, "");
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new EmailSendingException("contact message");
         }
     }
 }
