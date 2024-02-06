@@ -166,7 +166,7 @@ public class GMailerService {
     private static Credential getCredentials(NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory) {
         try {
             // Load client secrets. Replace the resourcePath with your client_secret json file
-            String resourcePath = "/client_secret_49338607330-aona1jlm9qs2m7r7rhni97e86hi9d0b7.apps.googleusercontent.com.json";
+            String resourcePath = "/your client_secret json file";
 
             GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory,
                     new InputStreamReader(GMailerService.class.getResourceAsStream(resourcePath)));
@@ -176,7 +176,6 @@ public class GMailerService {
             LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(RECEIVER_SERVER_PORT).build();
             return new AuthorizationCodeInstalledApp(flow, receiver).authorize(APPLICATION_NAME);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return new Credential(new Credential.AccessMethod() {
                 @Override
                 public void intercept(HttpRequest httpRequest, String s){}
