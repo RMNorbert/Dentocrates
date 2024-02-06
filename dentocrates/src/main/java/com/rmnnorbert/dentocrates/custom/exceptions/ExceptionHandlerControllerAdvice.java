@@ -2,6 +2,7 @@ package com.rmnnorbert.dentocrates.custom.exceptions;
 
 
 import jakarta.persistence.PersistenceException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Log4j2
 public class ExceptionHandlerControllerAdvice {
     /**
      * Exception handler method for handling MethodArgumentNotValidException.
@@ -26,11 +28,18 @@ public class ExceptionHandlerControllerAdvice {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
+        // Extract validation errors from the exception
         BindingResult result = exception.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
+
+        // Construct a detailed error message with field-specific validation details
         String errorMessage = fieldErrors.stream()
                 .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
+
+        // Log a warning with details about the encountered exception for debugging purposes
+        log.warn("["+ exception.getClass().getSimpleName() + "] encountered for object: " +
+                exception.getObjectName() + "\nDetails: " + exception);
         return ResponseEntity.badRequest().body(errorMessage);
     }
 
@@ -44,9 +53,11 @@ public class ExceptionHandlerControllerAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
         String cause = "";
+        // Extract the root cause of the exception
         if (exception.getRootCause() != null) {
             cause = exception.getRootCause().getLocalizedMessage();
         }
+        // Extract the error message from the cause, starting from the first '=' character
         int detailStartIndex = cause.indexOf("=");
         String message = cause.substring(detailStartIndex + 1).trim().replaceAll("[()]", "");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
@@ -61,6 +72,8 @@ public class ExceptionHandlerControllerAdvice {
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
+        // Log a warning with details about the encountered exception for debugging purposes
+        log.warn("["+ exception.getClass().getSimpleName() + "] encountered: \nDetails: " + exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
@@ -86,6 +99,8 @@ public class ExceptionHandlerControllerAdvice {
      */
     @ExceptionHandler(InvalidCredentialException.class)
     public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialException exception) {
+        // Log a warning with details about the encountered exception for debugging purposes
+        log.warn("["+ exception.getClass().getSimpleName() + "] encountered: \nDetails: " + exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
@@ -100,6 +115,24 @@ public class ExceptionHandlerControllerAdvice {
     @ExceptionHandler(InvalidOAuth2ClientRegistrationException.class)
     public ResponseEntity<String> handleInvalidOAuth2ClientRegistrationException(
             InvalidOAuth2ClientRegistrationException exception) {
+        // Log a warning with details about the encountered exception for debugging purposes
+        log.error("["+ exception.getClass().getSimpleName() + "] encountered for object: \nDetails: " + exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    }
+
+    /**
+     * Exception handler method for handling OAuth2AuthenticationException.
+     * This method is invoked when an error occurs during OAuth2 authentication with a third-party server.
+     *
+     * @param exception The OAuth2AuthenticationException thrown when authentication fails.
+     * @return ResponseEntity containing an internal server error status (500) and a user-friendly error message.
+     */
+    @ExceptionHandler(OAuth2AuthenticationException.class)
+    public ResponseEntity<String> handleOAuth2AuthenticationException(
+            OAuth2AuthenticationException exception) {
+        // Log a warning with details about the encountered exception for debugging purposes
+        log.error("["+ exception.getClass().getSimpleName() + "] encountered : \nDetails: " + exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An error occurred while authenticating with the third-party server. Please try again later.");
     }
 }
